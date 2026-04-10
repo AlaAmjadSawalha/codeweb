@@ -1,18 +1,22 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "React.js",
+  name: "SmartPlan AI",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "AI-powered platform for architectural and interior layout generation.",
   mainNav: [
     {
       title: "Home",
       href: "/",
     },
+    {
+      title: "Pricing",
+      href: "/pricing",
+    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/Youngermaster/react-shadcn-ui-template",
+    github: "https://github.com/your-username/smartplan-ai",
     docs: "https://ui.shadcn.com",
   },
 };

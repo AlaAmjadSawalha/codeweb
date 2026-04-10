@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->index(['is_active', 'sort_order'], 'plans_active_sort_idx');
         });
     }
 

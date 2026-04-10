@@ -1,5 +1,5 @@
 {
-  "name": "react-shadcn-ui-template",
+  "name": "smartplan-ai",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -11,12 +11,17 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
+    "axios": "^1.15.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "i18next": "^26.0.3",
+    "i18next-browser-languagedetector": "^8.2.1",
     "lucide-react": "^0.365.0",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^17.0.2",
+    "react-router-dom": "^7.14.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },

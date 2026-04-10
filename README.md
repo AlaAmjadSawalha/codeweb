@@ -1,6 +1,6 @@
-# React Shadcn-UI Template
+# SmartPlan AI
 
-This repository provides a boilerplate template for a React application using the [Shadcn-UI](https://github.com/your-link-to-shadcn-ui-repo) library and [Vite](https://vitejs.dev/) as the build tool and development server. The template is designed to help you kickstart your React projects with Shadcn-UI and Vite, offering a fast development environment and optimized production builds.
+SmartPlan AI is an AI-powered architectural and interior design platform. It helps users generate layout concepts, compare design variations, and explore design decisions faster through an intuitive React frontend.
 
 ## Features
 
@@ -14,7 +14,7 @@ This repository provides a boilerplate template for a React application using th
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/Youngermaster/react-shadcn-ui-template.git your-project-name
+   git clone https://github.com/your-username/smartplan-ai.git your-project-name
    ```
 
 2. Change to the project directory:
