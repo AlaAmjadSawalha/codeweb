@@ -4,6 +4,7 @@ import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import i18n from "./i18n";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

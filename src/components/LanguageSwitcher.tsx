@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
     <button
       type="button"
       onClick={toggleLanguage}
-      className="hidden sm:inline-flex h-9 items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm font-medium shadow-sm transition-colors hover:bg-muted"
+      className="d-none sm:inline-flex h-9 align-items-center rounded-2 border border-input bg-transparent px-3 py-1 fs-6 text-muted fw-medium shadow-sm transition-colors hover:bg-muted"
       aria-label={t("nav.language")}
       title={t("nav.language")}
     >

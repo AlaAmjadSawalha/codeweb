@@ -144,7 +144,7 @@ function App() {
       </Routes>
 
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 z-[80] rounded-md bg-slate-900 px-4 py-2 text-sm text-white shadow-lg dark:bg-slate-100 dark:text-slate-900">
+        <div className="fixed bottom-4 right-4 z-[80] rounded-2 bg-slate-900 px-3 py-2 fs-6 text-muted text-white shadow-lg dark:bg-slate-100 dark:text-slate-900">
           {toastMessage}
         </div>
       )}
