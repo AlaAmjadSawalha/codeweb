@@ -15,15 +15,15 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
     ];
 
     return (
-        <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-6">
+        <div className="p-5 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
+            <div className="d-flex flex-column sm:flex-row justify-content-between align-items-start sm:items-center gap-4 border-b pb-6">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">All Projects</h1>
-                    <p className="text-muted-foreground mt-1">Manage and organize your AI layout designs.</p>
+                    <h1 className="fs-2 fw-bold tracking-tight">All Projects</h1>
+                    <p className="text-muted mt-1">Manage and organize your AI layout designs.</p>
                 </div>
                 <button
                     onClick={() => setPage("create-project")}
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none"
+                    className="inline-flex h-10 align-items-center justify-content-center rounded-2 bg-blue-600 px-3 py-2 fs-6 text-muted fw-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none"
                 >
                     <Icons.plus className="mr-2 h-4 w-4" />
                     New Project
@@ -31,54 +31,54 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
             </div>
 
             {/* Filters and Search */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="relative w-full sm:max-w-xs">
-                    <Icons.fileIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <div className="d-flex flex-column sm:flex-row gap-4 align-items-center justify-content-between">
+                <div className="relative w-100 sm:max-w-xs">
+                    <Icons.fileIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted" />
                     <input
                         type="search"
                         placeholder="Search projects..."
-                        className="flex h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="d-flex h-10 w-100 rounded-2 border border-input bg-light pl-9 pr-3 py-2 fs-6 text-muted ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     />
                 </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <button className="flex-1 sm:flex-none inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
+                <div className="d-flex align-items-center gap-2 w-100 sm:w-auto">
+                    <button className="flex-1 sm:flex-none inline-flex h-10 align-items-center justify-content-center rounded-2 border border-input bg-light px-3 py-2 fs-6 text-muted fw-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
                         <Icons.layoutTemplate className="mr-2 h-4 w-4" />
                         Style Filter
                     </button>
-                    <button className="flex-1 sm:flex-none inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <button className="flex-1 sm:flex-none inline-flex h-10 align-items-center justify-content-center rounded-2 border border-input bg-light px-3 py-2 fs-6 text-muted fw-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
                         Sort: Newest
                     </button>
                 </div>
             </div>
 
             {/* Projects Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="d-grid gap-5 sm:grid-cols-2 row-cols-lg-3 xl:grid-cols-4">
                 {allProjects.map((project) => (
-                    <div key={project.id} className="group flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div key={project.id} className="group d-flex flex-column overflow-hidden rounded-4 border bg-white text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300">
                         <div
-                            className="h-48 w-full bg-muted bg-cover bg-center cursor-pointer relative"
+                            className="h-48 w-100 bg-light bg-cover bg-center cursor-pointer relative"
                             style={{ backgroundImage: `url(${project.img})` }}
                             onClick={() => setPage("ai-designs")}
                         >
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                <span className="bg-background/90 text-foreground px-4 py-2 rounded-full font-medium text-sm shadow-xl">
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity d-flex align-items-center justify-content-center backdrop-blur-[2px]">
+                                <span className="bg-background/90 text-foreground px-3 py-2 rounded-circle fw-medium fs-6 text-muted shadow-xl">
                                     View Designs
                                 </span>
                             </div>
                         </div>
 
-                        <div className="p-5 flex-1 flex flex-col">
-                            <h3 className="font-semibold text-lg line-clamp-1 mb-1 group-hover:text-blue-600 transition-colors cursor-pointer" onClick={() => setPage("ai-designs")}>
+                        <div className="p-5 flex-1 d-flex flex-column">
+                            <h3 className="fw-semibold fs-5 line-clamp-1 mb-1 group-hover:text-blue-600 transition-colors cursor-pointer" onClick={() => setPage("ai-designs")}>
                                 {project.name}
                             </h3>
-                            <p className="text-xs text-muted-foreground mb-4">Last edited {project.date}</p>
+                            <p className="small text-muted mb-4">Last edited {project.date}</p>
 
-                            <div className="mt-auto flex items-center justify-between pt-4 border-t">
-                                <div className="flex items-center text-sm text-muted-foreground">
+                            <div className="mt-auto d-flex align-items-center justify-content-between pt-4 border-t">
+                                <div className="d-flex align-items-center fs-6 text-muted text-muted">
                                     <Icons.settings className="mr-1.5 h-4 w-4 text-primary" />
-                                    <span className="font-medium">{project.designs} designs</span>
+                                    <span className="fw-medium">{project.designs} designs</span>
                                 </div>
-                                <button className="h-8 w-8 rounded-full hover:bg-accent flex items-center justify-center transition-colors text-muted-foreground hover:text-foreground">
+                                <button className="h-8 w-8 rounded-circle hover:bg-accent d-flex align-items-center justify-content-center transition-colors text-muted hover:text-foreground">
                                     <Icons.fileIcon className="h-4 w-4" />
                                 </button>
                             </div>

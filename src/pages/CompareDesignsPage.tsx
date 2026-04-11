@@ -61,47 +61,47 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
     const formatCurrency = (amount: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-24 pb-40 font-sans overflow-x-hidden relative">
+        <div className="min-vh-100 bg-gray-50 pt-24 pb-40 font-sans overflow-x-hidden relative">
 
             {/* Image Expansion Modal */}
             {expandedImage && (
-                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md d-flex align-items-center justify-content-center p-3 animate-in fade-in duration-200">
                     <button
                         onClick={() => setExpandedImage(null)}
-                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-white/20 rounded-full transition-colors z-50"
+                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-white/20 rounded-circle transition-colors z-50"
                     >
                         <X className="w-8 h-8" />
                     </button>
                     <img
                         src={expandedImage}
                         alt="Expanded Layout"
-                        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+                        className="max-w-full max-h-[90vh] object-contain rounded-3 shadow-2xl animate-in zoom-in-95 duration-300"
                     />
                 </div>
             )}
 
-            <div className="max-w-6xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-4">
 
                 {/* Header Section */}
-                <div className="mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="mb-10 text-center md:text-left d-flex flex-column md:flex-row justify-content-between align-items-center gap-5">
                     <div className="space-y-2">
-                        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Compare Design Options</h1>
-                        <p className="text-lg text-gray-500 max-w-2xl">
+                        <h1 className="fs-2 md:text-4xl font-extrabold text-gray-900 tracking-tight">Compare Design Options</h1>
+                        <p className="fs-5 text-gray-500 max-w-2xl">
                             Compare two AI-generated layouts side-by-side to find the best configuration for your space.
                         </p>
                     </div>
                     {/* Context Meta snippet */}
-                    <div className="flex gap-3 text-sm font-medium text-gray-500 bg-white px-5 py-3 rounded-xl shadow-sm border border-gray-100 flex-wrap justify-center">
-                        <span className="flex items-center gap-2"><Home className="w-4 h-4 text-blue-500" /> Ocean View Living</span>
-                        <span className="hidden sm:inline text-gray-300">•</span>
+                    <div className="d-flex gap-3 fs-6 text-muted fw-medium text-gray-500 bg-white px-5 py-3 rounded-4 shadow-sm border border-gray-100 flex-wrap justify-content-center">
+                        <span className="d-flex align-items-center gap-2"><Home className="w-4 h-4 text-blue-500" /> Ocean View Living</span>
+                        <span className="d-none sm:inline text-gray-300">•</span>
                         <span className="text-gray-700 bg-gray-100 px-2 py-0.5 rounded">Modern</span>
-                        <span className="hidden sm:inline text-gray-300">•</span>
+                        <span className="d-none sm:inline text-gray-300">•</span>
                         <span className="text-gray-700 bg-gray-100 px-2 py-0.5 rounded">Medium Budget</span>
                     </div>
                 </div>
 
                 {/* Side-by-Side Comparison Container */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div className="d-grid row-cols-1 row-cols-md-2 gap-5 mb-12">
 
                     {[LAYOUT_A, LAYOUT_B].map((layout, idx) => {
                         const isSelected = selectedLayoutId === layout.id;
@@ -117,21 +117,21 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     }`}
                             >
                                 {/* Fixed Image Header Container */}
-                                <div className="relative h-64 md:h-80 w-full bg-gray-100 overflow-hidden group">
-                                    <div className="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-md text-white px-4 py-1.5 rounded-full font-bold shadow-lg border border-white/20">
+                                <div className="relative h-64 md:h-80 w-100 bg-gray-100 overflow-hidden group">
+                                    <div className="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-circle fw-bold shadow-lg border border-white/20">
                                         {labelName}: {layout.title}
                                     </div>
                                     <img
                                         src={layout.imageUrl}
                                         alt={layout.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="w-100 h-100 object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
 
                                     {/* Overlay Action - Zoom */}
-                                    <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 d-flex align-items-center justify-content-center opacity-0 group-hover:opacity-100">
                                         <button
                                             onClick={(e) => { e.stopPropagation(); setExpandedImage(layout.imageUrl); }}
-                                            className="p-4 bg-white/90 backdrop-blur-md hover:bg-white text-gray-900 rounded-full shadow-2xl transition-all hover:scale-110"
+                                            className="p-3 bg-white/90 backdrop-blur-md hover:bg-white text-gray-900 rounded-circle shadow-2xl transition-all hover:scale-110"
                                             title="Expand Image"
                                         >
                                             <Maximize2 className="w-6 h-6" />
@@ -140,41 +140,41 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
 
                                     {/* Selection Target Indicator Overlay */}
                                     {isSelected && (
-                                        <div className="absolute top-4 right-4 z-20 bg-blue-600 text-white p-1 rounded-full shadow-lg animate-in zoom-in">
+                                        <div className="absolute top-4 right-4 z-20 bg-blue-600 text-white p-1 rounded-circle shadow-lg animate-in zoom-in">
                                             <CheckCircle2 className="w-8 h-8" />
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Body Content Metrics */}
-                                <div className="p-6 md:p-8 flex flex-col gap-8 flex-grow">
+                                <div className="p-4 md:p-8 d-flex flex-column gap-5 flex-grow">
 
                                     {/* Cost Breakdown */}
                                     <div>
-                                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                                        <h4 className="fs-6 text-muted fw-bold text-gray-400 uppercase tracking-widest mb-4 d-flex align-items-center gap-1.5">
                                             Cost Estimate
                                             <div className="group/tooltip relative inline-flex cursor-help">
                                                 <Info className="w-4 h-4 text-gray-300" />
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-10 text-center">
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-900 text-white small rounded-3 shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-10 text-center">
                                                     Estimated based on standard local market rates.
                                                 </div>
                                             </div>
                                         </h4>
-                                        <div className="space-y-2 text-sm text-gray-600">
-                                            <div className="flex justify-between border-b border-gray-100 pb-2">
+                                        <div className="space-y-2 fs-6 text-muted text-gray-600">
+                                            <div className="d-flex justify-content-between border-b border-gray-100 pb-2">
                                                 <span>Flooring</span>
-                                                <span className="font-medium text-gray-900">{formatCurrency(layout.cost.flooring)}</span>
+                                                <span className="fw-medium text-gray-900">{formatCurrency(layout.cost.flooring)}</span>
                                             </div>
-                                            <div className="flex justify-between border-b border-gray-100 pb-2">
+                                            <div className="d-flex justify-content-between border-b border-gray-100 pb-2">
                                                 <span>Furniture</span>
-                                                <span className="font-medium text-gray-900">{formatCurrency(layout.cost.furniture)}</span>
+                                                <span className="fw-medium text-gray-900">{formatCurrency(layout.cost.furniture)}</span>
                                             </div>
-                                            <div className="flex justify-between border-b border-gray-100 pb-2">
+                                            <div className="d-flex justify-content-between border-b border-gray-100 pb-2">
                                                 <span>Decoration</span>
-                                                <span className="font-medium text-gray-900">{formatCurrency(layout.cost.decoration)}</span>
+                                                <span className="fw-medium text-gray-900">{formatCurrency(layout.cost.decoration)}</span>
                                             </div>
-                                            <div className="flex justify-between pt-2">
-                                                <span className="font-bold text-gray-900">Total Estimate</span>
+                                            <div className="d-flex justify-content-between pt-2">
+                                                <span className="fw-bold text-gray-900">Total Estimate</span>
                                                 <span className={`font-bold text-lg ${isCostWinner(LAYOUT_A.cost.total, LAYOUT_B.cost.total, layout.cost.total) ? 'text-emerald-600' : 'text-gray-900'}`}>
                                                     {formatCurrency(layout.cost.total)}
                                                 </span>
@@ -184,13 +184,13 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
 
                                     {/* Space Usage Progress */}
                                     <div>
-                                        <div className="flex justify-between items-end text-sm mb-2">
-                                            <span className="font-bold text-gray-700">Space Usage</span>
+                                        <div className="d-flex justify-content-between align-items-end fs-6 text-muted mb-2">
+                                            <span className="fw-bold text-gray-700">Space Usage</span>
                                             <span className={`font-bold ${isMetricWinner(LAYOUT_A.metrics.spaceUsage, LAYOUT_B.metrics.spaceUsage, layout.metrics.spaceUsage) ? 'text-emerald-600' : 'text-gray-900'}`}>
                                                 {layout.metrics.spaceUsage}%
                                             </span>
                                         </div>
-                                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                        <div className="h-2 w-100 bg-gray-100 rounded-circle overflow-hidden">
                                             <div
                                                 className={`h-full rounded-full transition-all duration-1000 ease-out bg-indigo-500`}
                                                 style={{ width: `${layout.metrics.spaceUsage}%` }}
@@ -199,32 +199,32 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     </div>
 
                                     {/* Score Ratings Box */}
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100">
-                                            <span className="block text-xs font-bold text-amber-800 uppercase tracking-wide mb-1">Lighting Score</span>
-                                            <div className="flex items-baseline gap-1">
+                                    <div className="d-grid row-cols-2 gap-4">
+                                        <div className="bg-amber-50 rounded-4 p-3 border border-amber-100">
+                                            <span className="d-block small fw-bold text-amber-800 uppercase tracking-wide mb-1">Lighting Score</span>
+                                            <div className="d-flex align-items-baseline gap-1">
                                                 <span className={`text-2xl font-black ${isMetricWinner(LAYOUT_A.metrics.lightingScore, LAYOUT_B.metrics.lightingScore, layout.metrics.lightingScore) ? 'text-emerald-600' : 'text-amber-600'}`}>
                                                     {layout.metrics.lightingScore}
                                                 </span>
-                                                <span className="text-sm font-medium text-amber-700/60">/ 10</span>
+                                                <span className="fs-6 text-muted fw-medium text-amber-700/60">/ 10</span>
                                             </div>
                                             {/* Rating Visual */}
-                                            <div className="flex gap-1 mt-2">
+                                            <div className="d-flex gap-1 mt-2">
                                                 {[1, 2, 3, 4, 5].map(star => (
                                                     <div key={star} className={`flex-1 h-1.5 rounded-full ${star <= Math.round(layout.metrics.lightingScore / 2) ? 'bg-amber-400' : 'bg-amber-200/50'}`}></div>
                                                 ))}
                                             </div>
                                         </div>
-                                        <div className="bg-sky-50 rounded-2xl p-4 border border-sky-100">
-                                            <span className="block text-xs font-bold text-sky-800 uppercase tracking-wide mb-1">Movement Flow</span>
-                                            <div className="flex items-baseline gap-1">
+                                        <div className="bg-sky-50 rounded-4 p-3 border border-sky-100">
+                                            <span className="d-block small fw-bold text-sky-800 uppercase tracking-wide mb-1">Movement Flow</span>
+                                            <div className="d-flex align-items-baseline gap-1">
                                                 <span className={`text-2xl font-black ${isMetricWinner(LAYOUT_A.metrics.circulationScore, LAYOUT_B.metrics.circulationScore, layout.metrics.circulationScore) ? 'text-emerald-600' : 'text-sky-600'}`}>
                                                     {layout.metrics.circulationScore}
                                                 </span>
-                                                <span className="text-sm font-medium text-sky-700/60">/ 10</span>
+                                                <span className="fs-6 text-muted fw-medium text-sky-700/60">/ 10</span>
                                             </div>
                                             {/* Rating Visual */}
-                                            <div className="flex gap-1 mt-2">
+                                            <div className="d-flex gap-1 mt-2">
                                                 {[1, 2, 3, 4, 5].map(star => (
                                                     <div key={star} className={`flex-1 h-1.5 rounded-full ${star <= Math.round(layout.metrics.circulationScore / 2) ? 'bg-sky-400' : 'bg-sky-200/50'}`}></div>
                                                 ))}
@@ -257,23 +257,23 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
 
                 {/* Visual Summary Table */}
                 <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden mb-12">
-                    <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                        <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <div className="bg-gray-50 border-b border-gray-200 px-4 py-3">
+                        <h3 className="fs-5 fw-bold text-gray-900 d-flex align-items-center gap-2">
                             <LayoutDashboard className="w-5 h-5 text-blue-600" /> Summary Comparison
                         </h3>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-100 text-start border-collapse">
                             <thead>
                                 <tr>
-                                    <th className="px-6 py-4 border-b text-sm font-medium text-gray-500 bg-white w-1/3">Feature</th>
+                                    <th className="px-4 py-3 border-b fs-6 text-muted fw-medium text-gray-500 bg-white w-1/3">Feature</th>
                                     <th className={`px-6 py-4 border-b text-sm font-bold w-1/3 ${selectedLayoutId === LAYOUT_A.id ? 'bg-blue-50/50 text-blue-700' : 'bg-white text-gray-900'}`}>Layout A</th>
                                     <th className={`px-6 py-4 border-b text-sm font-bold w-1/3 ${selectedLayoutId === LAYOUT_B.id ? 'bg-blue-50/50 text-blue-700' : 'bg-white text-gray-900'}`}>Layout B</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-sm">
+                            <tbody className="fs-6 text-muted">
                                 <tr className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 border-b border-gray-100 text-gray-600">Total Cost Estimate</td>
+                                    <td className="px-4 py-3 border-b border-gray-100 text-gray-600">Total Cost Estimate</td>
                                     <td className={`px-6 py-4 border-b border-gray-100 ${isCostWinner(LAYOUT_A.cost.total, LAYOUT_B.cost.total, LAYOUT_A.cost.total) ? 'font-bold text-emerald-600 bg-emerald-50/30' : 'text-gray-900'}`}>
                                         {formatCurrency(LAYOUT_A.cost.total)}
                                     </td>
@@ -282,7 +282,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     </td>
                                 </tr>
                                 <tr className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 border-b border-gray-100 text-gray-600">Space Usage</td>
+                                    <td className="px-4 py-3 border-b border-gray-100 text-gray-600">Space Usage</td>
                                     <td className={`px-6 py-4 border-b border-gray-100 ${isMetricWinner(LAYOUT_A.metrics.spaceUsage, LAYOUT_B.metrics.spaceUsage, LAYOUT_A.metrics.spaceUsage) ? 'font-bold text-emerald-600 bg-emerald-50/30' : 'text-gray-900'}`}>
                                         {LAYOUT_A.metrics.spaceUsage}%
                                     </td>
@@ -291,7 +291,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     </td>
                                 </tr>
                                 <tr className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 border-b border-gray-100 text-gray-600">Lighting Quality Score</td>
+                                    <td className="px-4 py-3 border-b border-gray-100 text-gray-600">Lighting Quality Score</td>
                                     <td className={`px-6 py-4 border-b border-gray-100 ${isMetricWinner(LAYOUT_A.metrics.lightingScore, LAYOUT_B.metrics.lightingScore, LAYOUT_A.metrics.lightingScore) ? 'font-bold text-emerald-600 bg-emerald-50/30' : 'text-gray-900'}`}>
                                         {LAYOUT_A.metrics.lightingScore} / 10
                                     </td>
@@ -300,7 +300,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     </td>
                                 </tr>
                                 <tr className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 text-gray-600">Circulation / Movement Flow</td>
+                                    <td className="px-4 py-3 text-gray-600">Circulation / Movement Flow</td>
                                     <td className={`px-6 py-4 ${isMetricWinner(LAYOUT_A.metrics.circulationScore, LAYOUT_B.metrics.circulationScore, LAYOUT_A.metrics.circulationScore) ? 'font-bold text-emerald-600 bg-emerald-50/30' : 'text-gray-900'}`}>
                                         {LAYOUT_A.metrics.circulationScore} / 10
                                     </td>
@@ -316,24 +316,24 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
             </div>
 
             {/* Bottom Fixed Navigation Bar */}
-            <div className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-[0_-10px_40px_-5px_rgba(0,0,0,0.05)] z-40 transform transition-transform duration-300">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+            <div className="fixed bottom-0 left-0 w-100 bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-[0_-10px_40px_-5px_rgba(0,0,0,0.05)] z-40 transform transition-transform duration-300">
+                <div className="max-w-6xl mx-auto px-4 py-3 d-flex flex-column md:flex-row align-items-center justify-content-between gap-4">
+                    <div className="d-flex gap-4 w-100 md:w-auto overflow-x-auto pb-2 md:pb-0">
                         <button
                             onClick={() => setPage("ai-designs")}
-                            className="whitespace-nowrap px-5 py-2.5 rounded-xl font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all flex items-center gap-2"
+                            className="whitespace-nowrap px-5 py-2.5 rounded-4 fw-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all d-flex align-items-center gap-2"
                         >
                             <ArrowLeft className="w-5 h-5" /> Return to All Layouts
                         </button>
                         <button
                             onClick={() => setPage("create-project")}
-                            className="whitespace-nowrap px-5 py-2.5 rounded-xl font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all flex items-center gap-2"
+                            className="whitespace-nowrap px-5 py-2.5 rounded-4 fw-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all d-flex align-items-center gap-2"
                         >
                             <Edit2 className="w-5 h-5" /> Edit Preferences
                         </button>
                     </div>
 
-                    <div className="flex gap-4 w-full md:w-auto">
+                    <div className="d-flex gap-4 w-100 md:w-auto">
                         <button
                             disabled={!selectedLayoutId}
                             onClick={() => { /* Handle saving and proceeding */ setPage("design-details"); }}
