@@ -59,6 +59,9 @@ function App() {
       case "design-details":
         navigate("/design-details");
         return;
+      case "settings":
+        navigate("/settings");
+        return;
       default:
         // If it's already a pathname, navigate to it directly.
         if (page.startsWith("/")) navigate(page);
@@ -76,6 +79,7 @@ function App() {
     if (path.startsWith("/ai-designs")) return "ai-designs";
     if (path.startsWith("/compare-designs")) return "compare-designs";
     if (path.startsWith("/design-details")) return "design-details";
+    if (path.startsWith("/settings")) return "settings";
     if (path.startsWith("/pricing")) return "landing";
     return "landing";
   })();
@@ -127,6 +131,7 @@ function App() {
         <Route path="/ai-designs" element={protectedPage(<AIGeneratedDesignsPage setPage={setPage} />)} />
         <Route path="/compare-designs" element={protectedPage(<CompareDesignsPage setPage={setPage} />)} />
         <Route path="/design-details" element={protectedPage(<DesignDetailsPage setPage={setPage} />)} />
+        <Route path="/settings" element={protectedPage(<PlaceholderPage title="Settings" />)} />
 
         <Route path="/features" element={<PlaceholderPage title="Features" />} />
         <Route path="/gallery" element={<PlaceholderPage title="Gallery" />} />
