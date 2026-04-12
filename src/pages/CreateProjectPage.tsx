@@ -1,3 +1,5 @@
+import { useDemoDashboard } from "@/context/DemoDashboardContext";
+import { getDefaultCoverForMode } from "@/lib/demo-dashboard-storage";
 import { useState, useRef } from "react";
 import {
     Camera,
@@ -23,6 +25,7 @@ interface CreateProjectPageProps {
 }
 
 export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
+    const { addProjectFromWizard } = useDemoDashboard();
     const [step, setStep] = useState<number>(1);
 
     // File upload refs
@@ -68,6 +71,32 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
     };
 
     const handleGenerate = () => {
+        const fromFile = formData.uploadedFiles[0]?.name.replace(/\.[^.]+$/, "");
+        const name =
+            formData.projectName.trim() ||
+            fromFile ||
+            "New project";
+
+        const coverImageUrl =
+            formData.uploadedFiles[0]?.previewUrl ||
+            getDefaultCoverForMode(formData.entryMode);
+
+        addProjectFromWizard({
+            name,
+            coverImageUrl,
+            preferences: {
+                budget: formData.budget,
+                customBudget: formData.customBudget,
+                designStyle: formData.designStyle,
+                colorPreference: formData.colorPreference,
+                customColor: formData.customColor,
+                roomUsage: formData.roomUsage,
+                furniturePreference: formData.furniturePreference,
+                layoutStyle: formData.layoutStyle,
+                entryMode: formData.entryMode,
+            },
+        });
+
         setTimeout(() => {
             setPage("ai-processing");
         }, 300);
@@ -641,7 +670,8 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                 <div className="flex items-center justify-between pt-6 border-t border-gray-200">
                     <div>
                         <button
-                            onClick={() => setPage("DashboardPage")}
+                            type="button"
+                            onClick={() => setPage("dashboard")}
                             className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
                         >
                             Cancel Project
