@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import { DemoDashboardProvider } from "@/context/DemoDashboardContext";
 import i18n from "./i18n";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

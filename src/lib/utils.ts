@@ -1,8 +1,12 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).map(x => {
+    if (typeof x === 'string') return x;
+    if (typeof x === 'object' && x !== null) {
+      if (Array.isArray(x)) return x.filter(Boolean).join(' ');
+      return Object.keys(x).filter(k => x[k]).join(' ');
+    }
+    return '';
+  }).join(' ').replace(/\s+/g, ' ').trim();
 }
 
 /** Relative time in English for dashboard labels (e.g. "2 hours ago"). */
