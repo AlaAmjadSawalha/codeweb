@@ -10,8 +10,11 @@ import DesignDetailsPage from "@/pages/DesignDetailsPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import AuthPage from "@/pages/AuthPage";
 import PlaceholderPage from "@/pages/PlaceholderPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { getAuthToken } from "@/lib/api";
+import { getAuthToken, clearSession, setStoredUser } from "@/lib/api";
+import { logout as logoutRequest, me } from "@/api/auth";
 
 function App() {
   const navigate = useNavigate();
@@ -20,8 +23,32 @@ function App() {
   const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    setIsAuthenticated(!!getAuthToken());
+    const token = getAuthToken();
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
+    me()
+      .then((res) => {
+        if (res.data) setStoredUser(res.data);
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        clearSession();
+        setIsAuthenticated(false);
+      });
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logoutRequest();
+    } catch {
+      /* still clear locally */
+    }
+    clearSession();
+    setIsAuthenticated(false);
+    navigate("/auth/login");
+  };
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -77,6 +104,8 @@ function App() {
     if (path.startsWith("/compare-designs")) return "compare-designs";
     if (path.startsWith("/design-details")) return "design-details";
     if (path.startsWith("/pricing")) return "landing";
+    if (path.startsWith("/privacy-policy")) return "privacy-policy";
+    if (path.startsWith("/terms-of-service")) return "terms-of-service";
     return "landing";
   })();
 
@@ -91,6 +120,7 @@ function App() {
       setPage={setPage}
       isAuthenticated={isAuthenticated}
       onShowToast={showToast}
+      onLogout={handleLogout}
     >
       <Routes>
         <Route
@@ -105,19 +135,37 @@ function App() {
         <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
         <Route
           path="/auth/login"
-          element={<AuthPage setPage={setPage} initialView="login" onAuthSuccess={() => setIsAuthenticated(true)} />}
+          element={
+            <AuthPage
+              setPage={setPage}
+              initialView="login"
+              onAuthSuccess={() => setIsAuthenticated(true)}
+              onShowToast={showToast}
+            />
+          }
         />
         <Route
           path="/auth/signup"
-          element={<AuthPage setPage={setPage} initialView="signup" onAuthSuccess={() => setIsAuthenticated(true)} />}
+          element={
+            <AuthPage
+              setPage={setPage}
+              initialView="signup"
+              onAuthSuccess={() => setIsAuthenticated(true)}
+              onShowToast={showToast}
+            />
+          }
         />
         <Route
           path="/auth/forgot"
-          element={<AuthPage setPage={setPage} initialView="forgot" onAuthSuccess={() => setIsAuthenticated(true)} />}
+          element={
+            <AuthPage setPage={setPage} initialView="forgot" onAuthSuccess={() => setIsAuthenticated(true)} onShowToast={showToast} />
+          }
         />
         <Route
           path="/auth/reset"
-          element={<AuthPage setPage={setPage} initialView="reset" onAuthSuccess={() => setIsAuthenticated(true)} />}
+          element={
+            <AuthPage setPage={setPage} initialView="reset" onAuthSuccess={() => setIsAuthenticated(true)} onShowToast={showToast} />
+          }
         />
 
         <Route path="/dashboard" element={protectedPage(<DashboardPage setPage={setPage} />)} />
@@ -128,17 +176,19 @@ function App() {
         <Route path="/compare-designs" element={protectedPage(<CompareDesignsPage setPage={setPage} />)} />
         <Route path="/design-details" element={protectedPage(<DesignDetailsPage setPage={setPage} />)} />
 
-        <Route path="/features" element={<PlaceholderPage title="Features" />} />
-        <Route path="/gallery" element={<PlaceholderPage title="Gallery" />} />
-        <Route path="/docs" element={<PlaceholderPage title="API Docs" />} />
-        <Route path="/about" element={<PlaceholderPage title="About Us" />} />
-        <Route path="/careers" element={<PlaceholderPage title="Careers" />} />
-        <Route path="/blog" element={<PlaceholderPage title="Blog" />} />
-        <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
-        <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" />} />
-        <Route path="/terms" element={<PlaceholderPage title="Terms of Service" />} />
-        <Route path="/cookies" element={<PlaceholderPage title="Cookie Policy" />} />
-        <Route path="/changelog" element={<PlaceholderPage title="Changelog" />} />
+        <Route path="/features" element={<PlaceholderPage titleKey="placeholder.features" />} />
+        <Route path="/gallery" element={<PlaceholderPage titleKey="placeholder.gallery" />} />
+        <Route path="/docs" element={<PlaceholderPage titleKey="placeholder.apiDocs" />} />
+        <Route path="/about" element={<PlaceholderPage titleKey="placeholder.aboutUs" />} />
+        <Route path="/careers" element={<PlaceholderPage titleKey="placeholder.careers" />} />
+        <Route path="/blog" element={<PlaceholderPage titleKey="placeholder.blog" />} />
+        <Route path="/contact" element={<PlaceholderPage titleKey="placeholder.contact" />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/privacy" element={<PlaceholderPage titleKey="placeholder.privacyPolicy" />} />
+        <Route path="/terms" element={<PlaceholderPage titleKey="placeholder.termsOfService" />} />
+        <Route path="/cookies" element={<PlaceholderPage titleKey="placeholder.cookiePolicy" />} />
+        <Route path="/changelog" element={<PlaceholderPage titleKey="placeholder.changelog" />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

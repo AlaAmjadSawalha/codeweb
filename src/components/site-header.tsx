@@ -10,9 +10,10 @@ interface SiteHeaderProps {
   setPage: (page: string) => void;
   isAuthenticated: boolean;
   onShowToast: (message: string) => void;
+  onLogout: () => void;
 }
 
-export function SiteHeader({ setPage, isAuthenticated, onShowToast }: SiteHeaderProps) {
+export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: SiteHeaderProps) {
   const { t } = useTranslation();
 
   const handleSearch = (query: string) => {
@@ -20,11 +21,11 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast }: SiteHeader
     if (!value) return;
 
     if (!isAuthenticated) {
-      onShowToast("Please log in to search.");
+      onShowToast(t("nav.searchLoginRequired"));
       return;
     }
 
-    onShowToast(`Searching for "${value}"...`);
+    onShowToast(t("nav.searching", { query: value }));
     setPage("/projects");
   };
 
@@ -68,6 +69,14 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast }: SiteHeader
 
                   <ThemeToggle />
 
+                  <button
+                    type="button"
+                    onClick={() => onLogout()}
+                    className={buttonVariants({ variant: "outline", size: "sm" })}
+                  >
+                    {t("nav.logOut")}
+                  </button>
+
                   <div className="h-4 w-px bg-border mx-2 hidden sm:block"></div>
                 </>
               ) : (
@@ -76,13 +85,13 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast }: SiteHeader
                     onClick={() => setPage("/auth/login")}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                   >
-                    Log In
+                    {t("nav.logIn")}
                   </button>
                   <button
                     onClick={() => setPage("/auth/signup")}
                     className={buttonVariants({ size: "sm" })}
                   >
-                    Sign Up
+                    {t("nav.signUp")}
                   </button>
                 </div>
               )}

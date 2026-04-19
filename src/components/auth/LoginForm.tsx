@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, Chrome, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { api, getApiErrorMessage, setAuthToken } from "@/lib/api";
+import type { AxiosError } from "axios";
+import { getApiErrorMessage, setAuthToken, setStoredUser } from "@/lib/api";
+import { login as loginRequest } from "@/api/auth";
 
 interface LoginFormProps {
     onSwitchToSignUp: () => void;
@@ -36,16 +38,23 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword, onLoginSuccess }
         setError("");
         setIsSubmitting(true);
         try {
-            const { data } = await api.post<{ data: { token: string } }>("/auth/login", { email, password });
+            const data = await loginRequest({ email, password });
             const token = data.data?.token;
+            const user = data.data?.user;
             if (!token) {
                 setError(t("auth.errors.fillAllFields"));
                 return;
             }
             setAuthToken(token);
+            if (user) setStoredUser(user);
             onLoginSuccess();
         } catch (err) {
-            setError(getApiErrorMessage(err, t("auth.errors.fillAllFields")));
+            const ax = err as AxiosError;
+            if (ax.response?.status === 401) {
+                setError("Invalid email or password");
+            } else {
+                setError(getApiErrorMessage(err, t("auth.errors.fillAllFields")));
+            }
         } finally {
             setIsSubmitting(false);
         }

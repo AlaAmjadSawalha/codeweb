@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Loader2,
     CheckCircle2,
@@ -14,22 +15,23 @@ interface AIProcessingPageProps {
 }
 
 export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
+    const { t } = useTranslation();
     const [progress, setProgress] = useState(0);
     const [activeTipIndex, setActiveTipIndex] = useState(0);
 
     const steps = [
-        "Analyzing layout and dimensions...",
-        "Understanding spatial constraints...",
-        "Generating initial design options...",
-        "Optimizing layouts based on your preferences...",
-        "Preparing your final design results..."
+        t("aiProcessing.step0"),
+        t("aiProcessing.step1"),
+        t("aiProcessing.step2"),
+        t("aiProcessing.step3"),
+        t("aiProcessing.step4"),
     ];
 
     const tips = [
-        "Our AI analyzes thousands of architectural patterns to find the perfect fit for your space.",
-        "We optimize designs based on your selected style, layout, and estimated budget.",
-        "Great design takes a few seconds. Your custom layouts are almost ready!",
-        "Did you know? Smart home integration can increase your property value by up to 5%."
+        t("aiProcessing.tip0"),
+        t("aiProcessing.tip1"),
+        t("aiProcessing.tip2"),
+        t("aiProcessing.tip3"),
     ];
 
     // Determine current step based on progress (0-100 mapped to 0-4)
@@ -46,7 +48,7 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
                 const next = prev + increment;
                 if (next >= 100) {
                     clearInterval(timer);
-                    setTimeout(() => setPage("AIGeneratedDesignsPage"), 800); // Small delay at 100% before redirect
+                    setTimeout(() => setPage("ai-designs"), 800); // Small delay at 100% before redirect
                     return 100;
                 }
                 // Add some random jitter to make it feel more "real"
@@ -64,7 +66,7 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
             setActiveTipIndex((prev) => (prev + 1) % tips.length);
         }, 4000); // Change tip every 4 seconds
         return () => clearInterval(tipTimer);
-    }, [tips.length]);
+    }, [tips.length, t]);
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 font-sans relative overflow-hidden">
@@ -77,9 +79,9 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
 
                 {/* Header Section */}
                 <div className="space-y-4">
-                    <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Generating Your Design</h1>
+                    <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">{t("aiProcessing.title")}</h1>
                     <p className="text-lg text-gray-500 max-w-xl mx-auto">
-                        SmartPlan AI is analyzing your space and generating optimized layout options. This may take a few seconds.
+                        {t("aiProcessing.subtitle")}
                     </p>
                 </div>
 
@@ -122,8 +124,8 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
                 {/* Progress Bar & Percentage */}
                 <div className="space-y-3 max-w-md mx-auto">
                     <div className="flex justify-between items-end mb-1">
-                        <span className="text-sm font-bold text-gray-700">Overall Progress</span>
-                        <span className="text-xl font-extrabold text-blue-600">{Math.floor(progress)}% Complete</span>
+                        <span className="text-sm font-bold text-gray-700">{t("aiProcessing.overallProgress")}</span>
+                        <span className="text-xl font-extrabold text-blue-600">{t("aiProcessing.percentComplete", { n: Math.floor(progress) })}</span>
                     </div>
                     <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden shadow-inner">
                         <div
@@ -177,10 +179,10 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
                 {/* Cancel Button */}
                 <div className="pt-8">
                     <button
-                        onClick={() => setPage("DashboardPage")}
+                        onClick={() => setPage("dashboard")}
                         className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors"
                     >
-                        Cancel Generation
+                        {t("aiProcessing.cancelGeneration")}
                     </button>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\JwtAuthenticate;
+use App\Support\ModuleApiRequest;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
@@ -20,9 +22,21 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // API-only app: never redirect unauthenticated users to a web "login" route.
         $middleware->redirectGuestsTo(fn () => null);
+
+        $middleware->alias([
+            'jwt.auth' => JwtAuthenticate::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (ValidationException $e, Request $request) {
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => collect($e->errors())->flatten()->first() ?? __('The given data was invalid.'),
+                    'code' => 400,
+                ], 400);
+            }
+
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
@@ -35,6 +49,14 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (AuthenticationException $e, Request $request) {
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => __('Unauthenticated.'),
+                    'code' => 401,
+                ], 401);
+            }
+
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
@@ -45,6 +67,14 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => __('Not found.'),
+                    'code' => 404,
+                ], 404);
+            }
+
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
@@ -63,6 +93,22 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             }
 
+            if ($e->getStatusCode() === 429 && ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Too many requests, please try again later',
+                    'code' => 429,
+                ], 429);
+            }
+
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $e->getMessage() ?: __('Request could not be completed.'),
+                    'code' => $e->getStatusCode(),
+                ], $e->getStatusCode());
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() ?: __('Request could not be completed.'),
@@ -77,6 +123,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
             report($e);
 
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => config('app.debug')
+                        ? $e->getMessage()
+                        : __('Database service unavailable. Please try again later.'),
+                    'code' => 503,
+                ], 503);
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => config('app.debug')
@@ -86,9 +142,17 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 503);
         });
 
-        $exceptions->render(function (\Throwable $e, Request $request) {
+        $exceptions->render(function (Throwable $e, Request $request) {
             if (! $request->is('api/*') || config('app.debug')) {
                 return null;
+            }
+
+            if (ModuleApiRequest::matches($request)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => __('Server error.'),
+                    'code' => 500,
+                ], 500);
             }
 
             return response()->json([

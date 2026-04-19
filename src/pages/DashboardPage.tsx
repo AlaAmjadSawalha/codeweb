@@ -1,39 +1,107 @@
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Icons } from "@/components/icons";
+import { getDashboardMetrics } from "@/api/dashboard";
+import { deleteProject, duplicateProject } from "@/api/projects";
+import { getApiErrorMessage, getStoredUser } from "@/lib/api";
+import type { DashboardMetrics } from "@/api/dashboard";
 import { ArrowUpRight, FolderOpen, Image as ImageIcon, MoveRight, MoreHorizontal, Copy, Trash2, ArrowUpCircle, CheckCircle2, Clock } from "lucide-react";
 
 interface DashboardPageProps {
     setPage: (page: string) => void;
 }
 
+const placeholderImgs = [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400",
+];
+
+function formatWhen(iso: string): string {
+    try {
+        const d = new Date(iso);
+        return d.toLocaleString();
+    } catch {
+        return iso;
+    }
+}
+
 export default function DashboardPage({ setPage }: DashboardPageProps) {
-    const recentProjects = [
-        { id: 1, name: "Modern Loft Renovation", date: "2 hours ago", status: "Processing", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400", views: 0 },
-        { id: 2, name: "Suburban Family Home", date: "Yesterday", status: "Completed", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400", views: 4 },
-        { id: 3, name: "Downtown Office Space", date: "Last week", status: "Completed", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400", views: 12 },
-    ];
+    const { t } = useTranslation();
+    const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState("");
+
+    const load = useCallback(async () => {
+        setLoading(true);
+        setLoadError("");
+        try {
+            const res = await getDashboardMetrics();
+            setMetrics(res.data);
+        } catch (e) {
+            setLoadError(getApiErrorMessage(e, t("errors.dashboardLoad")));
+        } finally {
+            setLoading(false);
+        }
+    }, [t]);
+
+    useEffect(() => {
+        void load();
+    }, [load]);
+
+    const userName = getStoredUser<{ name?: string }>()?.name ?? t("dashboard.guestName");
+    const recentProjects = metrics?.recent_projects ?? [];
+
+    const handleDuplicate = async (id: number) => {
+        try {
+            await duplicateProject(id);
+            await load();
+            setPage("projects");
+        } catch (e) {
+            window.alert(getApiErrorMessage(e, t("errors.duplicateProject")));
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!window.confirm(t("dashboard.deleteConfirm"))) return;
+        try {
+            await deleteProject(id);
+            await load();
+        } catch (e) {
+            window.alert(getApiErrorMessage(e, t("errors.deleteProject")));
+        }
+    };
 
     const recentActivity = [
-        { id: 1, action: "Generated 3 layout variations", target: "Modern Loft Renovation", time: "2 hours ago" },
-        { id: 2, action: "Created new project", target: "Modern Loft Renovation", time: "2.5 hours ago" },
-        { id: 3, action: "Exported PDF report", target: "Suburban Family Home", time: "Yesterday" },
-        { id: 4, action: "Updated style preferences", target: "Account Settings", time: "2 days ago" },
+        { id: 1, action: t("dashboard.activity1Action"), target: t("dashboard.activity1Target"), time: t("dashboard.activity1Time") },
+        { id: 2, action: t("dashboard.activity2Action"), target: t("dashboard.activity1Target"), time: t("dashboard.activity2Time") },
+        { id: 3, action: t("dashboard.activity3Action"), target: t("dashboard.activity3Target"), time: t("dashboard.activity3Time") },
+        { id: 4, action: t("dashboard.activity4Action"), target: t("dashboard.activity4Target"), time: t("dashboard.activity4Time") },
     ];
 
     return (
         <div className="p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto bg-slate-50/50 dark:bg-background h-full min-h-screen">
+            {loadError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+                    {loadError}
+                </div>
+            )}
 
             {/* 2. Welcome Section */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
                 <div>
-                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Welcome back, Alex.</h1>
-                    <p className="text-muted-foreground mt-1">Here is the status of your AI designs and latest activity.</p>
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        {t("dashboard.welcomeBack", { name: userName })}
+                    </h1>
+                    <p className="text-muted-foreground mt-1">{t("dashboard.subtitle")}</p>
+                    {loading && <p className="text-sm text-muted-foreground mt-2">{t("dashboard.loading")}</p>}
                 </div>
                 <button
                     onClick={() => setPage("create-project")}
                     className="inline-flex h-11 items-center justify-center rounded-xl bg-indigo-600 px-6 py-2 text-sm font-medium text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:scale-105 focus-visible:outline-none"
                 >
                     <Icons.plus className="mr-2 h-4 w-4" />
-                    Create New Project
+                    {t("dashboard.createNewProject")}
                 </button>
             </div>
 
@@ -43,72 +111,72 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
 
                     {/* 3. Quick Action Buttons */}
                     <section>
-                        <h2 className="text-lg font-semibold tracking-tight mb-4">Quick Actions</h2>
+                        <h2 className="text-lg font-semibold tracking-tight mb-4">{t("dashboard.quickActions")}</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             <button onClick={() => setPage("create-project")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 group">
                                 <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                                     <Icons.plus className="h-5 w-5" />
                                 </div>
-                                <span className="text-xs font-medium">New Project</span>
+                                <span className="text-xs font-medium">{t("dashboard.newProject")}</span>
                             </button>
                             <button onClick={() => setPage("create-project")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
                                 <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                                     <FolderOpen className="h-5 w-5" />
                                 </div>
-                                <span className="text-xs font-medium">Upload Blueprint</span>
+                                <span className="text-xs font-medium">{t("dashboard.uploadBlueprint")}</span>
                             </button>
                             <button onClick={() => setPage("create-project")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
                                 <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                                     <ImageIcon className="h-5 w-5" />
                                 </div>
-                                <span className="text-xs font-medium">Upload Photos</span>
+                                <span className="text-xs font-medium">{t("dashboard.uploadPhotos")}</span>
                             </button>
                             <button onClick={() => setPage("ai-designs")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 group">
                                 <div className="w-10 h-10 rounded-full bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                                     <Icons.lightbulb className="h-5 w-5" />
                                 </div>
-                                <span className="text-xs font-medium">Inspiration Mode</span>
+                                <span className="text-xs font-medium">{t("dashboard.inspirationMode")}</span>
                             </button>
                         </div>
                     </section>
 
                     {/* 5. Usage Statistics */}
                     <section>
-                        <h2 className="text-lg font-semibold tracking-tight mb-4">Overview Analytics</h2>
+                        <h2 className="text-lg font-semibold tracking-tight mb-4">{t("dashboard.overviewAnalytics")}</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
                                 <div className="flex items-center justify-between text-muted-foreground mb-3">
                                     <Icons.folder className="h-4 w-4" />
                                     <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> 12%</span>
                                 </div>
-                                <div className="text-2xl font-bold text-slate-900 dark:text-white">12</div>
-                                <h3 className="text-xs font-medium text-muted-foreground mt-1">Total Projects</h3>
+                                <div className="text-2xl font-bold text-slate-900 dark:text-white">{metrics?.total_projects ?? "—"}</div>
+                                <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.totalProjects")}</h3>
                             </div>
 
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
                                 <div className="flex items-center justify-between text-muted-foreground mb-3">
                                     <Icons.layoutTemplate className="h-4 w-4" />
-                                    <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> 34%</span>
+                                    <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> </span>
                                 </div>
-                                <div className="text-2xl font-bold text-slate-900 dark:text-white">48</div>
-                                <h3 className="text-xs font-medium text-muted-foreground mt-1">Designs Generated</h3>
+                                <div className="text-2xl font-bold text-slate-900 dark:text-white">{metrics?.active_projects ?? "—"}</div>
+                                <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.activeProjects")}</h3>
                             </div>
 
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
                                 <div className="flex items-center justify-between text-muted-foreground mb-3">
                                     <Icons.brain className="h-4 w-4 text-indigo-500" />
-                                    <span className="text-xs font-medium text-muted-foreground">This Month</span>
+                                    <span className="text-xs font-medium text-muted-foreground">{t("dashboard.thisMonth")}</span>
                                 </div>
-                                <div className="text-2xl font-bold text-slate-900 dark:text-white">14<span className="text-sm font-normal text-muted-foreground">/50</span></div>
-                                <h3 className="text-xs font-medium text-muted-foreground mt-1">Generations Used</h3>
+                                <div className="text-2xl font-bold text-slate-900 dark:text-white">{metrics?.monthly_usage ?? "—"}</div>
+                                <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.projectsThisMonth")}</h3>
                             </div>
 
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
                                 <div className="flex items-center justify-between text-muted-foreground mb-3">
                                     <Icons.bookmark className="h-4 w-4" />
                                 </div>
-                                <div className="text-2xl font-bold text-slate-900 dark:text-white">8</div>
-                                <h3 className="text-xs font-medium text-muted-foreground mt-1">Saved Layouts</h3>
+                                <div className="text-2xl font-bold text-slate-900 dark:text-white capitalize">{metrics?.plan_status ?? "—"}</div>
+                                <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.plan")}</h3>
                             </div>
                         </div>
                     </section>
@@ -116,59 +184,65 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                     {/* 4. Recent Projects Section */}
                     <section>
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-semibold tracking-tight">Recent Projects</h2>
+                            <h2 className="text-lg font-semibold tracking-tight">{t("dashboard.recentProjects")}</h2>
                             <button
                                 onClick={() => setPage("projects")}
                                 className="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 font-medium hover:underline flex items-center"
                             >
-                                View all <MoveRight className="ml-1 w-3 h-3" />
+                                {t("dashboard.viewAll")} <MoveRight className="ml-1 w-3 h-3" />
                             </button>
                         </div>
                         <div className="grid sm:grid-cols-2 gap-4">
-                            {recentProjects.map((project) => (
+                            {recentProjects.length === 0 && !loading && (
+                                <p className="text-sm text-muted-foreground col-span-full">{t("dashboard.noProjectsYet")}</p>
+                            )}
+                            {recentProjects.map((project, idx) => {
+                                const img = placeholderImgs[idx % placeholderImgs.length];
+                                const active = project.status === "active";
+                                return (
                                 <div key={project.id} className="group flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden hover:shadow-md transition-all">
                                     <div className="relative h-32 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                                        <img src={project.img} alt={project.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                        <img src={img} alt={project.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                         <div className="absolute top-2 left-2">
-                                            {project.status === "Processing" ? (
+                                            {!active ? (
                                                 <span className="inline-flex items-center px-2 py-1 rounded bg-amber-100/90 text-amber-800 dark:bg-amber-900/90 dark:text-amber-300 text-[10px] font-bold tracking-wide uppercase shadow-sm backdrop-blur-sm">
-                                                    <Icons.spinner className="w-3 h-3 mr-1 animate-spin" /> Processing AI
+                                                    <Icons.spinner className="w-3 h-3 mr-1 animate-spin" /> {project.status}
                                                 </span>
                                             ) : (
                                                 <span className="inline-flex items-center px-2 py-1 rounded bg-white/90 text-slate-800 dark:bg-black/90 dark:text-slate-300 text-[10px] font-bold tracking-wide uppercase shadow-sm backdrop-blur-sm">
-                                                    <CheckCircle2 className="w-3 h-3 mr-1 text-emerald-500" /> Ready
+                                                    <CheckCircle2 className="w-3 h-3 mr-1 text-emerald-500" /> {t("dashboard.ready")}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
                                     <div className="p-4 flex-1 flex flex-col relative">
                                         <div className="flex justify-between items-start mb-1">
-                                            <h3 className="font-semibold text-base line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors cursor-pointer" onClick={() => setPage("design-details")}>
+                                            <h3 className="font-semibold text-base line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors cursor-pointer" onClick={() => setPage(`/design-details?id=${project.id}`)}>
                                                 {project.name}
                                             </h3>
-                                            {/* Context Menu Placeholder */}
-                                            <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 -mr-2">
+                                            <button type="button" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 -mr-2">
                                                 <MoreHorizontal className="w-4 h-4" />
                                             </button>
                                         </div>
                                         <div className="text-xs text-muted-foreground flex items-center mb-4">
-                                            <Clock className="w-3 h-3 mr-1" /> {project.date}
+                                            <Clock className="w-3 h-3 mr-1" /> {formatWhen(project.created_at)}
                                         </div>
 
                                         <div className="mt-auto flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/50">
-                                            <button onClick={() => setPage("design-details")} className="flex-1 inline-flex justify-center items-center h-8 rounded-lg bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 text-xs font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
-                                                Open
+                                            <button type="button" onClick={() => setPage(`/design-details?id=${project.id}`)} className="flex-1 inline-flex justify-center items-center h-8 rounded-lg bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 text-xs font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                                                {t("dashboard.open")}
                                             </button>
-                                            <button className="inline-flex justify-center items-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" title="Duplicate">
+                                            <button type="button" onClick={(e) => { e.stopPropagation(); void handleDuplicate(project.id); }} className="inline-flex justify-center items-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" title={t("dashboard.duplicateTitle")}>
                                                 <Copy className="w-3.5 h-3.5" />
                                             </button>
-                                            <button className="inline-flex justify-center items-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-900/50 transition-colors" title="Delete">
+                                            <button type="button" onClick={(e) => { e.stopPropagation(); void handleDelete(project.id); }} className="inline-flex justify-center items-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-900/50 transition-colors" title={t("dashboard.deleteTitle")}>
                                                 <Trash2 className="w-3.5 h-3.5" />
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </section>
                 </div>
@@ -186,15 +260,15 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 <Icons.brain className="w-5 h-5" />
                             </div>
                             <div>
-                                <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Current Plan</h2>
-                                <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Designer Pro</div>
+                                <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">{t("dashboard.currentPlan")}</h2>
+                                <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 capitalize">{metrics?.plan_status ?? "—"}</div>
                             </div>
                         </div>
 
                         <div className="space-y-3 mb-6 relative z-10">
                             <div>
                                 <div className="flex justify-between text-xs mb-1.5">
-                                    <span className="font-medium text-slate-700 dark:text-slate-300">AI Generations</span>
+                                    <span className="font-medium text-slate-700 dark:text-slate-300">{t("dashboard.aiGenerations")}</span>
                                     <span className="text-muted-foreground">14 / 50</span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
@@ -202,21 +276,21 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 </div>
                             </div>
                             <ul className="text-xs text-muted-foreground space-y-2 mt-4">
-                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> High-res PDF Exports</li>
-                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> Cost Estimation Engine</li>
-                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> Priority processing</li>
+                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> {t("dashboard.planFeature1")}</li>
+                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> {t("dashboard.planFeature2")}</li>
+                                <li className="flex items-center"><CheckCircle2 className="w-3 h-3 text-indigo-500 mr-2" /> {t("dashboard.planFeature3")}</li>
                             </ul>
                         </div>
 
                         <button className="w-full py-2.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors relative z-10 flex justify-center items-center">
-                            Upgrade to Business <ArrowUpCircle className="w-3.5 h-3.5 ml-1.5 opacity-70" />
+                            {t("dashboard.upgradeBusiness")} <ArrowUpCircle className="w-3.5 h-3.5 ml-1.5 opacity-70" />
                         </button>
                     </section>
 
                     {/* 7 & 8. Activity Timeline & Notifications */}
                     <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-sm font-semibold tracking-tight">Recent Activity</h2>
+                            <h2 className="text-sm font-semibold tracking-tight">{t("dashboard.recentActivity")}</h2>
                         </div>
 
                         <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 dark:before:via-slate-800 before:to-transparent">
@@ -240,10 +314,10 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                             <Icons.lightbulb className="w-4 h-4" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">Save styles for later</h3>
-                            <p className="text-xs text-muted-foreground leading-relaxed mb-3">You can create custom preset styles in your settings to apply them to new projects with one click.</p>
+                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">{t("dashboard.tipTitle")}</h3>
+                            <p className="text-xs text-muted-foreground leading-relaxed mb-3">{t("dashboard.tipBody")}</p>
                             <button onClick={() => setPage("settings")} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
-                                Go to Settings
+                                {t("dashboard.goToSettings")}
                             </button>
                         </div>
                     </section>

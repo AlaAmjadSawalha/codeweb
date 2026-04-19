@@ -73,7 +73,7 @@ export default function LandingPage({ setPage, isAuthenticated = false, onShowTo
                                 <button
                                     onClick={() => {
                                         setShowAmazingMessage(true);
-                                        onShowToast?.("Let's build something amazing.");
+                                        onShowToast?.(t("landing.amazingToast"));
                                         setPage(isAuthenticated ? "/dashboard" : "/auth/signup");
                                     }}
                                     className="w-full sm:w-auto inline-flex h-12 items-center justify-center rounded-full border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/30 px-8 text-sm font-medium text-indigo-700 dark:text-indigo-300 shadow-sm transition-colors hover:bg-indigo-100 dark:hover:bg-indigo-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"

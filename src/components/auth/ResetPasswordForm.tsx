@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Eye, EyeOff, Lock, ShieldCheck, ArrowRight, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { api, getApiErrorMessage } from "@/lib/api";
+import { getApiErrorMessage } from "@/lib/api";
+import { resetPassword as resetPasswordRequest } from "@/api/auth";
 
 interface ResetPasswordFormProps {
   email: string;
@@ -35,10 +36,6 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
       setError(t("auth.errors.fillAllFields"));
       return;
     }
-    if (code.length < 6) {
-      setError(t("auth.errors.resetCodeMin"));
-      return;
-    }
     if (password.length < 8 || !hasUppercase || !hasNumber) {
       setError(t("auth.errors.passwordStrong"));
       return;
@@ -51,15 +48,13 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
     setError("");
     setIsSubmitting(true);
     try {
-      await api.post("/auth/reset-password", {
-        email: email.trim(),
+      await resetPasswordRequest({
         token: code.trim(),
-        password,
-        password_confirmation: confirmPassword,
+        new_password: password,
       });
       onResetSuccess();
     } catch (err) {
-      setError(getApiErrorMessage(err, t("auth.errors.fillAllFields")));
+      setError(getApiErrorMessage(err, t("auth.errors.resetLinkInvalid")));
     } finally {
       setIsSubmitting(false);
     }

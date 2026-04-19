@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User, Chrome, ArrowRight, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { api, getApiErrorMessage, setAuthToken } from "@/lib/api";
+import { getApiErrorMessage, setAuthToken, setStoredUser } from "@/lib/api";
+import { register as registerRequest } from "@/api/auth";
 
 interface SignUpFormProps {
     onSwitchToLogin: () => void;
@@ -68,23 +70,23 @@ export function SignUpForm({ onSwitchToLogin, onSignUpSuccess }: SignUpFormProps
         setError("");
         setIsSubmitting(true);
         try {
-            const { data } = await api.post<{ data: { token: string } }>("/auth/register", {
+            const registerPayload = {
                 name: formData.name.trim(),
                 email: formData.email.trim(),
                 password: formData.password,
-                password_confirmation: formData.confirmPassword,
-                role: formData.role,
-                accept_terms: formData.acceptTerms,
-            });
+            };
+            const data = await registerRequest(registerPayload);
             const token = data.data?.token;
+            const user = data.data?.user;
             if (!token) {
                 setError(t("auth.errors.fillAllRequiredFields"));
                 return;
             }
             setAuthToken(token);
+            if (user) setStoredUser(user);
             onSignUpSuccess();
-        } catch (err) {
-            setError(getApiErrorMessage(err, t("auth.errors.fillAllRequiredFields")));
+        } catch (error: unknown) {
+            setError(getApiErrorMessage(error, t("auth.errors.fillAllRequiredFields")));
         } finally {
             setIsSubmitting(false);
         }
@@ -229,7 +231,14 @@ export function SignUpForm({ onSwitchToLogin, onSignUpSuccess }: SignUpFormProps
                             htmlFor="acceptTerms"
                             className="text-sm leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-slate-600 dark:text-slate-400"
                         >
-                            {t("auth.acceptTermsPrefix")} <a href="#" className="font-medium text-slate-900 dark:text-slate-100 hover:underline">{t("common.termsOfService")}</a> {t("auth.acceptTermsJoiner")} <a href="#" className="font-medium text-slate-900 dark:text-slate-100 hover:underline">{t("common.privacyPolicy")}</a>
+                            {t("auth.acceptTermsPrefix")}{" "}
+                            <Link to="/terms-of-service" className="font-medium text-slate-900 dark:text-slate-100 hover:underline">
+                                {t("common.termsOfService")}
+                            </Link>{" "}
+                            {t("auth.acceptTermsJoiner")}{" "}
+                            <Link to="/privacy-policy" className="font-medium text-slate-900 dark:text-slate-100 hover:underline">
+                                {t("common.privacyPolicy")}
+                            </Link>
                         </label>
                     </div>
 

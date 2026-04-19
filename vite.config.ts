@@ -9,4 +9,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Ensure PostCSS + Tailwind run reliably (fixes unprocessed @tailwind in index.css).
+  css: {
+    postcss: path.resolve(__dirname, "postcss.config.cjs"),
+  },
 });

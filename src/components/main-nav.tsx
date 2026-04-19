@@ -36,7 +36,13 @@ export function MainNav({ items, setPage }: MainNavProps) {
                     item.disabled && "cursor-not-allowed opacity-80"
                   )}
                 >
-                  {item.title === "Home" ? t("nav.home") : item.title === "Pricing" ? t("footer.pricing") : item.title}
+                  {item.title === "Home"
+                    ? t("nav.home")
+                    : item.title === "Pricing"
+                      ? t("footer.pricing")
+                      : item.title === "Features"
+                        ? t("footer.features")
+                        : item.title}
                 </button>
               )
           )}

@@ -9,12 +9,14 @@ interface RootLayoutProps {
   setPage: (page: string) => void;
   isAuthenticated: boolean;
   onShowToast: (message: string) => void;
+  onLogout: () => void;
 }
 
-export default function RootLayout({ children, currentPage, setPage, isAuthenticated, onShowToast }: RootLayoutProps) {
+export default function RootLayout({ children, currentPage, setPage, isAuthenticated, onShowToast, onLogout }: RootLayoutProps) {
   const isLanding = currentPage === "landing";
   const isAuth = currentPage === "auth";
-  const hideLayout = isLanding || isAuth;
+  const isLegalDoc = currentPage === "privacy-policy" || currentPage === "terms-of-service";
+  const hideLayout = isLanding || isAuth || isLegalDoc;
 
   return (
     <div className="min-h-screen bg-background font-sans antialiased text-foreground">
@@ -25,6 +27,7 @@ export default function RootLayout({ children, currentPage, setPage, isAuthentic
               setPage={setPage}
               isAuthenticated={isAuthenticated}
               onShowToast={onShowToast}
+              onLogout={onLogout}
             />
           )}
 

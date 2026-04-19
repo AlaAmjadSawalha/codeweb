@@ -31,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->ip());
         });
 
+        RateLimiter::for('module-api-auth', function (Request $request) {
+            return Limit::perMinute(10)->by($request->ip());
+        });
+
         // Deep links for SPA password reset (token + email as query params).
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
             $base = rtrim((string) config('app.frontend_url'), '/');

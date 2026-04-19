@@ -5,15 +5,16 @@ import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { Box } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 interface AuthPageProps {
     setPage: (page: string) => void;
     initialView?: "login" | "signup" | "forgot" | "reset";
     onAuthSuccess?: () => void;
+    onShowToast?: (message: string) => void;
 }
 
-export default function AuthPage({ setPage, initialView = "login", onAuthSuccess }: AuthPageProps) {
+export default function AuthPage({ setPage, initialView = "login", onAuthSuccess, onShowToast }: AuthPageProps) {
     const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const [view, setView] = useState<"login" | "signup" | "forgot" | "reset">(initialView);
@@ -27,17 +28,15 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
     useEffect(() => {
         const token = searchParams.get("token") ?? undefined;
         const emailParam = searchParams.get("email") ?? "";
-        if (token && emailParam) {
+        if (token) {
             setResetTokenFromLink(token);
-            setResetEmail(emailParam);
+            if (emailParam) setResetEmail(emailParam);
             setView("reset");
         }
     }, [searchParams]);
 
     const handleAuthSuccess = () => {
-        localStorage.setItem("sp-authenticated", "true");
         onAuthSuccess?.();
-        // Navigate to dashboard after successful login/signup
         setPage("dashboard");
     };
 
@@ -62,29 +61,21 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
                     <span className="text-xl font-bold tracking-wider">{t("common.brand")}</span>
                 </div>
 
-                {/* Testimonial / Value prop */}
+                {/* Tagline */}
                 <div className="relative z-20 max-w-lg mt-auto mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
                     <h1 className="text-4xl font-bold text-white tracking-tight leading-tight">
                         {t("auth.tagline")}
                     </h1>
-                    <p className="mt-6 text-lg text-slate-300">
-                        {t("auth.testimonial")}
-                    </p>
-                    <div className="mt-8 flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-indigo-500/50 bg-slate-800">
-                            <img src="https://i.pravatar.cc/150?img=42" alt="Avatar" className="w-full h-full object-cover" />
-                        </div>
-                        <div>
-                            <div className="text-base font-medium text-white">{t("auth.testimonialName")}</div>
-                            <div className="text-sm text-slate-400">{t("auth.testimonialRole")}</div>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Footer links */}
                 <div className="relative z-20 flex space-x-6 text-sm text-slate-400">
-                    <a href="#" className="hover:text-white transition-colors">{t("common.privacyPolicy")}</a>
-                    <a href="#" className="hover:text-white transition-colors">{t("common.termsOfService")}</a>
+                    <Link to="/privacy-policy" className="hover:text-white transition-colors">
+                        {t("common.privacyPolicy")}
+                    </Link>
+                    <Link to="/terms-of-service" className="hover:text-white transition-colors">
+                        {t("common.termsOfService")}
+                    </Link>
                 </div>
             </div>
 
@@ -109,20 +100,16 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
                             onSignUpSuccess={handleAuthSuccess}
                         />
                     ) : view === "forgot" ? (
-                        <ForgotPasswordForm
-                            onBackToLogin={() => setPage("/auth/login")}
-                            onRequestSent={(email) => {
-                                setResetTokenFromLink(undefined);
-                                setResetEmail(email);
-                                setPage("/auth/reset");
-                            }}
-                        />
+                        <ForgotPasswordForm onBackToLogin={() => setPage("/auth/login")} />
                     ) : (
                         <ResetPasswordForm
                             email={resetEmail}
                             initialResetToken={resetTokenFromLink}
                             onBackToForgot={() => setPage("/auth/forgot")}
-                            onResetSuccess={() => setPage("/auth/login")}
+                            onResetSuccess={() => {
+                                onShowToast?.("Password updated successfully.");
+                                setPage("/auth/login");
+                            }}
                         />
                     )}
                 </div>

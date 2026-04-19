@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
                 'profile_role' => 'Architect',
                 'email_verified_at' => now(),
+                'plan' => 'enterprise',
             ],
         );
 
@@ -36,7 +37,10 @@ class DatabaseSeeder extends Seeder
                 'role' => 'user',
                 'profile_role' => 'Homeowner',
                 'email_verified_at' => now(),
+                'plan' => 'free',
             ],
         );
+
+        $this->call(ModuleDemoSeeder::class);
     }
 }

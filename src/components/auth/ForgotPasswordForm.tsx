@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { Mail, ArrowRight, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { api, getApiErrorMessage } from "@/lib/api";
+import { getApiErrorMessage } from "@/lib/api";
+import { forgotPassword as forgotPasswordRequest } from "@/api/auth";
 
 interface ForgotPasswordFormProps {
   onBackToLogin: () => void;
-  onRequestSent: (email: string) => void;
 }
 
-export function ForgotPasswordForm({ onBackToLogin, onRequestSent }: ForgotPasswordFormProps) {
+export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,14 +31,35 @@ export function ForgotPasswordForm({ onBackToLogin, onRequestSent }: ForgotPassw
     setError("");
     setIsSubmitting(true);
     try {
-      await api.post("/auth/forgot-password", { email: email.trim() });
-      onRequestSent(email.trim());
+      await forgotPasswordRequest({ email: email.trim() });
+      setSent(true);
     } catch (err) {
       setError(getApiErrorMessage(err, t("auth.errors.invalidEmail")));
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (sent) {
+    return (
+      <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t("auth.forgotTitle")}</h2>
+          <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+            If this email exists, a reset link was sent.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onBackToLogin}
+          className="inline-flex items-center text-sm font-medium text-slate-700 hover:underline dark:text-slate-300"
+        >
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          {t("auth.backToLogin")}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
