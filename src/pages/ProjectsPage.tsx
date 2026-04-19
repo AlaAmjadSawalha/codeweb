@@ -78,15 +78,15 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
     };
 
     return (
-        <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-6">
+        <div className="p-5 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
+            <div className="d-flex flex-column sm:flex-row justify-content-between align-items-start sm:items-center gap-4 border-b pb-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h1>
                     <p className="text-muted-foreground mt-1">{t("projects.subtitle")}</p>
                 </div>
                 <button
                     onClick={() => setPage("create-project")}
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none"
+                    className="inline-flex h-10 align-items-center justify-content-center rounded-2 bg-blue-600 px-3 py-2 fs-6 text-muted fw-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none"
                 >
                     <Icons.plus className="mr-2 h-4 w-4" />
                     {t("projects.newProject")}
@@ -184,9 +184,9 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
                                 {t("projects.deleteProject")}
                             </button>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

@@ -41,29 +41,29 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
     };
 
     return (
-        <div className="min-h-screen w-full flex bg-white dark:bg-slate-950">
+        <div className="min-vh-100 w-100 d-flex bg-white dark:bg-slate-950">
             {/* Left pane - Visual/Marketing */}
-            <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 bg-slate-900 dark:bg-black overflow-hidden">
+            <div className="d-none d-lg-flex lg:w-1/2 relative flex-column justify-content-between p-12 bg-slate-900 dark:bg-black overflow-hidden">
                 {/* Background Image / Gradient */}
                 <div className="absolute inset-0 z-0">
                     <img
                         src="/auth-bg.png"
                         alt={t("common.brand")}
-                        className="object-cover w-full h-full opacity-60 mix-blend-overlay"
+                        className="object-cover w-100 h-100 opacity-60 mix-blend-overlay"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent dark:from-black dark:via-black/60 z-10"></div>
                     <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/20 to-transparent z-10"></div>
                 </div>
 
                 {/* Logo area */}
-                <div className="relative z-20 flex items-center space-x-2 text-white">
+                <div className="relative z-20 d-flex align-items-center space-x-2 text-white">
                     <Box className="w-8 h-8 text-indigo-400" />
-                    <span className="text-xl font-bold tracking-wider">{t("common.brand")}</span>
+                    <span className="fs-4 fw-bold tracking-wider">{t("common.brand")}</span>
                 </div>
 
                 {/* Tagline */}
                 <div className="relative z-20 max-w-lg mt-auto mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <h1 className="text-4xl font-bold text-white tracking-tight leading-tight">
+                    <h1 className="fs-1 fw-bold text-white tracking-tight leading-tight">
                         {t("auth.tagline")}
                     </h1>
                 </div>
@@ -80,12 +80,12 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
             </div>
 
             {/* Right pane - Forms */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 xl:p-24 bg-white dark:bg-slate-950">
-                <div className="w-full max-w-md">
+            <div className="w-100 lg:w-1/2 d-flex align-items-center justify-content-center p-5 sm:p-12 xl:p-24 bg-white dark:bg-slate-950">
+                <div className="w-100 max-w-md">
                     {/* Mobile Logo */}
-                    <div className="lg:hidden flex items-center justify-center space-x-2 text-slate-900 dark:text-white mb-10">
+                    <div className="d-lg-none d-flex align-items-center justify-content-center space-x-2 text-slate-900 dark:text-white mb-10">
                         <Box className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        <span className="text-2xl font-bold tracking-wider">{t("common.brand")}</span>
+                        <span className="fs-3 fw-bold tracking-wider">{t("common.brand")}</span>
                     </div>
 
                     {view === "login" ? (

@@ -16,7 +16,7 @@ export default function HomePage() {
           {t("home.subtitle")}
         </p>
       </div>
-      <div className="flex gap-4">
+      <div className="d-flex gap-4">
         <a href={siteConfig.links.docs} className={buttonVariants()}>
           {t("home.documentation")}
         </a>

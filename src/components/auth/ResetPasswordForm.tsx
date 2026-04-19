@@ -61,37 +61,37 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="w-100 max-w-md mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t("auth.resetTitle")}</h2>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        <h2 className="fs-2 fw-bold tracking-tight text-slate-900 dark:text-white">{t("auth.resetTitle")}</h2>
+        <p className="mt-2 fs-6 text-muted text-slate-600 dark:text-slate-400">
           {t("auth.resetSubtitle", { email })}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/10 dark:border-red-500/20 flex items-center gap-2">
+          <div className="p-3 fs-6 text-muted text-red-500 bg-red-50 border border-red-200 rounded-3 dark:bg-red-900/10 dark:border-red-500/20 d-flex align-items-center gap-2">
             <ShieldCheck className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <div className="space-y-1">
-          <label className="text-sm font-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.resetCode")}</label>
+          <label className="fs-6 text-muted fw-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.resetCode")}</label>
           <input
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder={t("auth.resetCodePlaceholder")}
-            className="flex w-full h-11 px-3 py-2 text-sm bg-transparent border rounded-md border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
+            className="d-flex w-100 h-11 px-3 py-2 fs-6 text-muted bg-transparent border rounded-2 border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.newPassword")}</label>
+          <label className="fs-6 text-muted fw-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.newPassword")}</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <div className="absolute inset-y-0 left-0 d-flex align-items-center pl-3 text-slate-400">
               <Lock className="w-5 h-5" />
             </div>
             <input
@@ -99,12 +99,12 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="flex w-full h-11 px-3 py-2 pl-10 pr-9 text-sm bg-transparent border rounded-md border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
+              className="d-flex w-100 h-11 px-3 py-2 pl-10 pr-9 fs-6 text-muted bg-transparent border rounded-2 border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+              className="absolute inset-y-0 right-0 d-flex align-items-center pr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -112,9 +112,9 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.confirmPassword")}</label>
+          <label className="fs-6 text-muted fw-medium leading-none text-slate-700 dark:text-slate-300">{t("auth.confirmPassword")}</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <div className="absolute inset-y-0 left-0 d-flex align-items-center pl-3 text-slate-400">
               <Lock className="w-5 h-5" />
             </div>
             <input
@@ -122,12 +122,12 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
-              className="flex w-full h-11 px-3 py-2 pl-10 pr-9 text-sm bg-transparent border rounded-md border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
+              className="d-flex w-100 h-11 px-3 py-2 pl-10 pr-9 fs-6 text-muted bg-transparent border rounded-2 border-slate-200 ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:border-slate-800 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 transition-colors"
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+              className="absolute inset-y-0 right-0 d-flex align-items-center pr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
             >
               {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -137,7 +137,7 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center justify-center w-full h-11 px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors rounded-md bg-slate-900 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 disabled:opacity-50"
+          className="inline-flex align-items-center justify-content-center w-100 h-11 px-3 py-2 fs-6 text-muted fw-medium tracking-wide text-white transition-colors rounded-2 bg-slate-900 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 disabled:opacity-50"
         >
           {isSubmitting ? t("auth.updatePassword") + "…" : t("auth.updatePassword")}
           <ArrowRight className="w-4 h-4 ml-2" />
@@ -147,7 +147,7 @@ export function ResetPasswordForm({ email, initialResetToken, onBackToForgot, on
       <button
         type="button"
         onClick={onBackToForgot}
-        className="inline-flex items-center text-sm font-medium text-slate-700 hover:underline dark:text-slate-300"
+        className="inline-flex align-items-center fs-6 text-muted fw-medium text-slate-700 hover:underline dark:text-slate-300"
       >
         <ArrowLeft className="w-4 h-4 mr-1" />
         {t("auth.backToForgot")}

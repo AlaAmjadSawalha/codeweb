@@ -13,13 +13,13 @@ export function MainNav({ items, setPage }: MainNavProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex gap-6 md:gap-10">
-      <button onClick={() => setPage("landing")} className="flex items-center space-x-2 bg-transparent border-none p-0 cursor-pointer">
+    <div className="d-flex gap-5 md:gap-10">
+      <button onClick={() => setPage("landing")} className="d-flex align-items-center space-x-2 bg-transparent border-none p-0 cursor-pointer">
         <Icons.laptop className="h-6 w-6" />
-        <span className="inline-block font-bold">{siteConfig.name}</span>
+        <span className="d-inline-block fw-bold">{siteConfig.name}</span>
       </button>
       {items?.length ? (
-        <nav className="flex gap-6">
+        <nav className="d-flex gap-5">
           {items?.map(
             (item, index) =>
               item.href && (

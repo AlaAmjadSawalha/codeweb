@@ -87,7 +87,6 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                 </div>
             )}
 
-            {/* 2. Welcome Section */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
                 <div>
                     <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -98,7 +97,7 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                 </div>
                 <button
                     onClick={() => setPage("create-project")}
-                    className="inline-flex h-11 items-center justify-center rounded-xl bg-indigo-600 px-6 py-2 text-sm font-medium text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:scale-105 focus-visible:outline-none"
+                    className="inline-flex h-11 align-items-center justify-content-center rounded-4 bg-indigo-600 px-4 py-2 fs-6 text-muted fw-medium text-white shadow shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:scale-105 focus-visible:outline-none"
                 >
                     <Icons.plus className="mr-2 h-4 w-4" />
                     {t("dashboard.createNewProject")}
@@ -106,10 +105,8 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column (Main Content) */}
                 <div className="lg:col-span-2 space-y-8">
 
-                    {/* 3. Quick Action Buttons */}
                     <section>
                         <h2 className="text-lg font-semibold tracking-tight mb-4">{t("dashboard.quickActions")}</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -119,20 +116,20 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.newProject")}</span>
                             </button>
-                            <button onClick={() => setPage("create-project")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
-                                <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
+                                <div className="w-10 h-10 rounded-circle bg-blue-50 dark:bg-blue-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
                                     <FolderOpen className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.uploadBlueprint")}</span>
                             </button>
-                            <button onClick={() => setPage("create-project")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
-                                <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
+                                <div className="w-10 h-10 rounded-circle bg-emerald-50 dark:bg-emerald-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
                                     <ImageIcon className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.uploadPhotos")}</span>
                             </button>
-                            <button onClick={() => setPage("ai-designs")} className="flex flex-col items-center justify-center p-4 h-28 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 group">
-                                <div className="w-10 h-10 rounded-full bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <button onClick={() => setPage("ai-designs")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 group">
+                                <div className="w-10 h-10 rounded-circle bg-purple-50 dark:bg-purple-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
                                     <Icons.lightbulb className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.inspirationMode")}</span>
@@ -140,21 +137,20 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                         </div>
                     </section>
 
-                    {/* 5. Usage Statistics */}
                     <section>
                         <h2 className="text-lg font-semibold tracking-tight mb-4">{t("dashboard.overviewAnalytics")}</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
                                 <div className="flex items-center justify-between text-muted-foreground mb-3">
                                     <Icons.folder className="h-4 w-4" />
-                                    <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> 12%</span>
+                                    <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> Live</span>
                                 </div>
                                 <div className="text-2xl font-bold text-slate-900 dark:text-white">{metrics?.total_projects ?? "—"}</div>
                                 <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.totalProjects")}</h3>
                             </div>
 
-                            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-                                <div className="flex items-center justify-between text-muted-foreground mb-3">
+                            <div className="rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+                                <div className="d-flex align-items-center justify-content-between text-muted mb-3">
                                     <Icons.layoutTemplate className="h-4 w-4" />
                                     <span className="text-xs font-medium text-emerald-500 flex items-center"><ArrowUpRight className="h-3 w-3 mr-1" /> </span>
                                 </div>
@@ -162,8 +158,8 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.activeProjects")}</h3>
                             </div>
 
-                            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-                                <div className="flex items-center justify-between text-muted-foreground mb-3">
+                            <div className="rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+                                <div className="d-flex align-items-center justify-content-between text-muted mb-3">
                                     <Icons.brain className="h-4 w-4 text-indigo-500" />
                                     <span className="text-xs font-medium text-muted-foreground">{t("dashboard.thisMonth")}</span>
                                 </div>
@@ -171,8 +167,8 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 <h3 className="text-xs font-medium text-muted-foreground mt-1">{t("dashboard.projectsThisMonth")}</h3>
                             </div>
 
-                            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-                                <div className="flex items-center justify-between text-muted-foreground mb-3">
+                            <div className="rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+                                <div className="d-flex align-items-center justify-content-between text-muted mb-3">
                                     <Icons.bookmark className="h-4 w-4" />
                                 </div>
                                 <div className="text-2xl font-bold text-slate-900 dark:text-white capitalize">{metrics?.plan_status ?? "—"}</div>
@@ -181,13 +177,12 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                         </div>
                     </section>
 
-                    {/* 4. Recent Projects Section */}
                     <section>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-semibold tracking-tight">{t("dashboard.recentProjects")}</h2>
                             <button
                                 onClick={() => setPage("projects")}
-                                className="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 font-medium hover:underline flex items-center"
+                                className="fs-6 text-muted text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 fw-medium hover:underline d-flex align-items-center"
                             >
                                 {t("dashboard.viewAll")} <MoveRight className="ml-1 w-3 h-3" />
                             </button>
@@ -247,16 +242,13 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                     </section>
                 </div>
 
-                {/* Right Column (Sidebar Information) */}
                 <div className="space-y-8">
 
-                    {/* 6. Subscription / Plan Status */}
                     <section className="rounded-2xl border border-indigo-200 dark:border-indigo-900/50 bg-gradient-to-b from-indigo-50 to-white dark:from-indigo-950/20 dark:to-slate-900 p-6 shadow-indigo-100/50 dark:shadow-none shadow-sm relative overflow-hidden">
-                        {/* Decorative background element */}
                         <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"></div>
 
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <div className="d-flex align-items-center gap-2 mb-4">
+                            <div className="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-3 text-indigo-600 dark:text-indigo-400">
                                 <Icons.brain className="w-5 h-5" />
                             </div>
                             <div>
@@ -272,7 +264,7 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                     <span className="text-muted-foreground">14 / 50</span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
-                                    <div className="bg-indigo-600 h-2 rounded-full" style={{ width: '28%' }}></div>
+                                    <div className="bg-indigo-600 h-2 rounded-full transition-all" style={{ width: `${usagePct}%` }}></div>
                                 </div>
                             </div>
                             <ul className="text-xs text-muted-foreground space-y-2 mt-4">
@@ -287,28 +279,76 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                         </button>
                     </section>
 
-                    {/* 7 & 8. Activity Timeline & Notifications */}
+                    <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+                        <div className="flex items-center justify-between mb-4 gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
+                                <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 shrink-0">
+                                    <Bell className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0">
+                                    <h2 className="text-sm font-semibold tracking-tight">Notifications</h2>
+                                    {unreadCount > 0 && (
+                                        <p className="text-xs text-muted-foreground truncate">{unreadCount} unread</p>
+                                    )}
+                                </div>
+                            </div>
+                            {unreadCount > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => markAllNotificationsRead()}
+                                    className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline shrink-0"
+                                >
+                                    Mark all read
+                                </button>
+                            )}
+                        </div>
+                        <ul className="space-y-3 max-h-64 overflow-y-auto pr-1">
+                            {state.notifications.slice(0, 6).map((n) => (
+                                <li key={n.id}>
+                                    <button
+                                        type="button"
+                                        onClick={() => !n.read && markNotificationRead(n.id)}
+                                        className={`w-full text-left rounded-xl border px-3 py-2.5 transition-colors ${n.read
+                                            ? "border-transparent bg-slate-50/80 dark:bg-slate-950/50"
+                                            : "border-indigo-200/80 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/20"
+                                            }`}
+                                    >
+                                        <div className="flex items-start justify-between gap-2">
+                                            <p className={`text-sm font-medium leading-snug ${n.read ? "text-slate-600 dark:text-slate-400" : "text-slate-900 dark:text-white"}`}>
+                                                {n.title}
+                                            </p>
+                                            {!n.read && (
+                                                <span className="h-2 w-2 rounded-full bg-indigo-500 shrink-0 mt-1.5" aria-hidden />
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{n.body}</p>
+                                        <p className="text-[10px] text-muted-foreground mt-1.5">{formatRelativeTime(n.createdAt)}</p>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
                     <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-sm font-semibold tracking-tight">{t("dashboard.recentActivity")}</h2>
                         </div>
 
                         <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 dark:before:via-slate-800 before:to-transparent">
-                            {recentActivity.map((activity) => (
+                            {state.activity.slice(0, 6).map((activity) => (
                                 <div key={activity.id} className="relative flex items-start gap-4">
                                     <div className="absolute left-0 mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 z-10">
                                         <div className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></div>
                                     </div>
                                     <div className="pl-8">
-                                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-snug">{activity.action}</p>
-                                        <p className="text-xs text-muted-foreground "><span className="font-medium text-slate-900 dark:text-slate-100">{activity.target}</span> • {activity.time}</p>
+                                        <p className="fs-6 text-muted fw-medium text-slate-700 dark:text-slate-300 leading-snug">{activity.action}</p>
+                                        <p className="small text-muted"><span className="fw-medium text-slate-900 dark:text-slate-100">{activity.target}</span> • {activity.time}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </section>
 
-                    {/* 9. Recommended Features Tip */}
                     <section className="rounded-2xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-950/20 p-5 p-6 flex items-start gap-4">
                         <div className="p-2 bg-blue-100 dark:bg-blue-900/60 rounded-full shrink-0 text-blue-600 dark:text-blue-400">
                             <Icons.lightbulb className="w-4 h-4" />

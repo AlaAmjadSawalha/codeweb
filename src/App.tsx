@@ -86,6 +86,9 @@ function App() {
       case "design-details":
         navigate("/design-details");
         return;
+      case "settings":
+        navigate("/settings");
+        return;
       default:
         // If it's already a pathname, navigate to it directly.
         if (page.startsWith("/")) navigate(page);
@@ -103,6 +106,7 @@ function App() {
     if (path.startsWith("/ai-designs")) return "ai-designs";
     if (path.startsWith("/compare-designs")) return "compare-designs";
     if (path.startsWith("/design-details")) return "design-details";
+    if (path.startsWith("/settings")) return "settings";
     if (path.startsWith("/pricing")) return "landing";
     if (path.startsWith("/privacy-policy")) return "privacy-policy";
     if (path.startsWith("/terms-of-service")) return "terms-of-service";
@@ -175,6 +179,7 @@ function App() {
         <Route path="/ai-designs" element={protectedPage(<AIGeneratedDesignsPage setPage={setPage} />)} />
         <Route path="/compare-designs" element={protectedPage(<CompareDesignsPage setPage={setPage} />)} />
         <Route path="/design-details" element={protectedPage(<DesignDetailsPage setPage={setPage} />)} />
+        <Route path="/settings" element={protectedPage(<PlaceholderPage title="Settings" />)} />
 
         <Route path="/features" element={<PlaceholderPage titleKey="placeholder.features" />} />
         <Route path="/gallery" element={<PlaceholderPage titleKey="placeholder.gallery" />} />
@@ -194,7 +199,7 @@ function App() {
       </Routes>
 
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 z-[80] rounded-md bg-slate-900 px-4 py-2 text-sm text-white shadow-lg dark:bg-slate-100 dark:text-slate-900">
+        <div className="fixed bottom-4 right-4 z-[80] rounded-2 bg-slate-900 px-3 py-2 fs-6 text-muted text-white shadow-lg dark:bg-slate-100 dark:text-slate-900">
           {toastMessage}
         </div>
       )}

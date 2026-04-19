@@ -63,14 +63,14 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
     const formatCurrency = (amount: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-24 pb-40 font-sans overflow-x-hidden relative">
+        <div className="min-vh-100 bg-gray-50 pt-24 pb-40 font-sans overflow-x-hidden relative">
 
             {/* Image Expansion Modal */}
             {expandedImage && (
-                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md d-flex align-items-center justify-content-center p-3 animate-in fade-in duration-200">
                     <button
                         onClick={() => setExpandedImage(null)}
-                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-white/20 rounded-full transition-colors z-50"
+                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-white/20 rounded-circle transition-colors z-50"
                     >
                         <X className="w-8 h-8" />
                     </button>
@@ -82,10 +82,10 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                 </div>
             )}
 
-            <div className="max-w-6xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-4">
 
                 {/* Header Section */}
-                <div className="mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="mb-10 text-center md:text-left d-flex flex-column md:flex-row justify-content-between align-items-center gap-5">
                     <div className="space-y-2">
                         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{t("compareDesigns.title")}</h1>
                         <p className="text-lg text-gray-500 max-w-2xl">
@@ -103,7 +103,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                 </div>
 
                 {/* Side-by-Side Comparison Container */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div className="d-grid row-cols-1 row-cols-md-2 gap-5 mb-12">
 
                     {[LAYOUT_A, LAYOUT_B].map((layout, idx) => {
                         const isSelected = selectedLayoutId === layout.id;
@@ -130,7 +130,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     />
 
                                     {/* Overlay Action - Zoom */}
-                                    <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 d-flex align-items-center justify-content-center opacity-0 group-hover:opacity-100">
                                         <button
                                             onClick={(e) => { e.stopPropagation(); setExpandedImage(layout.imageUrl); }}
                                             className="p-4 bg-white/90 backdrop-blur-md hover:bg-white text-gray-900 rounded-full shadow-2xl transition-all hover:scale-110"
@@ -142,14 +142,14 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
 
                                     {/* Selection Target Indicator Overlay */}
                                     {isSelected && (
-                                        <div className="absolute top-4 right-4 z-20 bg-blue-600 text-white p-1 rounded-full shadow-lg animate-in zoom-in">
+                                        <div className="absolute top-4 right-4 z-20 bg-blue-600 text-white p-1 rounded-circle shadow-lg animate-in zoom-in">
                                             <CheckCircle2 className="w-8 h-8" />
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Body Content Metrics */}
-                                <div className="p-6 md:p-8 flex flex-col gap-8 flex-grow">
+                                <div className="p-4 md:p-8 d-flex flex-column gap-5 flex-grow">
 
                                     {/* Cost Breakdown */}
                                     <div>
@@ -192,7 +192,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                                 {layout.metrics.spaceUsage}%
                                             </span>
                                         </div>
-                                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                        <div className="h-2 w-100 bg-gray-100 rounded-circle overflow-hidden">
                                             <div
                                                 className={`h-full rounded-full transition-all duration-1000 ease-out bg-indigo-500`}
                                                 style={{ width: `${layout.metrics.spaceUsage}%` }}
@@ -208,10 +208,10 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                                 <span className={`text-2xl font-black ${isMetricWinner(LAYOUT_A.metrics.lightingScore, LAYOUT_B.metrics.lightingScore, layout.metrics.lightingScore) ? 'text-emerald-600' : 'text-amber-600'}`}>
                                                     {layout.metrics.lightingScore}
                                                 </span>
-                                                <span className="text-sm font-medium text-amber-700/60">/ 10</span>
+                                                <span className="fs-6 text-muted fw-medium text-amber-700/60">/ 10</span>
                                             </div>
                                             {/* Rating Visual */}
-                                            <div className="flex gap-1 mt-2">
+                                            <div className="d-flex gap-1 mt-2">
                                                 {[1, 2, 3, 4, 5].map(star => (
                                                     <div key={star} className={`flex-1 h-1.5 rounded-full ${star <= Math.round(layout.metrics.lightingScore / 2) ? 'bg-amber-400' : 'bg-amber-200/50'}`}></div>
                                                 ))}
@@ -223,10 +223,10 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                                 <span className={`text-2xl font-black ${isMetricWinner(LAYOUT_A.metrics.circulationScore, LAYOUT_B.metrics.circulationScore, layout.metrics.circulationScore) ? 'text-emerald-600' : 'text-sky-600'}`}>
                                                     {layout.metrics.circulationScore}
                                                 </span>
-                                                <span className="text-sm font-medium text-sky-700/60">/ 10</span>
+                                                <span className="fs-6 text-muted fw-medium text-sky-700/60">/ 10</span>
                                             </div>
                                             {/* Rating Visual */}
-                                            <div className="flex gap-1 mt-2">
+                                            <div className="d-flex gap-1 mt-2">
                                                 {[1, 2, 3, 4, 5].map(star => (
                                                     <div key={star} className={`flex-1 h-1.5 rounded-full ${star <= Math.round(layout.metrics.circulationScore / 2) ? 'bg-sky-400' : 'bg-sky-200/50'}`}></div>
                                                 ))}
@@ -265,7 +265,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                         </h3>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-100 text-start border-collapse">
                             <thead>
                                 <tr>
                                     <th className="px-6 py-4 border-b text-sm font-medium text-gray-500 bg-white w-1/3">{t("compareDesigns.feature")}</th>
@@ -273,7 +273,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                                     <th className={`px-6 py-4 border-b text-sm font-bold w-1/3 ${selectedLayoutId === LAYOUT_B.id ? 'bg-blue-50/50 text-blue-700' : 'bg-white text-gray-900'}`}>{t("compareDesigns.layoutB")}</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-sm">
+                            <tbody className="fs-6 text-muted">
                                 <tr className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 border-b border-gray-100 text-gray-600">{t("compareDesigns.totalCostEstimate")}</td>
                                     <td className={`px-6 py-4 border-b border-gray-100 ${isCostWinner(LAYOUT_A.cost.total, LAYOUT_B.cost.total, LAYOUT_A.cost.total) ? 'font-bold text-emerald-600 bg-emerald-50/30' : 'text-gray-900'}`}>
@@ -318,24 +318,24 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
             </div>
 
             {/* Bottom Fixed Navigation Bar */}
-            <div className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-[0_-10px_40px_-5px_rgba(0,0,0,0.05)] z-40 transform transition-transform duration-300">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+            <div className="fixed bottom-0 left-0 w-100 bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-[0_-10px_40px_-5px_rgba(0,0,0,0.05)] z-40 transform transition-transform duration-300">
+                <div className="max-w-6xl mx-auto px-4 py-3 d-flex flex-column md:flex-row align-items-center justify-content-between gap-4">
+                    <div className="d-flex gap-4 w-100 md:w-auto overflow-x-auto pb-2 md:pb-0">
                         <button
                             onClick={() => setPage("ai-designs")}
-                            className="whitespace-nowrap px-5 py-2.5 rounded-xl font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all flex items-center gap-2"
+                            className="whitespace-nowrap px-5 py-2.5 rounded-4 fw-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all d-flex align-items-center gap-2"
                         >
                             <ArrowLeft className="w-5 h-5" /> {t("compareDesigns.returnLayouts")}
                         </button>
                         <button
                             onClick={() => setPage("create-project")}
-                            className="whitespace-nowrap px-5 py-2.5 rounded-xl font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all flex items-center gap-2"
+                            className="whitespace-nowrap px-5 py-2.5 rounded-4 fw-medium text-gray-600 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all d-flex align-items-center gap-2"
                         >
                             <Edit2 className="w-5 h-5" /> {t("compareDesigns.editPreferences")}
                         </button>
                     </div>
 
-                    <div className="flex gap-4 w-full md:w-auto">
+                    <div className="d-flex gap-4 w-100 md:w-auto">
                         <button
                             disabled={!selectedLayoutId}
                             onClick={() => { /* Handle saving and proceeding */ setPage("/design-details"); }}

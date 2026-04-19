@@ -30,14 +30,14 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
   };
 
   return (
-    <div className="grid">
-      <header className="sticky top-0 z-40 w-full border-b bg-background">
-        <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+    <div className="d-grid">
+      <header className="sticky top-0 z-40 w-100 border-b bg-light">
+        <div className="container d-flex h-16 align-items-center space-x-4 sm:justify-between sm:space-x-0">
           <MainNav items={siteConfig.mainNav} setPage={setPage} />
-          <div className="flex flex-1 items-center justify-end space-x-4">
+          <div className="d-flex flex-1 align-items-center justify-content-end space-x-4">
             {/* Search Bar */}
-            <div className="hidden md:flex relative w-full max-w-sm ml-auto mr-4">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
+            <div className="d-none d-md-flex relative w-100 max-w-sm ml-auto mr-4">
+              <div className="absolute inset-y-0 left-0 d-flex align-items-center pl-3 pointer-events-none text-muted">
                 <Icons.search className="w-4 h-4" />
               </div>
               <input
@@ -48,17 +48,17 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
                     handleSearch((e.target as HTMLInputElement).value);
                   }
                 }}
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 pl-10 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                className="d-flex h-9 w-100 rounded-2 border border-input bg-transparent px-3 py-1 pl-10 fs-6 text-muted shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
 
-            <nav className="flex items-center space-x-2">
+            <nav className="d-flex align-items-center space-x-2">
               <LanguageSwitcher />
               {isAuthenticated ? (
                 <>
                   <button className={buttonVariants({ size: "icon", variant: "ghost" }) + " relative hidden sm:flex"}>
                     <Icons.bell className="h-5 w-5" />
-                    <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-red-600"></span>
+                    <span className="absolute top-2 right-2.5 h-2 w-2 rounded-circle bg-red-600"></span>
                     <span className="sr-only">{t("nav.notifications")}</span>
                   </button>
 
@@ -80,7 +80,7 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
                   <div className="h-4 w-px bg-border mx-2 hidden sm:block"></div>
                 </>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="d-flex align-items-center gap-2">
                   <button
                     onClick={() => setPage("/auth/login")}
                     className={buttonVariants({ variant: "outline", size: "sm" })}

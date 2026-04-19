@@ -1,3 +1,5 @@
+import { useDemoDashboard } from "@/context/DemoDashboardContext";
+import { getDefaultCoverForMode } from "@/lib/demo-dashboard-storage";
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { createProject, updateProjectPreferences, type ProjectMode } from "@/api/projects";
@@ -173,14 +175,14 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
     // Step 1 UI
     const renderStep1 = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="d-grid row-cols-md-3 gap-5">
                 {/* Blueprint Mode */}
                 <div
                     onClick={() => updateForm("entryMode", "blueprint")}
                     className={`relative p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center gap-4 ${formData.entryMode === 'blueprint' ? 'border-blue-600 bg-blue-50/50' : 'border-gray-200 hover:border-blue-300 hover:shadow-md bg-white'}`}
                 >
                     {formData.entryMode === 'blueprint' && <div className="absolute top-4 right-4 text-blue-600"><CheckCircle2 className="w-6 h-6" /></div>}
-                    <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-2">
+                    <div className="w-16 h-16 rounded-circle bg-blue-100 d-flex align-items-center justify-content-center text-blue-600 mb-2">
                         <FileImage className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{t("createProject.blueprintTitle")}</h3>
@@ -193,7 +195,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                     className={`relative p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center gap-4 ${formData.entryMode === 'real_space' ? 'border-purple-600 bg-purple-50/50' : 'border-gray-200 hover:border-purple-300 hover:shadow-md bg-white'}`}
                 >
                     {formData.entryMode === 'real_space' && <div className="absolute top-4 right-4 text-purple-600"><CheckCircle2 className="w-6 h-6" /></div>}
-                    <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-2">
+                    <div className="w-16 h-16 rounded-circle bg-purple-100 d-flex align-items-center justify-content-center text-purple-600 mb-2">
                         <Camera className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{t("createProject.realSpaceTitle")}</h3>
@@ -206,7 +208,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                     className={`relative p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center gap-4 ${formData.entryMode === 'inspiration' ? 'border-amber-500 bg-amber-50/50' : 'border-gray-200 hover:border-amber-300 hover:shadow-md bg-white'}`}
                 >
                     {formData.entryMode === 'inspiration' && <div className="absolute top-4 right-4 text-amber-500"><CheckCircle2 className="w-6 h-6" /></div>}
-                    <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-2">
+                    <div className="w-16 h-16 rounded-circle bg-amber-100 d-flex align-items-center justify-content-center text-amber-500 mb-2">
                         <Lightbulb className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{t("createProject.inspirationTitle")}</h3>
@@ -222,13 +224,13 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
             // Render basic space details form for inspiration mode
             return (
                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-6">
+                    <div className="bg-white p-5 rounded-4 border border-gray-200 shadow-sm space-y-6">
                         <div className="text-center mb-6">
                             <h2 className="text-2xl font-bold text-gray-900">{t("createProject.spaceDetailsHeading")}</h2>
                             <p className="text-gray-500 mt-2">{t("createProject.spaceDetailsSub")}</p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="d-grid row-cols-md-2 gap-5">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">{t("createProject.projectName")}</label>
                                 <input
@@ -252,7 +254,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">{t("createProject.propertyType")}</label>
                                 <select
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-white"
+                                    className="w-100 px-3 py-3 rounded-4 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-white"
                                     value={formData.roomType}
                                     onChange={(e) => updateForm("roomType", e.target.value)}
                                 >
@@ -268,7 +270,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                                 <input
                                     type="number"
                                     min="1"
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                                    className="w-100 px-3 py-3 rounded-4 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
                                     value={formData.roomsCount}
                                     onChange={(e) => updateForm("roomsCount", e.target.value)}
                                 />
@@ -290,11 +292,11 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
         return (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="text-center space-y-2 mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900">{uploadTitle}</h2>
+                    <h2 className="fs-2 fw-bold text-gray-900">{uploadTitle}</h2>
                     <p className="text-gray-500 max-w-xl mx-auto">{uploadDescription}</p>
                 </div>
 
-                <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-8">
+                <div className="bg-white p-5 rounded-4 border border-gray-200 shadow-sm space-y-8">
                     {/* Upload Dropzone */}
                     <div
                         className={`relative border-2 border-dashed rounded-2xl p-12 flex flex-col items-center justify-center text-center transition-all ${formData.uploadedFiles.length > 0 && isBlueprint ? 'border-gray-200 bg-gray-50 cursor-not-allowed hidden' : 'border-blue-300 hover:border-blue-500 hover:bg-blue-50/50 cursor-pointer group'}`}
@@ -303,12 +305,12 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                         <input
                             type="file"
                             ref={fileInputRef}
-                            className="hidden"
+                            className="d-none"
                             accept={acceptedFormats}
                             multiple={!isBlueprint}
                             onChange={handleFileSelect}
                         />
-                        <div className="w-20 h-20 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 group-hover:bg-blue-100 group-hover:scale-110 transition-transform mb-6 shadow-sm border border-blue-100">
+                        <div className="w-20 h-20 rounded-circle bg-blue-50 d-flex align-items-center justify-content-center text-blue-500 group-hover:bg-blue-100 group-hover:scale-110 transition-transform mb-6 shadow-sm border border-blue-100">
                             {isBlueprint ? <FileImage className="w-10 h-10" /> : <Camera className="w-10 h-10" />}
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -331,13 +333,13 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                             <h4 className="text-lg font-bold text-gray-900 flex items-center justify-between">
                                 <span>{t("createProject.uploadedFiles")} <span className="text-gray-500 text-sm font-normal ml-2">({formData.uploadedFiles.length})</span></span>
                             </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="d-grid row-cols-1 sm:grid-cols-2 gap-4">
                                 {formData.uploadedFiles.map((fileRecord) => (
-                                    <div key={fileRecord.id} className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow group relative pr-12">
+                                    <div key={fileRecord.id} className="d-flex align-items-center gap-4 p-3 rounded-4 border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow group relative pr-12">
                                         {/* Thumbnail */}
-                                        <div className="w-16 h-16 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                        <div className="w-16 h-16 rounded-3 bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 d-flex align-items-center justify-content-center">
                                             {fileRecord.previewUrl ? (
-                                                <img src={fileRecord.previewUrl} alt="preview" className="w-full h-full object-cover" />
+                                                <img src={fileRecord.previewUrl} alt="preview" className="w-100 h-100 object-cover" />
                                             ) : (
                                                 <FileText className="w-8 h-8 text-gray-400" />
                                             )}
@@ -345,8 +347,8 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
 
                                         {/* File Info */}
                                         <div className="overflow-hidden">
-                                            <p className="font-semibold text-gray-900 truncate" title={fileRecord.name}>{fileRecord.name}</p>
-                                            <p className="text-sm text-gray-500">{formatFileSize(fileRecord.size)}</p>
+                                            <p className="fw-semibold text-gray-900 truncate" title={fileRecord.name}>{fileRecord.name}</p>
+                                            <p className="fs-6 text-muted text-gray-500">{formatFileSize(fileRecord.size)}</p>
                                         </div>
 
                                         {/* Remove Button */}
@@ -365,16 +367,16 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
 
                     {/* Reference Measurement (Only for Real Space Mode) */}
                     {!isBlueprint && (
-                        <div className="bg-purple-50 p-6 rounded-2xl border border-purple-100 space-y-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-purple-100 rounded-lg text-purple-600"><Settings className="w-5 h-5" /></div>
+                        <div className="bg-purple-50 p-4 rounded-4 border border-purple-100 space-y-4">
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="p-2 bg-purple-100 rounded-3 text-purple-600"><Settings className="w-5 h-5" /></div>
                                 <div>
                                     <h4 className="text-lg font-bold text-gray-900">{t("createProject.referenceMeasurement")}</h4>
                                     <p className="text-sm text-purple-700">{t("createProject.referenceMeasurementSub")}</p>
                                 </div>
                             </div>
 
-                            <div className="flex gap-4">
+                            <div className="d-flex gap-4">
                                 <div className="flex-1 space-y-2">
                                     <label className="text-xs font-bold text-purple-900 uppercase">{t("createProject.knownLength")}</label>
                                     <input
@@ -389,7 +391,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                                 <div className="w-1/3 space-y-2">
                                     <label className="text-xs font-bold text-purple-900 uppercase">{t("createProject.unit")}</label>
                                     <select
-                                        className="w-full px-4 py-3 rounded-xl border border-purple-200 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all outline-none bg-white"
+                                        className="w-100 px-3 py-3 rounded-4 border border-purple-200 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all outline-none bg-white"
                                         value={formData.measurementUnit}
                                         onChange={(e) => updateForm("measurementUnit", e.target.value)}
                                     >
@@ -512,7 +514,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                                     <span className="font-medium text-gray-700">{t(labelKey)}</span>
                                 </label>
                             ))}
-                            <div className="flex items-center gap-4 mt-4 p-3 rounded-xl border border-gray-200">
+                            <div className="d-flex align-items-center gap-4 mt-4 p-3 rounded-4 border border-gray-200">
                                 <input type="color" className="w-10 h-10 rounded cursor-pointer" value={formData.customColor} onChange={(e) => { updateForm("colorPreference", "Custom"); updateForm("customColor", e.target.value) }} />
                                 <span className="font-medium text-gray-700">{t("createProject.customSelection")}</span>
                             </div>
@@ -550,7 +552,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                             <Users className="text-orange-500 w-5 h-5" /> {t("createProject.roomUsage")}
                         </h3>
                         <select
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white"
+                            className="w-100 px-3 py-3 rounded-4 border border-gray-200 bg-white"
                             value={formData.roomUsage}
                             onChange={(e) => updateForm("roomUsage", e.target.value)}
                         >
@@ -566,7 +568,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                             <Sofa className="text-teal-500 w-5 h-5" /> {t("createProject.furniture")}
                         </h3>
                         <select
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white"
+                            className="w-100 px-3 py-3 rounded-4 border border-gray-200 bg-white"
                             value={formData.furniturePreference}
                             onChange={(e) => updateForm("furniturePreference", e.target.value)}
                         >
@@ -584,8 +586,8 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
     // Step 4 UI
     const renderStep4 = () => (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white relative">
+            <div className="bg-white rounded-4 border border-gray-200 shadow-xl overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
                     <div className="absolute inset-0 bg-black/10"></div>
                     <div className="relative z-10">
                         <h2 className="text-3xl font-bold mb-2">{t("createProject.reviewTitle")}</h2>
@@ -593,8 +595,8 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                     </div>
                 </div>
 
-                <div className="p-8">
-                    <div className="grid md:grid-cols-2 gap-y-8 gap-x-12">
+                <div className="p-5">
+                    <div className="d-grid row-cols-md-2 gap-y-8 gap-x-12">
 
                         <div className="space-y-6">
                             <div>
@@ -647,7 +649,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                                         <span className="text-gray-500">{t("createProject.colorPalette")}</span>
                                         <span className="flex items-center gap-2 font-medium text-gray-900">
                                             {formData.colorPreference === 'Custom' ? (
-                                                <span className="w-4 h-4 rounded-full border border-gray-300 inline-block" style={{ backgroundColor: formData.customColor }}></span>
+                                                <span className="w-4 h-4 rounded-circle border border-gray-300 d-inline-block" style={{ backgroundColor: formData.customColor }}></span>
                                             ) : null}
                                             {formData.colorPreference === "Custom" ? t("createProject.customSelection") : formData.colorPreference || "-"}
                                         </span>
@@ -667,8 +669,8 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
     const stepLabels = getStepLabels();
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-24 pb-12 font-sans overflow-x-hidden">
-            <div className="max-w-5xl mx-auto px-6">
+        <div className="min-vh-100 bg-gray-50 pt-24 pb-12 font-sans overflow-x-hidden">
+            <div className="max-w-5xl mx-auto px-4">
                 {/* Header content (Only Step 1 usually has this text, but I will keep it for consistency from original) */}
                 {step === 1 && (
                     <div className="mb-10 text-center space-y-4 animate-in slide-in-from-top-4 duration-500">
@@ -681,15 +683,15 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
 
                 {/* Progress Indicator */}
                 <div className="mb-12">
-                    <div className="flex items-center justify-between relative">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 z-0 hidden md:block rounded-full"></div>
+                    <div className="d-flex align-items-center justify-content-between relative">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-100 h-1 bg-gray-200 z-0 d-none d-md-block rounded-circle"></div>
                         <div
-                            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 z-0 hidden md:block transition-all duration-500 rounded-full"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 z-0 d-none d-md-block transition-all duration-500 rounded-circle"
                             style={{ width: `${((step - 1) / 3) * 100}%` }}
                         ></div>
 
                         {stepLabels.map((s) => (
-                            <div key={s.num} className="relative z-10 flex flex-col items-center gap-3">
+                            <div key={s.num} className="relative z-10 d-flex flex-column align-items-center gap-3">
                                 <div
                                     className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold border-4 transition-all duration-300 ${step >= s.num
                                         ? 'bg-blue-600 border-blue-100 text-white shadow-lg'
@@ -715,7 +717,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                 </div>
 
                 {/* Bottom Navigation */}
-                <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                <div className="d-flex align-items-center justify-content-between pt-6 border-t border-gray-200">
                     <div>
                         <button
                             onClick={() => setPage("dashboard")}
@@ -724,11 +726,11 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                             {t("createProject.cancelProject")}
                         </button>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="d-flex gap-4">
                         {step > 1 && (
                             <button
                                 onClick={handleBack}
-                                className="px-6 py-3 rounded-xl font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-all flex items-center gap-2 outline-none"
+                                className="px-4 py-3 rounded-4 fw-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-all d-flex align-items-center gap-2 outline-none"
                             >
                                 <ChevronLeft className="w-5 h-5" /> {t("createProject.back")}
                             </button>
@@ -748,7 +750,7 @@ export default function CreateProjectPage({ setPage }: CreateProjectPageProps) {
                         ) : (
                             <button
                                 onClick={handleGenerate}
-                                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 transition-all flex items-center gap-2 outline-none"
+                                className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-4 fw-bold shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 transition-all d-flex align-items-center gap-2 outline-none"
                             >
                                 {t("createProject.generateAiDesigns")} <Lightbulb className="w-5 h-5 fill-current" />
                             </button>

@@ -36,13 +36,13 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
     const pref = project?.preferences;
 
     return (
-        <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
+        <div className="p-5 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
             {/* Top Header & Actions */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-6">
+            <div className="d-flex flex-column sm:flex-row justify-content-between align-items-start sm:items-center gap-4 border-b pb-6">
                 <div>
                     <button
                         onClick={() => setPage("ai-designs")}
-                        className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-4"
+                        className="inline-flex align-items-center fs-6 text-muted fw-medium text-muted hover:text-foreground mb-4"
                     >
                         <Icons.arrowRight className="mr-2 h-4 w-4 rotate-180" />
                         {t("designDetails.backToResults")}
@@ -65,21 +65,21 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="d-flex align-items-center gap-3">
                     <button
-                        className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none"
+                        className="inline-flex h-10 align-items-center justify-content-center rounded-2 border border-input bg-light px-3 py-2 fs-6 text-muted fw-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none"
                     >
                         <Icons.layoutTemplate className="mr-2 h-4 w-4" />
                         {t("designDetails.compare")}
                     </button>
                     <button
-                        className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none"
+                        className="inline-flex h-10 align-items-center justify-content-center rounded-2 border border-input bg-light px-3 py-2 fs-6 text-muted fw-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none"
                     >
                         <Icons.fileIcon className="mr-2 h-4 w-4" />
                         {t("designDetails.exportPdf")}
                     </button>
                     <button
-                        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none"
+                        className="inline-flex h-10 align-items-center justify-content-center rounded-2 bg-primary px-3 py-2 fs-6 text-muted fw-medium text-white shadow transition-colors hover:bg-primary/90 focus-visible:outline-none"
                     >
                         <Icons.bookmark className="mr-2 h-4 w-4" />
                         {t("designDetails.saveDesign")}
@@ -87,26 +87,26 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                 </div>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="d-grid row-cols-lg-3 gap-5">
                 {/* Left Col: Main Preview Image */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="rounded-xl overflow-hidden border shadow-sm aspect-[16/9] bg-muted relative group">
+                    <div className="rounded-4 overflow-hidden border shadow-sm aspect-[16/9] bg-light relative group">
                         <img
                             src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200"
                             alt={t("designDetails.previewAlt")}
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                         />
-                        <button className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground hover:bg-background p-2 rounded-full shadow-lg border">
+                        <button className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground hover:bg-background p-2 rounded-circle shadow-lg border">
                             <Icons.settings className="h-5 w-5" />
                         </button>
                     </div>
 
-                    <div className="rounded-xl border bg-card text-card-foreground p-6 shadow-sm">
-                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <div className="rounded-4 border bg-white text-card-foreground p-4 shadow-sm">
+                        <h2 className="fs-4 fw-semibold mb-4 d-flex align-items-center gap-2">
                             <Icons.brain className="h-5 w-5 text-purple-500" />
                             {t("designDetails.aiExplanation")}
                         </h2>
-                        <div className="space-y-4 text-muted-foreground leading-relaxed">
+                        <div className="space-y-4 text-muted leading-relaxed">
                             <p>
                                 {pref
                                     ? t("designDetails.prefsLine", {
@@ -138,8 +138,8 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                                     <span className="font-medium flex items-center gap-2"><Icons.layoutTemplate className="h-4 w-4 text-blue-500" /> {t("designDetails.spaceEfficiency")}</span>
                                     <span className="font-bold">96/100</span>
                                 </div>
-                                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                                    <div className="h-full bg-blue-500 rounded-full" style={{ width: "96%" }}></div>
+                                <div className="h-2 w-100 bg-secondary rounded-circle overflow-hidden">
+                                    <div className="h-100 bg-blue-500 rounded-circle" style={{ width: "96%" }}></div>
                                 </div>
                             </div>
 
@@ -148,8 +148,8 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                                     <span className="font-medium flex items-center gap-2"><Icons.lightbulb className="h-4 w-4 text-amber-500" /> {t("designDetails.lightingIntegration")}</span>
                                     <span className="font-bold">92/100</span>
                                 </div>
-                                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                                    <div className="h-full bg-amber-500 rounded-full" style={{ width: "92%" }}></div>
+                                <div className="h-2 w-100 bg-secondary rounded-circle overflow-hidden">
+                                    <div className="h-100 bg-amber-500 rounded-circle" style={{ width: "92%" }}></div>
                                 </div>
                             </div>
 
@@ -158,8 +158,8 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                                     <span className="font-medium flex items-center gap-2"><Icons.settings className="h-4 w-4 text-pink-500" /> {t("designDetails.comfortFlow")}</span>
                                     <span className="font-bold">95/100</span>
                                 </div>
-                                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                                    <div className="h-full bg-pink-500 rounded-full" style={{ width: "95%" }}></div>
+                                <div className="h-2 w-100 bg-secondary rounded-circle overflow-hidden">
+                                    <div className="h-100 bg-pink-500 rounded-circle" style={{ width: "95%" }}></div>
                                 </div>
                             </div>
 
@@ -168,8 +168,8 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                                     <span className="font-medium flex items-center gap-2"><Icons.folder className="h-4 w-4 text-emerald-500" /> {t("designDetails.functionality")}</span>
                                     <span className="font-bold">89/100</span>
                                 </div>
-                                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: "89%" }}></div>
+                                <div className="h-2 w-100 bg-secondary rounded-circle overflow-hidden">
+                                    <div className="h-100 bg-emerald-500 rounded-circle" style={{ width: "89%" }}></div>
                                 </div>
                             </div>
 
