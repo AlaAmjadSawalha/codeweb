@@ -179,7 +179,7 @@ function App() {
         <Route path="/ai-designs" element={protectedPage(<AIGeneratedDesignsPage setPage={setPage} />)} />
         <Route path="/compare-designs" element={protectedPage(<CompareDesignsPage setPage={setPage} />)} />
         <Route path="/design-details" element={protectedPage(<DesignDetailsPage setPage={setPage} />)} />
-        <Route path="/settings" element={protectedPage(<PlaceholderPage title="Settings" />)} />
+        <Route path="/settings" element={protectedPage(<PlaceholderPage titleKey="placeholder.settings" />)} />
 
         <Route path="/features" element={<PlaceholderPage titleKey="placeholder.features" />} />
         <Route path="/gallery" element={<PlaceholderPage titleKey="placeholder.gallery" />} />

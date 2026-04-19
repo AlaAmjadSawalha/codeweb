@@ -5,7 +5,21 @@ import { getDashboardMetrics } from "@/api/dashboard";
 import { deleteProject, duplicateProject } from "@/api/projects";
 import { getApiErrorMessage, getStoredUser } from "@/lib/api";
 import type { DashboardMetrics } from "@/api/dashboard";
-import { ArrowUpRight, FolderOpen, Image as ImageIcon, MoveRight, MoreHorizontal, Copy, Trash2, ArrowUpCircle, CheckCircle2, Clock } from "lucide-react";
+import { useDemoDashboard } from "@/context/DemoDashboardContext";
+import type { DemoActivity, DemoNotification } from "@/types/demo-dashboard";
+import {
+    ArrowUpRight,
+    Bell,
+    FolderOpen,
+    Image as ImageIcon,
+    MoveRight,
+    MoreHorizontal,
+    Copy,
+    Trash2,
+    ArrowUpCircle,
+    CheckCircle2,
+    Clock,
+} from "lucide-react";
 
 interface DashboardPageProps {
     setPage: (page: string) => void;
@@ -26,8 +40,30 @@ function formatWhen(iso: string): string {
     }
 }
 
+function formatRelativeTime(iso: string): string {
+    try {
+        const d = new Date(iso);
+        const diffMs = Date.now() - d.getTime();
+        const mins = Math.floor(diffMs / 60000);
+        if (mins < 1) return "Just now";
+        if (mins < 60) return `${mins}m ago`;
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return `${hrs}h ago`;
+        const days = Math.floor(hrs / 24);
+        return `${days}d ago`;
+    } catch {
+        return iso;
+    }
+}
+
 export default function DashboardPage({ setPage }: DashboardPageProps) {
     const { t } = useTranslation();
+    const { state, markNotificationRead, markAllNotificationsRead, metrics: demoMetrics } = useDemoDashboard();
+    const usagePct =
+        demoMetrics.generationsLimit > 0
+            ? Math.min(100, (demoMetrics.generationsUsed / demoMetrics.generationsLimit) * 100)
+            : 0;
+    const unreadCount = state.notifications.filter((n) => !n.read).length;
     const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState("");
@@ -71,13 +107,6 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
             window.alert(getApiErrorMessage(e, t("errors.deleteProject")));
         }
     };
-
-    const recentActivity = [
-        { id: 1, action: t("dashboard.activity1Action"), target: t("dashboard.activity1Target"), time: t("dashboard.activity1Time") },
-        { id: 2, action: t("dashboard.activity2Action"), target: t("dashboard.activity1Target"), time: t("dashboard.activity2Time") },
-        { id: 3, action: t("dashboard.activity3Action"), target: t("dashboard.activity3Target"), time: t("dashboard.activity3Time") },
-        { id: 4, action: t("dashboard.activity4Action"), target: t("dashboard.activity4Target"), time: t("dashboard.activity4Time") },
-    ];
 
     return (
         <div className="p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto bg-slate-50/50 dark:bg-background h-full min-h-screen">
@@ -261,7 +290,9 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                             <div>
                                 <div className="flex justify-between text-xs mb-1.5">
                                     <span className="font-medium text-slate-700 dark:text-slate-300">{t("dashboard.aiGenerations")}</span>
-                                    <span className="text-muted-foreground">14 / 50</span>
+                                    <span className="text-muted-foreground">
+                                        {demoMetrics.generationsUsed} / {demoMetrics.generationsLimit}
+                                    </span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
                                     <div className="bg-indigo-600 h-2 rounded-full transition-all" style={{ width: `${usagePct}%` }}></div>
@@ -303,7 +334,7 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                             )}
                         </div>
                         <ul className="space-y-3 max-h-64 overflow-y-auto pr-1">
-                            {state.notifications.slice(0, 6).map((n) => (
+                            {state.notifications.slice(0, 6).map((n: DemoNotification) => (
                                 <li key={n.id}>
                                     <button
                                         type="button"
@@ -335,7 +366,7 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                         </div>
 
                         <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 dark:before:via-slate-800 before:to-transparent">
-                            {state.activity.slice(0, 6).map((activity) => (
+                            {state.activity.slice(0, 6).map((activity: DemoActivity) => (
                                 <div key={activity.id} className="relative flex items-start gap-4">
                                     <div className="absolute left-0 mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 z-10">
                                         <div className="h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></div>

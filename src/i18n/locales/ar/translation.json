@@ -136,7 +136,8 @@
     "privacyPolicy": "سياسة الخصوصية",
     "termsOfService": "شروط الخدمة",
     "cookiePolicy": "سياسة الكوكيز",
-    "changelog": "سجل التغييرات"
+    "changelog": "سجل التغييرات",
+    "settings": "الإعدادات"
   },
   "dashboard": {
     "guestName": "هناك",

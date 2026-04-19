@@ -184,9 +184,9 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
                                 {t("projects.deleteProject")}
                             </button>
                         </div>
-                    ))}
-                </div>
-            )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

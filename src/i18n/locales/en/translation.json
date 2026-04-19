@@ -136,7 +136,8 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "cookiePolicy": "Cookie Policy",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "settings": "Settings"
   },
   "dashboard": {
     "guestName": "there",

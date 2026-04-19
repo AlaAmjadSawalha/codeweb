@@ -1,5 +1,3 @@
-import { useDemoDashboard } from "@/context/DemoDashboardContext";
-import { getDefaultCoverForMode } from "@/lib/demo-dashboard-storage";
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { createProject, updateProjectPreferences, type ProjectMode } from "@/api/projects";
