@@ -95,7 +95,7 @@ export default function AIGeneratedDesignsPage({ setPage }: AIGeneratedDesignsPa
                 <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm d-flex align-items-center justify-content-center p-3 animate-in fade-in duration-200">
                     <button
                         onClick={() => setExpandedImage(null)}
-                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-circle transition-colors"
+                        className="absolute top-6 right-6 rounded-full p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                     >
                         <X className="w-8 h-8" />
                     </button>
@@ -175,7 +175,7 @@ export default function AIGeneratedDesignsPage({ setPage }: AIGeneratedDesignsPa
 
                                     {/* Selection Target Indicator Overlay */}
                                     {isSelected && (
-                                        <div className="absolute top-4 left-4 bg-blue-600 text-white p-1 rounded-circle shadow-lg">
+                                        <div className="absolute top-4 left-4 rounded-full bg-blue-600 p-1 text-white shadow-lg">
                                             <CheckCircle2 className="w-6 h-6" />
                                         </div>
                                     )}

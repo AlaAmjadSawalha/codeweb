@@ -13,13 +13,17 @@ export function MainNav({ items, setPage }: MainNavProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="d-flex gap-5 md:gap-10">
-      <button onClick={() => setPage("landing")} className="d-flex align-items-center space-x-2 bg-transparent border-none p-0 cursor-pointer">
+    <div className="flex items-center gap-5 md:gap-10">
+      <button
+        onClick={() => setPage("landing")}
+        className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0"
+        type="button"
+      >
         <Icons.laptop className="h-6 w-6" />
-        <span className="d-inline-block fw-bold">{siteConfig.name}</span>
+        <span className="inline-block font-bold">{siteConfig.name}</span>
       </button>
       {items?.length ? (
-        <nav className="d-flex gap-5">
+        <nav className="flex flex-wrap gap-5">
           {items?.map(
             (item, index) =>
               item.href && (

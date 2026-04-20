@@ -70,7 +70,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
                 <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md d-flex align-items-center justify-content-center p-3 animate-in fade-in duration-200">
                     <button
                         onClick={() => setExpandedImage(null)}
-                        className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-white/20 rounded-circle transition-colors z-50"
+                        className="absolute top-6 right-6 z-50 rounded-full bg-black/50 p-2 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
                     >
                         <X className="w-8 h-8" />
                     </button>
@@ -142,7 +142,7 @@ export default function CompareDesignsPage({ setPage }: CompareDesignsPageProps)
 
                                     {/* Selection Target Indicator Overlay */}
                                     {isSelected && (
-                                        <div className="absolute top-4 right-4 z-20 bg-blue-600 text-white p-1 rounded-circle shadow-lg animate-in zoom-in">
+                                        <div className="absolute top-4 right-4 z-20 animate-in zoom-in rounded-full bg-blue-600 p-1 text-white shadow-lg">
                                             <CheckCircle2 className="w-8 h-8" />
                                         </div>
                                     )}

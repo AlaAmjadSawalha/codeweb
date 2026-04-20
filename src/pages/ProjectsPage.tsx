@@ -79,16 +79,17 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
 
     return (
         <div className="p-5 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
-            <div className="d-flex flex-column sm:flex-row justify-content-between align-items-start sm:items-center gap-4 border-b pb-6">
+            <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h1>
-                    <p className="text-muted-foreground mt-1">{t("projects.subtitle")}</p>
+                    <p className="mt-1 text-muted-foreground">{t("projects.subtitle")}</p>
                 </div>
                 <button
+                    type="button"
                     onClick={() => setPage("create-project")}
-                    className="inline-flex h-10 align-items-center justify-content-center rounded-2 bg-blue-600 px-3 py-2 fs-6 text-muted fw-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none"
+                    className="inline-flex shrink-0 items-center justify-center gap-2 px-8 py-3 rounded-full bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-colors cursor-pointer w-auto"
                 >
-                    <Icons.plus className="mr-2 h-4 w-4" />
+                    <Icons.plus className="h-4 w-4" />
                     {t("projects.newProject")}
                 </button>
             </div>

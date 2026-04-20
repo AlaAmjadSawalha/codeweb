@@ -13,4 +13,13 @@ export default defineConfig({
   css: {
     postcss: path.resolve(__dirname, "postcss.config.cjs"),
   },
+  // Dev: same-origin /api → Laravel (avoids CORS and "Connection error" when frontend is on :5173).
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });

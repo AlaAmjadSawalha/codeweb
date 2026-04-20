@@ -19,9 +19,9 @@ export default function RootLayout({ children, currentPage, setPage, isAuthentic
   const hideLayout = isLanding || isAuth || isLegalDoc;
 
   return (
-    <div className="min-vh-100 bg-light font-sans antialiased text-foreground">
+    <div className="min-h-screen bg-background font-sans antialiased text-foreground">
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <div className="relative d-flex min-vh-100 flex-column">
+        <div className="relative flex min-h-screen flex-col">
           {!isAuth && (
             <SiteHeader
               setPage={setPage}
@@ -31,11 +31,11 @@ export default function RootLayout({ children, currentPage, setPage, isAuthentic
             />
           )}
 
-          <div className="d-flex flex-1">
+          <div className="flex min-h-0 flex-1">
             {!hideLayout && (
               <Sidebar currentPage={currentPage} setPage={setPage} />
             )}
-            <main className="flex-1 overflow-x-hidden">
+            <main className="min-w-0 flex-1 overflow-x-hidden bg-background">
               {children}
             </main>
           </div>

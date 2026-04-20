@@ -8,8 +8,16 @@ function apiOrigin(): string {
   return s.replace(/\/$/, "");
 }
 
+/** In dev, call same-origin `/api` so Vite can proxy to Laravel (see vite.config.ts). In prod, use full API origin. */
+function apiBaseURL(): string {
+  if (import.meta.env.DEV) {
+    return "/api";
+  }
+  return `${apiOrigin()}/api`;
+}
+
 export const api = axios.create({
-  baseURL: `${apiOrigin()}/api`,
+  baseURL: apiBaseURL(),
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

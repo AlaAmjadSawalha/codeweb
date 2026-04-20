@@ -170,7 +170,7 @@ export default function AIProcessingPage({ setPage }: AIProcessingPageProps) {
                 <div className="h-16 d-flex align-items-center justify-content-center">
                     <p
                         key={activeTipIndex} // Forces re-render for animation on change
-                        className="fs-6 text-muted fw-medium text-indigo-600 px-4 py-3 bg-indigo-50 rounded-circle border border-indigo-100 animate-in fade-in slide-in-from-bottom-2 duration-500"
+                        className="fs-6 text-muted fw-medium text-indigo-600 max-w-2xl rounded-full border border-indigo-100 bg-indigo-50 px-4 py-3 text-center animate-in fade-in slide-in-from-bottom-2 duration-500"
                     >
                         💡 {tips[activeTipIndex]}
                     </p>

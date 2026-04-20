@@ -41,22 +41,22 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
     };
 
     return (
-        <div className="min-vh-100 w-100 d-flex bg-white dark:bg-slate-950">
+        <div className="flex min-h-screen w-full bg-white dark:bg-slate-950">
             {/* Left pane - Visual/Marketing */}
-            <div className="d-none d-lg-flex lg:w-1/2 relative flex-column justify-content-between p-12 bg-slate-900 dark:bg-black overflow-hidden">
+            <div className="relative hidden w-full flex-col justify-between overflow-hidden bg-slate-900 p-12 dark:bg-black lg:flex lg:w-1/2">
                 {/* Background Image / Gradient */}
                 <div className="absolute inset-0 z-0">
                     <img
                         src="/auth-bg.png"
                         alt={t("common.brand")}
-                        className="object-cover w-100 h-100 opacity-60 mix-blend-overlay"
+                        className="h-full w-full object-cover opacity-60 mix-blend-overlay"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent dark:from-black dark:via-black/60 z-10"></div>
                     <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/20 to-transparent z-10"></div>
                 </div>
 
                 {/* Logo area */}
-                <div className="relative z-20 d-flex align-items-center space-x-2 text-white">
+                <div className="relative z-20 flex items-center gap-2 text-white">
                     <Box className="w-8 h-8 text-indigo-400" />
                     <span className="fs-4 fw-bold tracking-wider">{t("common.brand")}</span>
                 </div>
@@ -80,10 +80,10 @@ export default function AuthPage({ setPage, initialView = "login", onAuthSuccess
             </div>
 
             {/* Right pane - Forms */}
-            <div className="w-100 lg:w-1/2 d-flex align-items-center justify-content-center p-5 sm:p-12 xl:p-24 bg-white dark:bg-slate-950">
-                <div className="w-100 max-w-md">
+            <div className="flex w-full items-center justify-center bg-white p-5 sm:p-12 xl:p-24 dark:bg-slate-950 lg:w-1/2">
+                <div className="w-full max-w-md">
                     {/* Mobile Logo */}
-                    <div className="d-lg-none d-flex align-items-center justify-content-center space-x-2 text-slate-900 dark:text-white mb-10">
+                    <div className="mb-10 flex items-center justify-center gap-2 text-slate-900 dark:text-white lg:hidden">
                         <Box className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         <span className="fs-3 fw-bold tracking-wider">{t("common.brand")}</span>
                     </div>

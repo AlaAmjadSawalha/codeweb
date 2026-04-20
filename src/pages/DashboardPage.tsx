@@ -126,7 +126,7 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                 </div>
                 <button
                     onClick={() => setPage("create-project")}
-                    className="inline-flex h-11 align-items-center justify-content-center rounded-4 bg-indigo-600 px-4 py-2 fs-6 text-muted fw-medium text-white shadow shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:scale-105 focus-visible:outline-none"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-colors cursor-pointer w-auto shrink-0"
                 >
                     <Icons.plus className="mr-2 h-4 w-4" />
                     {t("dashboard.createNewProject")}
@@ -146,19 +146,19 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 <span className="text-xs font-medium">{t("dashboard.newProject")}</span>
                             </button>
                             <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
-                                <div className="w-10 h-10 rounded-circle bg-blue-50 dark:bg-blue-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
+                                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 transition-transform group-hover:scale-110 dark:bg-blue-900/30">
                                     <FolderOpen className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.uploadBlueprint")}</span>
                             </button>
                             <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
-                                <div className="w-10 h-10 rounded-circle bg-emerald-50 dark:bg-emerald-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
+                                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 transition-transform group-hover:scale-110 dark:bg-emerald-900/30">
                                     <ImageIcon className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.uploadPhotos")}</span>
                             </button>
                             <button onClick={() => setPage("ai-designs")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 group">
-                                <div className="w-10 h-10 rounded-circle bg-purple-50 dark:bg-purple-900/30 d-flex align-items-center justify-content-center mb-2 group-hover:scale-110 transition-transform">
+                                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-purple-50 transition-transform group-hover:scale-110 dark:bg-purple-900/30">
                                     <Icons.lightbulb className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.inspirationMode")}</span>
@@ -305,8 +305,11 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                             </ul>
                         </div>
 
-                        <button className="w-full py-2.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors relative z-10 flex justify-center items-center">
-                            {t("dashboard.upgradeBusiness")} <ArrowUpCircle className="w-3.5 h-3.5 ml-1.5 opacity-70" />
+                        <button
+                            type="button"
+                            className="relative z-10 inline-flex w-auto max-w-full items-center justify-center gap-2 self-center px-8 py-3 rounded-full bg-slate-900 text-xs font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                        >
+                            {t("dashboard.upgradeBusiness")} <ArrowUpCircle className="h-3.5 w-3.5 shrink-0 opacity-70" />
                         </button>
                     </section>
 

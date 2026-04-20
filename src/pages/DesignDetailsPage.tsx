@@ -96,7 +96,7 @@ export default function DesignDetailsPage({ setPage }: DesignDetailsPageProps) {
                             alt={t("designDetails.previewAlt")}
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                         />
-                        <button className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground hover:bg-background p-2 rounded-circle shadow-lg border">
+                        <button className="absolute bottom-4 right-4 rounded-full border bg-background/80 p-2 text-foreground shadow-lg backdrop-blur-sm hover:bg-background">
                             <Icons.settings className="h-5 w-5" />
                         </button>
                     </div>

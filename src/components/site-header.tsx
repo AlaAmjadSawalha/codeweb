@@ -30,14 +30,14 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
   };
 
   return (
-    <div className="d-grid">
-      <header className="sticky top-0 z-40 w-100 border-b bg-light">
-        <div className="container d-flex h-16 align-items-center space-x-4 sm:justify-between sm:space-x-0">
+    <div className="w-full">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="container flex h-16 items-center gap-4 sm:justify-between">
           <MainNav items={siteConfig.mainNav} setPage={setPage} />
-          <div className="d-flex flex-1 align-items-center justify-content-end space-x-4">
+          <div className="flex flex-1 items-center justify-end gap-4">
             {/* Search Bar */}
-            <div className="d-none d-md-flex relative w-100 max-w-sm ml-auto mr-4">
-              <div className="absolute inset-y-0 left-0 d-flex align-items-center pl-3 pointer-events-none text-muted">
+            <div className="relative hidden max-w-sm flex-1 md:flex md:mr-4 md:ml-auto">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                 <Icons.search className="w-4 h-4" />
               </div>
               <input
@@ -48,11 +48,11 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
                     handleSearch((e.target as HTMLInputElement).value);
                   }
                 }}
-                className="d-flex h-9 w-100 rounded-2 border border-input bg-transparent px-3 py-1 pl-10 fs-6 text-muted shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 pl-10 text-sm text-foreground shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
 
-            <nav className="d-flex align-items-center space-x-2">
+            <nav className="flex shrink-0 items-center gap-2">
               <LanguageSwitcher />
               {isAuthenticated ? (
                 <>
@@ -80,7 +80,7 @@ export function SiteHeader({ setPage, isAuthenticated, onShowToast, onLogout }: 
                   <div className="h-4 w-px bg-border mx-2 hidden sm:block"></div>
                 </>
               ) : (
-                <div className="d-flex align-items-center gap-2">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => setPage("/auth/login")}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
