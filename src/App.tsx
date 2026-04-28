@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import LandingPage from "@/pages/LandingPage";
 import DashboardPage from "@/pages/DashboardPage";
 import CreateProjectPage from "@/pages/CreateProjectPage";
+import UploadPage from "@/pages/UploadPage";
 import AIProcessingPage from "@/pages/AIProcessingPage";
 import AIGeneratedDesignsPage from "@/pages/AIGeneratedDesignsPage";
 import CompareDesignsPage from "@/pages/CompareDesignsPage";
@@ -12,7 +13,13 @@ import AuthPage from "@/pages/AuthPage";
 import PlaceholderPage from "@/pages/PlaceholderPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { getAuthToken, clearSession, setStoredUser } from "@/lib/api";
 import { logout as logoutRequest, me } from "@/api/auth";
 
@@ -21,13 +28,20 @@ function App() {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-
+  /*
   useEffect(() => {
     const token = getAuthToken();
     if (!token) {
       setIsAuthenticated(false);
       return;
     }
+
+    // TEST API (Laravel connection)
+    fetch("http://127.0.0.1:8000/api/v1/home")
+      .then((res) => res.json())
+      .then((data) => console.log("API TEST:", data))
+      .catch((err) => console.log("ERROR:", err));
+
     me()
       .then((res) => {
         if (res.data) setStoredUser(res.data);
@@ -36,6 +50,19 @@ function App() {
       .catch(() => {
         clearSession();
         setIsAuthenticated(false);
+      });
+  }, []);
+*/
+  useEffect(() => {
+    console.log("APP STARTED 🚀");
+
+    fetch("http://127.0.0.1:8000/api/v1/home")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("🔥 LARAVEL RESPONSE:", data);
+      })
+      .catch((err) => {
+        console.log("❌ ERROR:", err);
       });
   }, []);
 
@@ -114,8 +141,9 @@ function App() {
   })();
 
   const protectedPage = useMemo(
-    () => (element: JSX.Element) => (isAuthenticated ? element : <Navigate to="/auth/login" replace />),
-    [isAuthenticated]
+    () => (element: JSX.Element) =>
+      isAuthenticated ? element : <Navigate to="/auth/login" replace />,
+    [isAuthenticated],
   );
 
   return (
@@ -129,11 +157,23 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<LandingPage setPage={setPage} isAuthenticated={isAuthenticated} onShowToast={showToast} />}
+          element={
+            <LandingPage
+              setPage={setPage}
+              isAuthenticated={isAuthenticated}
+              onShowToast={showToast}
+            />
+          }
         />
         <Route
           path="/pricing"
-          element={<LandingPage setPage={setPage} isAuthenticated={isAuthenticated} onShowToast={showToast} />}
+          element={
+            <LandingPage
+              setPage={setPage}
+              isAuthenticated={isAuthenticated}
+              onShowToast={showToast}
+            />
+          }
         />
 
         <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
@@ -162,38 +202,113 @@ function App() {
         <Route
           path="/auth/forgot"
           element={
-            <AuthPage setPage={setPage} initialView="forgot" onAuthSuccess={() => setIsAuthenticated(true)} onShowToast={showToast} />
+            <AuthPage
+              setPage={setPage}
+              initialView="forgot"
+              onAuthSuccess={() => setIsAuthenticated(true)}
+              onShowToast={showToast}
+            />
           }
         />
         <Route
           path="/auth/reset"
           element={
-            <AuthPage setPage={setPage} initialView="reset" onAuthSuccess={() => setIsAuthenticated(true)} onShowToast={showToast} />
+            <AuthPage
+              setPage={setPage}
+              initialView="reset"
+              onAuthSuccess={() => setIsAuthenticated(true)}
+              onShowToast={showToast}
+            />
           }
         />
 
-        <Route path="/dashboard" element={protectedPage(<DashboardPage setPage={setPage} />)} />
-        <Route path="/projects" element={protectedPage(<ProjectsPage setPage={setPage} />)} />
-        <Route path="/create-project" element={protectedPage(<CreateProjectPage setPage={setPage} />)} />
-        <Route path="/ai-processing" element={protectedPage(<AIProcessingPage setPage={setPage} />)} />
-        <Route path="/ai-designs" element={protectedPage(<AIGeneratedDesignsPage setPage={setPage} />)} />
-        <Route path="/compare-designs" element={protectedPage(<CompareDesignsPage setPage={setPage} />)} />
-        <Route path="/design-details" element={protectedPage(<DesignDetailsPage setPage={setPage} />)} />
-        <Route path="/settings" element={protectedPage(<PlaceholderPage titleKey="placeholder.settings" />)} />
+        <Route
+          path="/dashboard"
+          element={protectedPage(<DashboardPage setPage={setPage} />)}
+        />
+        <Route
+          path="/projects"
+          element={protectedPage(<ProjectsPage setPage={setPage} />)}
+        />
+        <Route
+          path="/create-project"
+          element={protectedPage(<CreateProjectPage setPage={setPage} />)}
+        />
 
-        <Route path="/features" element={<PlaceholderPage titleKey="placeholder.features" />} />
-        <Route path="/gallery" element={<PlaceholderPage titleKey="placeholder.gallery" />} />
-        <Route path="/docs" element={<PlaceholderPage titleKey="placeholder.apiDocs" />} />
-        <Route path="/about" element={<PlaceholderPage titleKey="placeholder.aboutUs" />} />
-        <Route path="/careers" element={<PlaceholderPage titleKey="placeholder.careers" />} />
-        <Route path="/blog" element={<PlaceholderPage titleKey="placeholder.blog" />} />
-        <Route path="/contact" element={<PlaceholderPage titleKey="placeholder.contact" />} />
+        <Route
+          path="/upload"
+          element={protectedPage(<UploadPage setPage={setPage} />)}
+        />
+
+        <Route
+          path="/ai-processing"
+          element={protectedPage(<AIProcessingPage setPage={setPage} />)}
+        />
+        <Route
+          path="/ai-designs"
+          element={protectedPage(<AIGeneratedDesignsPage setPage={setPage} />)}
+        />
+        <Route
+          path="/compare-designs"
+          element={protectedPage(<CompareDesignsPage setPage={setPage} />)}
+        />
+        <Route
+          path="/design-details"
+          element={protectedPage(<DesignDetailsPage setPage={setPage} />)}
+        />
+        <Route
+          path="/settings"
+          element={protectedPage(
+            <PlaceholderPage titleKey="placeholder.settings" />,
+          )}
+        />
+
+        <Route
+          path="/features"
+          element={<PlaceholderPage titleKey="placeholder.features" />}
+        />
+        <Route
+          path="/gallery"
+          element={<PlaceholderPage titleKey="placeholder.gallery" />}
+        />
+        <Route
+          path="/docs"
+          element={<PlaceholderPage titleKey="placeholder.apiDocs" />}
+        />
+        <Route
+          path="/about"
+          element={<PlaceholderPage titleKey="placeholder.aboutUs" />}
+        />
+        <Route
+          path="/careers"
+          element={<PlaceholderPage titleKey="placeholder.careers" />}
+        />
+        <Route
+          path="/blog"
+          element={<PlaceholderPage titleKey="placeholder.blog" />}
+        />
+        <Route
+          path="/contact"
+          element={<PlaceholderPage titleKey="placeholder.contact" />}
+        />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-        <Route path="/privacy" element={<PlaceholderPage titleKey="placeholder.privacyPolicy" />} />
-        <Route path="/terms" element={<PlaceholderPage titleKey="placeholder.termsOfService" />} />
-        <Route path="/cookies" element={<PlaceholderPage titleKey="placeholder.cookiePolicy" />} />
-        <Route path="/changelog" element={<PlaceholderPage titleKey="placeholder.changelog" />} />
+        <Route
+          path="/privacy"
+          element={<PlaceholderPage titleKey="placeholder.privacyPolicy" />}
+        />
+        <Route
+          path="/terms"
+          element={<PlaceholderPage titleKey="placeholder.termsOfService" />}
+        />
+        <Route
+          path="/cookies"
+          element={<PlaceholderPage titleKey="placeholder.cookiePolicy" />}
+        />
+        <Route
+          path="/changelog"
+          element={<PlaceholderPage titleKey="placeholder.changelog" />}
+        />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -27,6 +27,9 @@ Route::middleware(['throttle:module-api-auth'])->group(function (): void {
 Route::middleware(['jwt.auth'])->group(function (): void {
     Route::get('projects', [ModuleProjectController::class, 'index']);
     Route::post('projects', [ModuleProjectController::class, 'store']);
+    Route::post('projects/{id}/upload', [ModuleProjectController::class, 'uploadFiles']);
+    
+    Route::get('projects/{id}/files', [ModuleProjectController::class, 'getFiles']);
     Route::get('projects/{id}', [ModuleProjectController::class, 'show'])->whereNumber('id');
     Route::put('projects/{id}', [ModuleProjectController::class, 'update'])->whereNumber('id');
     Route::delete('projects/{id}', [ModuleProjectController::class, 'destroy'])->whereNumber('id');
