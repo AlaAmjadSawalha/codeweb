@@ -145,13 +145,13 @@ export default function DashboardPage({ setPage }: DashboardPageProps) {
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.newProject")}</span>
                             </button>
-                            <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
+                            <button onClick={() => setPage("/upload")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 group">
                                 <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 transition-transform group-hover:scale-110 dark:bg-blue-900/30">
                                     <FolderOpen className="h-5 w-5" />
                                 </div>
                                 <span className="text-xs font-medium">{t("dashboard.uploadBlueprint")}</span>
                             </button>
-                            <button onClick={() => setPage("create-project")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
+                            <button onClick={() => setPage("/upload")} className="d-flex flex-column align-items-center justify-content-center p-3 h-28 rounded-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 group">
                                 <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 transition-transform group-hover:scale-110 dark:bg-emerald-900/30">
                                     <ImageIcon className="h-5 w-5" />
                                 </div>

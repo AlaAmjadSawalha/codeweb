@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Module;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectFile;
 use App\Models\ProjectPreference;
 use App\Models\User;
 use App\Support\ModuleApiResponse;
@@ -16,7 +17,6 @@ class ModuleProjectController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        /** @var User $user */
         $user = $request->user();
 
         $query = Project::query()
@@ -24,17 +24,15 @@ class ModuleProjectController extends Controller
             ->with('preferences')
             ->orderByDesc('created_at');
 
-        $search = $request->query('search');
-        if (is_string($search) && $search !== '') {
-            $query->where('name', 'like', '%'.$search.'%');
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        $status = $request->query('status');
-        if (is_string($status) && $status !== '') {
-            $query->where('status', $status);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
 
-        $projects = $query->get()->map(fn (Project $p) => $this->projectPayload($p));
+        $projects = $query->get()->map(fn ($p) => $this->projectPayload($p));
 
         return ModuleApiResponse::success('Projects loaded.', $projects->all());
     }
@@ -50,16 +48,16 @@ class ModuleProjectController extends Controller
             return ModuleApiResponse::error($validator->errors()->first(), 400, 400);
         }
 
-        /** @var User $user */
         $user = $request->user();
         $data = $validator->validated();
 
-        $project = Project::query()->create([
+        $project = Project::create([
             'user_id' => $user->id,
             'name' => $data['name'],
             'mode' => $data['mode'],
             'status' => 'active',
         ]);
+
         $project->load('preferences');
 
         return ModuleApiResponse::success('Project created.', $this->projectPayload($project), 201);
@@ -67,14 +65,13 @@ class ModuleProjectController extends Controller
 
     public function show(Request $request, int $id): JsonResponse
     {
-        $project = Project::query()->with('preferences')->find($id);
-        if ($project === null) {
+        $project = Project::with('preferences')->find($id);
+
+        if (!$project) {
             return ModuleApiResponse::error('Project not found.', 404, 404);
         }
 
-        /** @var User $user */
-        $user = $request->user();
-        if ((int) $project->user_id !== (int) $user->id) {
+        if ($project->user_id != $request->user()->id) {
             return ModuleApiResponse::error('You do not have access to this project.', 403, 403);
         }
 
@@ -83,33 +80,19 @@ class ModuleProjectController extends Controller
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'mode' => ['sometimes', 'in:residential,commercial,office,other'],
-            'status' => ['sometimes', 'string', 'max:255'],
-        ]);
+        $project = Project::find($id);
 
-        if ($validator->fails()) {
-            return ModuleApiResponse::error($validator->errors()->first(), 400, 400);
-        }
-
-        $project = Project::query()->find($id);
-        if ($project === null) {
+        if (!$project) {
             return ModuleApiResponse::error('Project not found.', 404, 404);
         }
 
-        /** @var User $user */
-        $user = $request->user();
-        if ((int) $project->user_id !== (int) $user->id) {
+        if ($project->user_id != $request->user()->id) {
             return ModuleApiResponse::error('You do not have access to this project.', 403, 403);
         }
 
-        $data = array_filter($validator->validated(), static fn ($v) => $v !== null);
-        if ($data !== []) {
-            $project->fill($data);
-            $project->save();
-        }
+        $data = $request->only(['name', 'mode', 'status']);
 
+        $project->update(array_filter($data));
         $project->load('preferences');
 
         return ModuleApiResponse::success('Project updated.', $this->projectPayload($project));
@@ -117,14 +100,13 @@ class ModuleProjectController extends Controller
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $project = Project::query()->find($id);
-        if ($project === null) {
+        $project = Project::find($id);
+
+        if (!$project) {
             return ModuleApiResponse::error('Project not found.', 404, 404);
         }
 
-        /** @var User $user */
-        $user = $request->user();
-        if ((int) $project->user_id !== (int) $user->id) {
+        if ($project->user_id != $request->user()->id) {
             return ModuleApiResponse::error('You do not have access to this project.', 403, 403);
         }
 
@@ -135,24 +117,24 @@ class ModuleProjectController extends Controller
 
     public function duplicate(Request $request, int $id): JsonResponse
     {
-        $project = Project::query()->with('preferences')->find($id);
-        if ($project === null) {
+        $project = Project::with('preferences')->find($id);
+
+        if (!$project) {
             return ModuleApiResponse::error('Project not found.', 404, 404);
         }
 
-        /** @var User $user */
-        $user = $request->user();
-        if ((int) $project->user_id !== (int) $user->id) {
+        if ($project->user_id != $request->user()->id) {
             return ModuleApiResponse::error('You do not have access to this project.', 403, 403);
         }
 
-        $copy = DB::transaction(function () use ($project, $user) {
+        $copy = DB::transaction(function () use ($project, $request) {
+
             $new = $project->replicate();
-            $new->user_id = $user->id;
-            $new->name = 'Copy of '.$project->name;
+            $new->user_id = $request->user()->id;
+            $new->name = 'Copy of ' . $project->name;
             $new->save();
 
-            if ($project->preferences !== null) {
+            if ($project->preferences) {
                 $pref = $project->preferences->replicate();
                 $pref->project_id = $new->id;
                 $pref->save();
@@ -164,53 +146,69 @@ class ModuleProjectController extends Controller
         return ModuleApiResponse::success('Project duplicated.', $this->projectPayload($copy), 201);
     }
 
-    public function updatePreferences(Request $request, int $id): JsonResponse
+    public function uploadFiles(Request $request, int $id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'budget' => ['sometimes', 'nullable', 'numeric'],
-            'style' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'colors' => ['sometimes', 'nullable', 'array'],
-            'usage' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'furniture' => ['sometimes', 'boolean'],
+        $project = Project::find($id);
+
+        if (!$project) {
+            return ModuleApiResponse::error('Project not found', 404, 404);
+        }
+
+        if ($project->user_id != $request->user()->id) {
+            return ModuleApiResponse::error('Unauthorized', 403, 403);
+        }
+
+        $request->validate([
+            'blueprint' => ['required', 'file'],
+            'rooms.*' => ['nullable', 'image'],
         ]);
 
-        if ($validator->fails()) {
-            return ModuleApiResponse::error($validator->errors()->first(), 400, 400);
-        }
+        $blueprintPath = $request->file('blueprint')->store('uploads/blueprints', 'public');
 
-        $project = Project::query()->find($id);
-        if ($project === null) {
-            return ModuleApiResponse::error('Project not found.', 404, 404);
-        }
+        ProjectFile::create([
+            'project_id' => $project->id,
+            'type' => 'blueprint',
+            'file_path' => $blueprintPath,
+        ]);
 
-        /** @var User $user */
-        $user = $request->user();
-        if ((int) $project->user_id !== (int) $user->id) {
-            return ModuleApiResponse::error('You do not have access to this project.', 403, 403);
-        }
+        $roomsPaths = [];
 
-        $data = $validator->validated();
-        $pref = $project->preferences;
+        if ($request->hasFile('rooms')) {
+            foreach ($request->file('rooms') as $file) {
+                $path = $file->store('uploads/rooms', 'public');
+                $roomsPaths[] = $path;
 
-        if ($pref === null) {
-            $pref = new ProjectPreference(['project_id' => $project->id]);
-        }
-
-        foreach (['budget', 'style', 'colors', 'usage', 'furniture'] as $key) {
-            if (array_key_exists($key, $data)) {
-                $pref->{$key} = $data[$key];
+                ProjectFile::create([
+                    'project_id' => $project->id,
+                    'type' => 'room',
+                    'file_path' => $path,
+                ]);
             }
         }
 
-        $pref->project_id = $project->id;
-        $pref->save();
-
-        return ModuleApiResponse::success('Preferences saved.', $this->preferencesPayload($pref));
+        return ModuleApiResponse::success('Files uploaded.', [
+            'blueprint' => $blueprintPath,
+            'rooms' => $roomsPaths,
+        ]);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    public function getFiles(Request $request, int $id): JsonResponse
+    {
+        $project = Project::find($id);
+
+        if (!$project) {
+            return ModuleApiResponse::error('Project not found.', 404, 404);
+        }
+
+        if ($project->user_id != $request->user()->id) {
+            return ModuleApiResponse::error('Unauthorized', 403, 403);
+        }
+
+        $files = ProjectFile::where('project_id', $id)->get();
+
+        return ModuleApiResponse::success('Files fetched.', $files);
+    }
+
     private function projectPayload(Project $project): array
     {
         return [
@@ -221,27 +219,7 @@ class ModuleProjectController extends Controller
             'status' => $project->status,
             'created_at' => $project->created_at?->toIso8601String(),
             'updated_at' => $project->updated_at?->toIso8601String(),
-            'preferences' => $project->preferences !== null
-                ? $this->preferencesPayload($project->preferences)
-                : null,
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function preferencesPayload(ProjectPreference $p): array
-    {
-        return [
-            'id' => $p->id,
-            'project_id' => $p->project_id,
-            'budget' => $p->budget !== null ? (float) $p->budget : null,
-            'style' => $p->style,
-            'colors' => $p->colors,
-            'usage' => $p->usage,
-            'furniture' => (bool) $p->furniture,
-            'created_at' => $p->created_at?->toIso8601String(),
-            'updated_at' => $p->updated_at?->toIso8601String(),
+            'preferences' => $project->preferences,
         ];
     }
 }
