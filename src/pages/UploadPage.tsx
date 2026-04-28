@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UploadCloud, Trash2, FileImage } from "lucide-react";
-
+////////////////////////////////////
 type FileItem = {
   file: File;
   preview: string;
@@ -9,7 +9,8 @@ type FileItem = {
 interface UploadPageProps {
   setPage: (page: string) => void;
 }
-
+///////////////////////////
+///////////////
 export default function UploadPage({ setPage }: UploadPageProps) {
   const [blueprint, setBlueprint] = useState<FileItem | null>(null);
   const [rooms, setRooms] = useState<FileItem[]>([]);
@@ -21,7 +22,6 @@ export default function UploadPage({ setPage }: UploadPageProps) {
     setBlueprint({ file, preview });
   };
 
-  // Handle multiple room images
   const handleRooms = (files: FileList | null) => {
     if (!files) return;
 
