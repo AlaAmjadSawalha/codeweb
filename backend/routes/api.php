@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Module\ModuleAuthController;
 use App\Http\Controllers\API\Module\ModuleDashboardController;
+use App\Http\Controllers\API\Module\ModuleDesignController;
 use App\Http\Controllers\API\Module\ModuleProjectController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\HomeController;
@@ -37,6 +38,17 @@ Route::middleware(['jwt.auth'])->group(function (): void {
     Route::put('projects/{id}/preferences', [ModuleProjectController::class, 'updatePreferences'])->whereNumber('id');
 
     Route::get('dashboard/metrics', [ModuleDashboardController::class, 'metrics']);
+
+    // Design routes (nested under projects — compare/generate before {design} wildcard)
+    Route::prefix('projects/{projectId}')->whereNumber('projectId')->group(function (): void {
+        Route::get('designs',                   [ModuleDesignController::class, 'index']);
+        Route::post('designs',                  [ModuleDesignController::class, 'store']);
+        Route::post('designs/generate',         [ModuleDesignController::class, 'generate']);
+        Route::post('designs/compare',          [ModuleDesignController::class, 'compare']);
+        Route::get('designs/{designId}',        [ModuleDesignController::class, 'show'])->whereNumber('designId');
+        Route::put('designs/{designId}/select', [ModuleDesignController::class, 'select'])->whereNumber('designId');
+        Route::delete('designs/{designId}',     [ModuleDesignController::class, 'destroy'])->whereNumber('designId');
+    });
 });
 
 Route::prefix('v1')->group(function (): void {

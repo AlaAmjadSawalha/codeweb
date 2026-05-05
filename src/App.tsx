@@ -20,7 +20,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { getAuthToken, clearSession, setStoredUser } from "@/lib/api";
+import { clearSession, getAuthToken, setStoredUser } from "@/lib/api";
 import { logout as logoutRequest, me } from "@/api/auth";
 
 function App() {
@@ -28,20 +28,13 @@ function App() {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  /*
+
   useEffect(() => {
     const token = getAuthToken();
     if (!token) {
       setIsAuthenticated(false);
       return;
     }
-
-    // TEST API (Laravel connection)
-    fetch("http://127.0.0.1:8000/api/v1/home")
-      .then((res) => res.json())
-      .then((data) => console.log("API TEST:", data))
-      .catch((err) => console.log("ERROR:", err));
-
     me()
       .then((res) => {
         if (res.data) setStoredUser(res.data);
@@ -50,19 +43,6 @@ function App() {
       .catch(() => {
         clearSession();
         setIsAuthenticated(false);
-      });
-  }, []);
-*/
-  useEffect(() => {
-    console.log("APP STARTED 🚀");
-
-    fetch("http://127.0.0.1:8000/api/v1/home")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("🔥 LARAVEL RESPONSE:", data);
-      })
-      .catch((err) => {
-        console.log("❌ ERROR:", err);
       });
   }, []);
 
@@ -176,10 +156,11 @@ function App() {
           }
         />
 
-        <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
+        <Route path="/auth" element={<Navigate to={isAuthenticated ? "/dashboard" : "/auth/login"} replace />} />
         <Route
           path="/auth/login"
           element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> :
             <AuthPage
               setPage={setPage}
               initialView="login"
@@ -191,6 +172,7 @@ function App() {
         <Route
           path="/auth/signup"
           element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> :
             <AuthPage
               setPage={setPage}
               initialView="signup"
@@ -202,6 +184,7 @@ function App() {
         <Route
           path="/auth/forgot"
           element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> :
             <AuthPage
               setPage={setPage}
               initialView="forgot"
@@ -213,6 +196,7 @@ function App() {
         <Route
           path="/auth/reset"
           element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> :
             <AuthPage
               setPage={setPage}
               initialView="reset"
@@ -314,7 +298,7 @@ function App() {
       </Routes>
 
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 z-[80] rounded-2 bg-slate-900 px-3 py-2 fs-6 text-muted text-white shadow-lg dark:bg-slate-100 dark:text-slate-900">
+        <div className="fixed bottom-4 right-4 z-[80] rounded-xl bg-foreground text-background px-4 py-2.5 text-sm font-medium shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-200">
           {toastMessage}
         </div>
       )}

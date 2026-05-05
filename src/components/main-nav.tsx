@@ -1,6 +1,5 @@
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
 import { NavItem } from "@/types/nav";
 import { useTranslation } from "react-i18next";
 
@@ -13,31 +12,36 @@ export function MainNav({ items, setPage }: MainNavProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center gap-5 md:gap-10">
+    <div className="flex items-center gap-6 md:gap-10">
+      {/* Wordmark logo */}
       <button
         onClick={() => setPage("landing")}
         className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0"
         type="button"
       >
-        <Icons.laptop className="h-6 w-6" />
-        <span className="inline-block font-bold">{siteConfig.name}</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white text-xs font-bold shrink-0 shadow-sm shadow-violet-500/30">
+          SP
+        </span>
+        <span className="hidden sm:inline-block font-bold text-sm tracking-tight text-foreground">
+          {siteConfig.name}
+        </span>
       </button>
+
       {items?.length ? (
-        <nav className="flex flex-wrap gap-5">
+        <nav className="hidden md:flex items-center gap-6">
           {items?.map(
             (item, index) =>
               item.href && (
                 <button
                   key={index}
                   onClick={() => {
-                    if (item.href === "/") {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }
+                    if (item.href === "/") window.scrollTo({ top: 0, behavior: "smooth" });
                     setPage(item.href || "landing");
                   }}
                   className={cn(
-                    "flex items-center text-sm font-medium text-muted-foreground bg-transparent border-none p-0 cursor-pointer",
-                    item.disabled && "cursor-not-allowed opacity-80"
+                    "relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none p-0 cursor-pointer",
+                    "after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-0 after:bg-violet-600 after:transition-all hover:after:w-full",
+                    item.disabled && "cursor-not-allowed opacity-50"
                   )}
                 >
                   {item.title === "Home"
