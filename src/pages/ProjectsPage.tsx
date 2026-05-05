@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Icons } from "@/components/icons";
 import { deleteProject, duplicateProject, listProjects, type Project } from "@/api/projects";
 import { getApiErrorMessage } from "@/lib/api";
+import { AlertCircle, Calendar, CheckCircle2, Copy, Trash2, ChevronDown } from "lucide-react";
 
 interface ProjectsPageProps {
     setPage: (page: string) => void;
@@ -78,112 +79,171 @@ export default function ProjectsPage({ setPage }: ProjectsPageProps) {
     };
 
     return (
-        <div className="p-5 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
-            <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto min-h-screen">
+
+            {/* Page header */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h1>
-                    <p className="mt-1 text-muted-foreground">{t("projects.subtitle")}</p>
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{t("projects.title")}</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">{t("projects.subtitle")}</p>
                 </div>
                 <button
                     type="button"
                     onClick={() => setPage("create-project")}
-                    className="inline-flex shrink-0 items-center justify-center gap-2 px-8 py-3 rounded-full bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-colors cursor-pointer w-auto"
+                    className="inline-flex shrink-0 items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 active:bg-violet-800 transition-colors shadow-md shadow-violet-500/20 cursor-pointer"
                 >
                     <Icons.plus className="h-4 w-4" />
                     {t("projects.newProject")}
                 </button>
             </div>
 
+            {/* Error */}
             {error && (
-                <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
-                    {error}
+                <div className="flex items-start gap-3 rounded-xl border border-red-100 bg-red-50 px-4 py-3.5 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-400">
+                    <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                    <span>{error}</span>
                 </div>
             )}
 
-            {/* Filters and Search */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="relative w-full sm:max-w-xs">
-                    <Icons.fileIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            {/* Search + Filters */}
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                <div className="relative flex-1 sm:max-w-sm">
+                    <Icons.search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     <input
                         type="search"
                         placeholder={t("projects.searchPlaceholder")}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="flex h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full h-10 pl-10 pr-4 text-sm bg-slate-50 dark:bg-slate-800/50 border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-500 transition-all duration-200"
                     />
                 </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-2">
                     <button
                         type="button"
                         onClick={cycleStatus}
-                        className="flex-1 sm:flex-none inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                        className={`inline-flex items-center gap-2 h-10 px-4 rounded-xl border text-sm font-medium transition-all duration-200 ${
+                            statusFilter
+                                ? "border-violet-300 dark:border-violet-700 bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300"
+                                : "border-border bg-card hover:bg-muted text-foreground"
+                        }`}
                     >
-                        <Icons.layoutTemplate className="mr-2 h-4 w-4" />
+                        <Icons.layoutTemplate className="h-4 w-4" />
                         {statusFilter === "" ? t("projects.statusAll") : t("projects.status", { status: statusFilter })}
+                        <ChevronDown className="h-3.5 w-3.5 opacity-60" />
                     </button>
-                    <button className="flex-1 sm:flex-none inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <button
+                        type="button"
+                        className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium text-foreground transition-colors"
+                    >
                         {t("projects.sortNewest")}
+                        <ChevronDown className="h-3.5 w-3.5 opacity-60" />
                     </button>
                 </div>
             </div>
 
-            {loading && <p className="text-sm text-muted-foreground">{t("projects.loading")}</p>}
+            {/* Loading state */}
+            {loading && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Icons.spinner className="h-4 w-4 animate-spin" />
+                    {t("projects.loading")}
+                </div>
+            )}
 
-            {/* Projects Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {/* Projects grid */}
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {!loading && projects.length === 0 && (
-                    <p className="text-sm text-muted-foreground col-span-full">{t("projects.noMatches")}</p>
+                    <div className="col-span-full flex flex-col items-center justify-center py-20 rounded-2xl border border-dashed border-border bg-card text-center">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted mb-4">
+                            <Icons.folder className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <p className="text-sm font-semibold text-foreground">{t("projects.noMatches")}</p>
+                        <p className="text-xs text-muted-foreground mt-1 mb-4">
+                            {search || statusFilter ? "Try adjusting your search or filters." : "Create your first project to get started."}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => setPage("create-project")}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline underline-offset-4"
+                        >
+                            <Icons.plus className="h-3.5 w-3.5" />
+                            {t("projects.newProject")}
+                        </button>
+                    </div>
                 )}
+
                 {projects.map((project, idx) => (
                     <div
                         key={project.id}
-                        className="group flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300"
+                        className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-violet-700 transition-all duration-300"
                     >
+                        {/* Project image */}
                         <div
-                            className="h-48 w-full bg-muted bg-cover bg-center cursor-pointer relative"
-                            style={{ backgroundImage: `url(${placeholderImgs[idx % placeholderImgs.length]})` }}
-                            onClick={() => setPage(`/design-details?id=${project.id}`)}
+                            className="relative h-44 w-full cursor-pointer overflow-hidden bg-muted"
+                            onClick={() => setPage(`/ai-designs?project=${project.id}`)}
                         >
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                <span className="bg-background/90 text-foreground px-4 py-2 rounded-full font-medium text-sm shadow-xl">
+                            <img
+                                src={placeholderImgs[idx % placeholderImgs.length]}
+                                alt={project.name}
+                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                            <div className="absolute inset-0 bg-violet-900/0 group-hover:bg-violet-900/15 transition-colors duration-300 flex items-center justify-center">
+                                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-white/95 dark:bg-black/80 text-foreground px-4 py-2 rounded-full font-semibold text-xs shadow-lg backdrop-blur-sm">
                                     {t("projects.viewDesigns")}
                                 </span>
                             </div>
+                            {/* Status badge */}
+                            <div className="absolute top-2.5 left-2.5">
+                                {project.status === "active" ? (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/95 dark:bg-black/80 text-[10px] font-bold uppercase text-slate-800 dark:text-slate-200 shadow-sm backdrop-blur-sm">
+                                        <CheckCircle2 className="h-3 w-3 text-emerald-500" /> Active
+                                    </span>
+                                ) : (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100/95 dark:bg-amber-900/90 text-[10px] font-bold uppercase text-amber-800 dark:text-amber-300 shadow-sm backdrop-blur-sm">
+                                        <Icons.spinner className="h-3 w-3 animate-spin" /> {project.status}
+                                    </span>
+                                )}
+                            </div>
                         </div>
 
-                        <div className="p-5 flex-1 flex flex-col">
+                        {/* Card body */}
+                        <div className="p-4 flex-1 flex flex-col">
                             <h3
-                                className="font-semibold text-lg line-clamp-1 mb-1 group-hover:text-blue-600 transition-colors cursor-pointer"
-                                onClick={() => setPage(`/design-details?id=${project.id}`)}
+                                className="font-semibold text-sm leading-snug line-clamp-1 mb-1 cursor-pointer group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors"
+                                onClick={() => setPage(`/ai-designs?project=${project.id}`)}
                             >
                                 {project.name}
                             </h3>
-                            <p className="text-xs text-muted-foreground mb-4">{t("projects.updated", { date: formatWhen(project.updated_at) })}</p>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-4">
+                                <Calendar className="h-3 w-3 shrink-0" />
+                                {t("projects.updated", { date: formatWhen(project.updated_at) })}
+                            </p>
 
-                            <div className="mt-auto flex items-center justify-between pt-4 border-t">
-                                <div className="flex items-center text-sm text-muted-foreground">
-                                    <Icons.settings className="mr-1.5 h-4 w-4 text-primary" />
+                            {/* Footer row */}
+                            <div className="mt-auto pt-3 border-t border-border flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                    <Icons.settings className="h-3.5 w-3.5 text-violet-500" />
                                     <span className="font-medium capitalize">{project.mode}</span>
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        void handleDup(project.id);
-                                    }}
-                                    className="h-8 w-8 rounded-full hover:bg-accent flex items-center justify-center transition-colors text-muted-foreground hover:text-foreground"
-                                    title={t("projects.duplicateTitle")}
-                                >
-                                    <Icons.fileIcon className="h-4 w-4" />
-                                </button>
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); void handleDup(project.id); }}
+                                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                        title={t("projects.duplicateTitle")}
+                                    >
+                                        <Copy className="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); void handleDel(project.id); }}
+                                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 transition-colors"
+                                        title={t("projects.deleteProject")}
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </button>
+                                </div>
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => void handleDel(project.id)}
-                                className="mt-2 text-xs text-red-600 hover:underline text-left"
-                            >
-                                {t("projects.deleteProject")}
-                            </button>
                         </div>
                     </div>
                 ))}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
-import { ArrowRight, CheckCircle2, LayoutTemplate, Star, FileText, Share2, Layers, Cpu, DollarSign, PenTool } from "lucide-react";
+import { ArrowRight, CheckCircle2, LayoutTemplate, Star, FileText, Share2, Layers, Cpu, DollarSign, PenTool, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
@@ -22,51 +22,72 @@ export default function LandingPage({ setPage, isAuthenticated = false, onShowTo
         }
     }, [location.pathname]);
 
+    const stats = [
+        { value: "12,000+", label: "Designers & Homeowners" },
+        { value: "50K+",    label: "Layouts Generated" },
+        { value: "97%",     label: "Client Satisfaction" },
+        { value: "< 30s",   label: "Avg. Generation Time" },
+    ];
+
     return (
-        <div className="d-flex flex-column min-vh-100 bg-light text-foreground overflow-hidden">
-            {/* 1. Hero Section */}
-            <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-                {/* Abstract Background */}
-                <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-100 via-background to-background dark:from-indigo-950/40 dark:via-background dark:to-background"></div>
-                <div className="absolute top-0 right-0 -z-10 w-[800px] h-[800px] bg-blue-500/10 dark:bg-blue-600/10 rounded-circle blur-3xl opacity-50 transform translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-purple-500/10 dark:bg-purple-600/10 rounded-circle blur-3xl opacity-50 transform -translate-x-1/2 translate-y-1/3"></div>
+        <div className="flex flex-col min-h-screen bg-background text-foreground overflow-hidden">
+
+            {/* ── 1. Hero ──────────────────────────────────────────────── */}
+            <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+                {/* Dot grid */}
+                <div
+                    className="absolute inset-0 -z-20"
+                    style={{
+                        backgroundImage: "radial-gradient(hsl(var(--border)) 1px, transparent 1px)",
+                        backgroundSize: "28px 28px",
+                    }}
+                />
+                {/* Violet radial glow */}
+                <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(124,58,237,0.14),transparent)]" />
+                {/* Decorative blobs */}
+                <div className="absolute top-16 left-[8%] -z-10 h-80 w-80 rounded-full bg-violet-500/5 blur-3xl" />
+                <div className="absolute top-32 right-[4%] -z-10 h-96 w-96 rounded-full bg-indigo-500/5 blur-3xl" />
 
                 <div className="mx-auto w-full max-w-6xl px-4 md:px-8">
-                    <div className="d-flex flex-column lg:flex-row align-items-center gap-12 lg:gap-8">
-                        <div className="flex-1 text-center lg:text-left space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-10">
+
+                        {/* Left: copy */}
+                        <div className="flex-1 text-center lg:text-left space-y-7 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                            {/* Pill badge */}
                             <button
                                 onClick={() => setPage("/blog")}
-                                className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50/50 px-3 py-1 text-sm font-medium text-indigo-800 backdrop-blur-sm hover:opacity-90 transition-opacity dark:border-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 mx-auto lg:mx-0"
+                                className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-sm font-medium text-violet-700 dark:text-violet-300 hover:opacity-90 transition-opacity mx-auto lg:mx-0"
                             >
-                                <span className="d-flex h-2 w-2 rounded-circle bg-indigo-600 dark:bg-indigo-400 mr-2 animate-pulse"></span>
+                                <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
                                 {t("landing.badge")}
                             </button>
 
-                            <h1 className="fs-1 md:text-5xl lg:text-6xl xl:text-7xl fw-bold tracking-tight text-balance leading-tight">
-                                {t("landing.titleLine1")} <br className="d-none d-lg-block" />
+                            {/* Headline */}
+                            <h1 className="text-4xl md:text-5xl lg:text-[3.75rem] xl:text-7xl font-bold tracking-tight text-balance leading-[1.1]">
+                                {t("landing.titleLine1")} <br className="hidden lg:block" />
                                 {t("landing.titleLine2Prefix")}{" "}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500 dark:from-violet-400 dark:to-indigo-300">
                                     {t("landing.titleAI")}
                                 </span>
                             </h1>
 
-                            <p className="fs-5 md:text-xl text-muted max-w-2xl mx-auto lg:mx-0 text-balance">
+                            {/* Subtitle */}
+                            <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 text-balance leading-relaxed">
                                 {t("landing.subtitle")}
                             </p>
 
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                            {/* CTAs */}
+                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
                                 <button
                                     onClick={() => setPage(isAuthenticated ? "/dashboard" : "/auth/signup")}
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-colors cursor-pointer w-auto"
+                                    className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 active:bg-violet-800 transition-all shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40"
                                 >
                                     {t("landing.ctaStart")}
                                     <ArrowRight className="h-4 w-4" />
                                 </button>
                                 <button
-                                    onClick={() => {
-                                        document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                                    }}
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border border-gray-300 text-sm font-medium hover:bg-gray-100 transition-colors w-auto"
+                                    onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
+                                    className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-sm"
                                 >
                                     {t("landing.ctaHow")}
                                 </button>
@@ -76,46 +97,93 @@ export default function LandingPage({ setPage, isAuthenticated = false, onShowTo
                                         onShowToast?.(t("landing.amazingToast"));
                                         setPage(isAuthenticated ? "/dashboard" : "/auth/signup");
                                     }}
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border border-gray-300 text-sm font-medium hover:bg-gray-100 transition-colors w-auto"
+                                    className="hidden sm:inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-sm"
                                 >
                                     {t("landing.ctaAmazing")}
                                 </button>
                             </div>
+
                             {showAmazingMessage && (
-                                <p className="fs-6 text-muted fw-medium text-indigo-600 dark:text-indigo-400">
+                                <p className="text-sm font-medium text-violet-600 dark:text-violet-400">
                                     {t("landing.amazingMessage")} 🔥
                                 </p>
                             )}
+
+                            {/* Social proof avatars */}
+                            <div className="flex items-center gap-3 justify-center lg:justify-start pt-1">
+                                <div className="flex -space-x-2">
+                                    {["img=12", "img=33", "img=68", "img=15", "img=22"].map((q, i) => (
+                                        <img
+                                            key={i}
+                                            src={`https://i.pravatar.cc/40?${q}`}
+                                            className="h-8 w-8 rounded-full border-2 border-background object-cover"
+                                            alt="user"
+                                        />
+                                    ))}
+                                </div>
+                                <div className="text-sm">
+                                    <span className="font-semibold text-foreground">12,000+</span>
+                                    <span className="text-muted-foreground"> designers trust SmartPlan</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="flex-1 w-100 max-w-2xl lg:max-w-none relative animate-in fade-in slide-in-from-right-12 duration-1000 delay-200 fill-mode-both">
-                            <div className="relative rounded-4 md:rounded-[2rem] border border-slate-200/50 dark:border-slate-800/50 bg-white/10 dark:bg-black/10 p-2 md:p-4 backdrop-blur-md shadow-2xl">
-                                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-blue-500/5 rounded-4 md:rounded-[2rem]"></div>
-                                <img
-                                    src="/auth-bg.png"
-                                    alt="AI Interior Planning Visual"
-                                    className="w-100 h-auto rounded-4 md:rounded-[1.5rem] object-cover shadow-inner aspect-[4/3]"
-                                />
-
-                                {/* Floating UI Elements */}
-                                <div className="absolute -left-6 top-1/4 bg-white dark:bg-slate-900 p-3 rounded-4 shadow-xl border border-slate-100 dark:border-slate-800 d-flex align-items-center gap-3 animate-bounce" style={{ animationDuration: '3s' }}>
-                                    <div className="w-10 h-10 rounded-circle bg-green-100 dark:bg-green-900/50 d-flex align-items-center justify-content-center">
-                                        <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
-                                    </div>
-                                    <div>
-                                        <div className="small text-muted fw-medium">Layout Optimized</div>
-                                        <div className="fs-6 text-muted fw-bold">Space Efficiency: 96%</div>
+                        {/* Right: hero visual */}
+                        <div className="flex-1 w-full max-w-2xl lg:max-w-none relative animate-in fade-in slide-in-from-right-10 duration-1000 delay-200 fill-mode-both">
+                            {/* Browser-frame mockup */}
+                            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl shadow-violet-500/5 overflow-hidden">
+                                {/* Browser chrome */}
+                                <div className="flex items-center gap-2 px-4 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80">
+                                    <span className="h-3 w-3 rounded-full bg-red-400" />
+                                    <span className="h-3 w-3 rounded-full bg-yellow-400" />
+                                    <span className="h-3 w-3 rounded-full bg-green-400" />
+                                    <div className="flex-1 mx-4 h-6 rounded-md bg-slate-200 dark:bg-slate-700 flex items-center px-3">
+                                        <span className="text-xs text-slate-400">smartplan.ai/design/project-12</span>
                                     </div>
                                 </div>
+                                {/* Image + gradient fallback */}
+                                <div className="relative aspect-[4/3] bg-gradient-to-br from-violet-50 via-indigo-50 to-slate-100 dark:from-violet-950/30 dark:via-indigo-950/20 dark:to-slate-900 overflow-hidden">
+                                    <img
+                                        src="/auth-bg.png"
+                                        alt="AI Interior Planning"
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                    />
+                                    {/* Placeholder skeleton visible when image fails */}
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center p-8 pointer-events-none">
+                                        <div className="w-full max-w-xs space-y-3 opacity-50">
+                                            <div className="h-3 w-3/4 rounded-full bg-violet-200 dark:bg-violet-800" />
+                                            <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-700" />
+                                            <div className="h-2 w-5/6 rounded-full bg-slate-200 dark:bg-slate-700" />
+                                            <div className="mt-5 grid grid-cols-3 gap-2">
+                                                {[1, 2, 3].map((n) => (
+                                                    <div key={n} className="aspect-square rounded-xl bg-violet-100 dark:bg-violet-900/40 border border-violet-200 dark:border-violet-800" />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div className="absolute -right-6 bottom-1/4 bg-white dark:bg-slate-900 p-3 rounded-4 shadow-xl border border-slate-100 dark:border-slate-800 d-flex align-items-center gap-3 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
-                                    <div className="w-10 h-10 rounded-circle bg-blue-100 dark:bg-blue-900/50 d-flex align-items-center justify-content-center">
-                                        <Cpu className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    <div>
-                                        <div className="small text-muted fw-medium">AI Generating</div>
-                                        <div className="fs-6 text-muted fw-bold">3 Variations Ready</div>
-                                    </div>
+                            {/* Floating badge – left */}
+                            <div className="absolute -left-5 top-1/4 bg-white dark:bg-slate-900 px-4 py-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 flex items-center gap-3 animate-bounce" style={{ animationDuration: "3.5s" }}>
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/30">
+                                    <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-muted-foreground">Space Efficiency</div>
+                                    <div className="text-sm font-semibold text-foreground">96% optimized</div>
+                                </div>
+                            </div>
+
+                            {/* Floating badge – right */}
+                            <div className="absolute -right-5 bottom-1/4 bg-white dark:bg-slate-900 px-4 py-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 flex items-center gap-3 animate-bounce" style={{ animationDuration: "4s", animationDelay: "1s" }}>
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-900/30">
+                                    <Cpu className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-muted-foreground">AI Generating</div>
+                                    <div className="text-sm font-semibold text-foreground">3 Variations Ready</div>
                                 </div>
                             </div>
                         </div>
@@ -123,315 +191,241 @@ export default function LandingPage({ setPage, isAuthenticated = false, onShowTo
                 </div>
             </section>
 
-            {/* 2. How It Works (3 Steps) */}
-            <section id="how-it-works" className="py-24 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+            {/* ── Stats strip ──────────────────────────────────────────── */}
+            <section className="border-y border-border bg-card/60">
+                <div className="mx-auto max-w-6xl px-4 md:px-8 py-9">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x-0 md:divide-x divide-border">
+                        {stats.map((s) => (
+                            <div key={s.label} className="text-center px-4">
+                                <div className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">{s.value}</div>
+                                <div className="text-sm text-muted-foreground mt-1">{s.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── 2. How It Works ──────────────────────────────────────── */}
+            <section id="how-it-works" className="py-24 bg-slate-50 dark:bg-slate-900/50">
                 <div className="mx-auto max-w-6xl px-4 md:px-8">
-                    <div className="mx-auto max-w-3xl">
-                        <h2 className="text-center mb-4 fs-2 md:text-4xl fw-bold tracking-tight">From Blueprint to Reality in Minutes</h2>
-                        <p className="text-center mb-12 fs-5 text-muted">Our intelligent pipeline turns your raw space data into beautiful, actionable layout plans through a simple three-step process.</p>
+                    <div className="text-center mb-16">
+                        <p className="text-sm font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-3">How It Works</p>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">From Blueprint to Reality in Minutes</h2>
+                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                            Our intelligent pipeline turns your raw space data into beautiful, actionable layout plans.
+                        </p>
                     </div>
 
-                    <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8">
-                        {/* Connecting Line */}
-                        <div className="absolute left-[12%] right-[12%] top-12 z-0 hidden h-0.5 bg-gradient-to-r from-slate-200 via-indigo-300 to-slate-200 dark:from-slate-800 dark:via-indigo-800 dark:to-slate-800 md:block"></div>
-
-                        <div className="group relative z-10 flex flex-col items-center text-center">
-                            <div className="w-24 h-24 rounded-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow d-flex align-items-center justify-content-center mb-6 transition-transform group-hover:-translate-y-2 group-hover:shadow-xl">
-                                <div className="w-16 h-16 rounded-4 bg-blue-50 dark:bg-blue-900/20 d-flex align-items-center justify-content-center">
-                                    <Icons.upload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                        {[
+                            { step: "01", icon: <Icons.upload className="h-6 w-6 text-white" />, title: "Upload Your Space", desc: "Upload your architectural blueprint (PDF/image) or snap photos of your empty room to give the AI context." },
+                            { step: "02", icon: <Icons.settings className="h-6 w-6 text-white" />, title: "Customize Preferences", desc: "Define constraints — budget range, design style (Minimalist, Industrial…), layout type, and room usage." },
+                            { step: "03", icon: <Icons.brain className="h-6 w-6 text-white" />, title: "Get AI Designs", desc: "In seconds our engine generates multiple layout options with explanations and rough cost estimates." },
+                        ].map((s, i) => (
+                            <div key={s.step} className="group relative flex flex-col items-center text-center bg-card rounded-2xl border border-border p-8 hover:border-violet-300 dark:hover:border-violet-700 hover:shadow-lg transition-all duration-300">
+                                {/* Step connector arrow (desktop) */}
+                                {i < 2 && (
+                                    <div className="hidden md:block absolute -right-3 top-14 z-10">
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-900/40 border border-violet-200 dark:border-violet-800">
+                                            <ArrowRight className="h-3 w-3 text-violet-500" />
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-600 shadow-lg shadow-violet-500/25 ring-8 ring-violet-100 dark:ring-violet-900/30 mb-6 transition-transform duration-300 group-hover:-translate-y-1">
+                                    {s.icon}
+                                    <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-slate-900 border-2 border-violet-200 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-[10px] font-bold">
+                                        {i + 1}
+                                    </span>
                                 </div>
+                                <p className="text-xs font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-2">Step {s.step}</p>
+                                <h3 className="text-xl font-bold mb-3">{s.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                             </div>
-                            <h3 className="fs-4 fw-bold mb-3">1. Upload Your Space</h3>
-                            <p className="text-muted">Simply upload your architectural blueprint (PDF/CAD) or snap photos of your empty room to give the AI context.</p>
-                        </div>
-
-                        <div className="group relative z-10 flex flex-col items-center text-center">
-                            <div className="w-24 h-24 rounded-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow d-flex align-items-center justify-content-center mb-6 transition-transform group-hover:-translate-y-2 group-hover:shadow-xl">
-                                <div className="w-16 h-16 rounded-4 bg-purple-50 dark:bg-purple-900/20 d-flex align-items-center justify-content-center">
-                                    <Icons.settings className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                                </div>
-                            </div>
-                            <h3 className="fs-4 fw-bold mb-3">2. Customize Preferences</h3>
-                            <p className="text-muted">Define your constraints. Select your budget range, preferred design style (e.g. Minimalist, Industrial), layout type, and core usage.</p>
-                        </div>
-
-                        <div className="group relative z-10 flex flex-col items-center text-center">
-                            <div className="w-24 h-24 rounded-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow d-flex align-items-center justify-content-center mb-6 transition-transform group-hover:-translate-y-2 group-hover:shadow-xl">
-                                <div className="w-16 h-16 rounded-4 bg-indigo-50 dark:bg-indigo-900/20 d-flex align-items-center justify-content-center">
-                                    <Icons.brain className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                                </div>
-                            </div>
-                            <h3 className="fs-4 fw-bold mb-3">3. Get AI Designs</h3>
-                            <p className="text-muted">Within seconds, our engine generates multiple spatial layout options complete with descriptive explanations and rough cost estimates.</p>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* 3. Example Design Outputs */}
+            {/* ── 3. Example Outputs ───────────────────────────────────── */}
             <section className="py-24">
                 <div className="mx-auto max-w-6xl px-4 md:px-8">
-                    <h2 className="text-center mb-4 fs-2 md:text-4xl fw-bold tracking-tight">Stunning Outputs, Instantly</h2>
-                    <div className="mx-auto mb-12 max-w-3xl text-center">
-                        <p className="text-center mb-12 fs-5 text-muted">
+                    <div className="text-center mb-14">
+                        <p className="text-sm font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-3">Design Outputs</p>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Stunning Outputs, Instantly</h2>
+                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-5">
                             See how SmartPlan AI transforms raw architectural constraints into beautiful, livable design concepts.
                         </p>
                         <button
-                            type="button"
                             onClick={() => setPage("auth")}
-                            className="inline-flex items-center fs-6 text-muted fw-medium text-indigo-600 dark:text-indigo-400 hover:underline"
+                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-violet-600 dark:text-violet-400 hover:underline underline-offset-4"
                         >
-                            View Gallery <ArrowRight className="ml-1 w-4 h-4" />
+                            View Gallery <ArrowRight className="h-3.5 w-3.5" />
                         </button>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                        {/* Example Card 1 */}
-                        <div className="group rounded-4 border border-slate-200 dark:border-slate-800 bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all h-100 d-flex flex-column">
-                            <div className="relative aspect-video overflow-hidden">
-                                <img
-                                    src="/layout-output.png"
-                                    alt="Modern minimalist living room layout generated by AI"
-                                    className="w-100 h-100 object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm small fw-semibold px-2 py-1 rounded-2 text-slate-900 dark:text-slate-100 d-flex align-items-center gap-1">
-                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" /> High Efficiency
-                                </div>
-                            </div>
-                            <div className="p-4 flex-1 d-flex flex-column">
-                                <div className="small fw-medium text-indigo-600 dark:text-indigo-400 mb-2">Layout Variation A • Minimalist</div>
-                                <h3 className="fs-4 fw-bold mb-2">Open Concept Living</h3>
-                                <p className="fs-6 text-muted text-muted mb-4 flex-1">
-                                    AI opted to remove the non-load bearing separation wall to maximize natural light from the south-facing windows. Furniture is arranged to create distinct zones without physical barriers.
-                                </p>
-                                <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 d-flex justify-content-between fs-6 text-muted">
-                                    <span className="text-muted">Est. Cost: $12k - $15k</span>
-                                    <span className="fw-medium">92% Space Util</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Example Card 2 */}
-                        <div className="group rounded-4 border border-slate-200 dark:border-slate-800 bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all h-100 d-flex flex-column">
-                            <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-900 d-flex">
-                                <div className="w-1/2 h-100 border-r-2 border-dashed border-white dark:border-black relative">
-                                    <div className="absolute inset-0 d-flex align-items-center justify-content-center text-muted">
-                                        <Icons.fileIcon className="w-12 h-12 opacity-50" />
+                        {[
+                            { tag: "Minimalist", tagColor: "bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300", title: "Open Concept Living", desc: "AI removed the non-load-bearing wall to maximize natural light and created distinct zones without physical barriers.", cost: "$12k – $15k", stat: "92% Space Util", gradient: "from-violet-100 via-purple-50 to-indigo-100 dark:from-violet-950/40 dark:to-indigo-950/40" },
+                            { tag: "Before / After", tagColor: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300", title: "Master Suite Redesign", desc: "Transformed a cramped 1990s bedroom into a modern master suite by repurposing dead hallway space into a walk-in closet.", cost: "$8k – $11k", stat: "+40 sq ft gained", gradient: "from-emerald-50 via-teal-50 to-cyan-100 dark:from-emerald-950/30 dark:to-teal-950/30" },
+                            { tag: "Industrial", tagColor: "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300", title: "Chef's Kitchen Flow", desc: "Optimized the classic work triangle for heavy cooking. Island size increased to support dining, replacing the formal table.", cost: "$25k – $32k", stat: "High Traffic Ready", gradient: "from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-950/30 dark:to-orange-950/30" },
+                        ].map((card) => (
+                            <div key={card.title} className="group rounded-2xl border border-border bg-card overflow-hidden hover:border-violet-300 dark:hover:border-violet-700 hover:shadow-xl transition-all duration-300 flex flex-col">
+                                <div className={`relative aspect-video overflow-hidden bg-gradient-to-br ${card.gradient}`}>
+                                    <img
+                                        src="/layout-output.png"
+                                        alt={card.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                    />
+                                    {/* Stylized floor-plan placeholder */}
+                                    <div className="absolute inset-0 flex items-end p-4 opacity-40 pointer-events-none">
+                                        <div className="grid grid-cols-3 gap-1.5 w-full">
+                                            <div className="col-span-2 rounded-lg bg-white/50 dark:bg-white/10 h-16" />
+                                            <div className="space-y-1.5">
+                                                <div className="rounded-lg bg-white/50 dark:bg-white/10 h-7" />
+                                                <div className="rounded-lg bg-white/50 dark:bg-white/10 h-7" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="absolute bottom-2 left-2 bg-slate-900/80 text-white small px-2 py-0.5 rounded">Before Blueprint</div>
+                                    <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> Top Pick
+                                    </div>
                                 </div>
-                                <div className="w-1/2 h-100 relative">
-                                    <img src="/layout-output.png" alt="After AI Design" className="w-100 h-100 object-cover grayscale opacity-90 mix-blend-multiply dark:mix-blend-screen" />
-                                    <div className="absolute bottom-2 right-2 bg-indigo-600/90 text-white small px-2 py-0.5 rounded">After AI Layout</div>
-                                </div>
-                            </div>
-                            <div className="p-4 flex-1 d-flex flex-column">
-                                <div className="small fw-medium text-emerald-600 dark:text-emerald-400 mb-2">Before / After Comparison</div>
-                                <h3 className="fs-4 fw-bold mb-2">Master Suite Redesign</h3>
-                                <p className="fs-6 text-muted text-muted mb-4 flex-1">
-                                    Transformed a cramped 1990s bedroom blueprint into a modern master suite by repurposing dead hallway space into a walk-in closet.
-                                </p>
-                                <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 d-flex justify-content-between fs-6 text-muted">
-                                    <span className="text-muted">Est. Cost: $8k - $11k</span>
-                                    <span className="fw-medium">+40 sq ft gained</span>
+                                <div className="p-5 flex flex-col flex-1">
+                                    <span className={`inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full mb-3 self-start ${card.tagColor}`}>{card.tag}</span>
+                                    <h3 className="text-base font-bold mb-2">{card.title}</h3>
+                                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">{card.desc}</p>
+                                    <div className="mt-4 pt-4 border-t border-border flex justify-between text-sm">
+                                        <span className="text-muted-foreground">{card.cost}</span>
+                                        <span className="font-semibold text-foreground">{card.stat}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Example Card 3 */}
-                        <div className="group rounded-4 border border-slate-200 dark:border-slate-800 bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all h-100 d-flex flex-column">
-                            <div className="relative aspect-video overflow-hidden">
-                                <img
-                                    src="/layout-output.png"
-                                    alt="Industrial kitchen layout"
-                                    className="w-100 h-100 object-cover transition-transform duration-700 group-hover:scale-105 hue-rotate-15"
-                                />
-                            </div>
-                            <div className="p-4 flex-1 d-flex flex-column">
-                                <div className="small fw-medium text-amber-600 dark:text-amber-500 mb-2">Interior Concept • Industrial</div>
-                                <h3 className="fs-4 fw-bold mb-2">Chef's Kitchen Flow</h3>
-                                <p className="fs-6 text-muted text-muted mb-4 flex-1">
-                                    Optimized the classic work triangle based on user preference for heavy cooking. Island size increased to support dining, replacing the formal table.
-                                </p>
-                                <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 d-flex justify-content-between fs-6 text-muted">
-                                    <span className="text-muted">Est. Cost: $25k - $32k</span>
-                                    <span className="fw-medium">High Traffic Ready</span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* 4. Key Features Section */}
-            <section className="py-24 bg-slate-950 text-slate-50">
-                <div className="mx-auto max-w-6xl px-4 md:px-8">
-                    <div className="mx-auto max-w-3xl">
-                        <h2 className="text-center mb-4 fs-2 md:text-4xl fw-bold tracking-tight text-white">
+            {/* ── 4. Key Features ──────────────────────────────────────── */}
+            <section className="py-24 bg-slate-50 dark:bg-slate-900/40 relative overflow-hidden">
+                {/* Subtle violet tint */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(124,58,237,0.05),transparent)]" />
+
+                <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-8">
+                    <div className="text-center mb-16">
+                        <p className="text-sm font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-3">Features</p>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                             Everything You Need to Plan Masterpieces
                         </h2>
-                        <p className="text-center mb-12 fs-5 text-slate-400">
-                            SmartPlan AI combines raw computational layout generation with intuitive user tools designed for both professionals and homeowners.
+                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                            SmartPlan AI combines computational layout generation with intuitive tools designed for professionals and homeowners.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-indigo-500/20 d-flex align-items-center justify-content-center border border-indigo-500/30">
-                                    <Layers className="w-5 h-5 text-indigo-400" />
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {[
+                            { color: "border-t-violet-500",  icon: <Layers         className="h-5 w-5 text-violet-600  dark:text-violet-400"  />, bg: "bg-violet-100  dark:bg-violet-500/10",  title: "Multiple Variations",      desc: "Generate 3–5 fundamentally different spatial arrangements for every upload so you can fully explore your space." },
+                            { color: "border-t-emerald-500", icon: <DollarSign     className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />, bg: "bg-emerald-100 dark:bg-emerald-500/10", title: "Smart Cost Estimation",     desc: "Integrated market data analyzes structural changes, materials, and labor to provide realistic budgetary boundaries." },
+                            { color: "border-t-blue-500",    icon: <PenTool        className="h-5 w-5 text-blue-600    dark:text-blue-400"    />, bg: "bg-blue-100    dark:bg-blue-500/10",    title: "Personalized Preferences", desc: "Need a home office? Mid-century modern? The engine strictly adheres to your lifestyle constraints." },
+                            { color: "border-t-purple-500",  icon: <LayoutTemplate className="h-5 w-5 text-purple-600  dark:text-purple-400"  />, bg: "bg-purple-100  dark:bg-purple-500/10",  title: "Side-by-Side Comparison",  desc: "Overlay layouts to instantly see where walls move, how flow improves, and how light propagation changes." },
+                            { color: "border-t-orange-500",  icon: <FileText       className="h-5 w-5 text-orange-600  dark:text-orange-400"  />, bg: "bg-orange-100  dark:bg-orange-500/10",  title: "PDF Export & Reports",     desc: "Generate standardized presentations with floor plans and cost breakdowns ready for your contractor." },
+                            { color: "border-t-pink-500",    icon: <Share2         className="h-5 w-5 text-pink-600    dark:text-pink-400"    />, bg: "bg-pink-100    dark:bg-pink-500/10",    title: "Team Collaboration",       desc: "Share secure view links with clients or partners. Gather comments and approvals directly on the layouts." },
+                        ].map((f) => (
+                            <div
+                                key={f.title}
+                                className={`rounded-2xl bg-card border border-border border-t-2 ${f.color} p-6 hover:shadow-md hover:border-violet-200 dark:hover:border-violet-800 hover:-translate-y-0.5 transition-all duration-300`}
+                            >
+                                <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl ${f.bg} mb-4`}>
+                                    {f.icon}
                                 </div>
+                                <h3 className="text-base font-semibold text-foreground mb-2">{f.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
                             </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">Multiple Variations</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Never settle for one idea. The AI generates 3-5 fundamentally different spatial arrangements for every upload so you can thoroughly explore the potential of your space.</p>
-                            </div>
-                        </div>
-
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-emerald-500/20 d-flex align-items-center justify-content-center border border-emerald-500/30">
-                                    <DollarSign className="w-5 h-5 text-emerald-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">Smart Cost Estimation</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Integrated market data analyzes the structural changes, materials, and labor required for each generated layout to provide realistic budgetary boundaries.</p>
-                            </div>
-                        </div>
-
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-blue-500/20 d-flex align-items-center justify-content-center border border-blue-500/30">
-                                    <PenTool className="w-5 h-5 text-blue-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">Personalized Preferences</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Dial in the AI constraints. Need a home office? A larger master bath? Strictly mid-century modern? The engine strictly adheres to your specific lifestyle rules.</p>
-                            </div>
-                        </div>
-
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-purple-500/20 d-flex align-items-center justify-content-center border border-purple-500/30">
-                                    <LayoutTemplate className="w-5 h-5 text-purple-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">Side-by-Side Comparison</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Our split-view tool lets you overlay different layouts to instantly see where walls move, where flow improves, and how light propagation changes.</p>
-                            </div>
-                        </div>
-
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-orange-500/20 d-flex align-items-center justify-content-center border border-orange-500/30">
-                                    <FileText className="w-5 h-5 text-orange-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">PDF Export & Reports</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Generate beautiful, standardized PDF presentations of your chosen layouts, complete with floor plans, 3D renders, and cost breakdowns ready for your contractor.</p>
-                            </div>
-                        </div>
-
-                        <div className="d-flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-10 h-10 rounded-3 bg-pink-500/20 d-flex align-items-center justify-content-center border border-pink-500/30">
-                                    <Share2 className="w-5 h-5 text-pink-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="fs-5 fw-bold text-white mb-2">Team Collaboration</h3>
-                                <p className="fs-6 text-muted text-slate-400 leading-relaxed">Share secure view links with clients, partners, or spouses. Gather comments, annotations, and approvals directly on the generated layouts.</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* 5. Pricing Plans */}
-            <section id="pricing" className="py-24 bg-slate-50 dark:bg-slate-900/10">
+            {/* ── 5. Pricing ───────────────────────────────────────────── */}
+            <section id="pricing" className="py-24 bg-slate-50 dark:bg-slate-900/20">
                 <div className="mx-auto max-w-6xl px-4 md:px-8">
-                    <div className="mx-auto max-w-3xl">
-                        <h2 className="text-center mb-4 fs-2 md:text-4xl fw-bold tracking-tight">{t("landing.pricingTitle")}</h2>
-                        <p className="text-center mb-12 fs-5 text-muted">{t("landing.pricingSubtitle")}</p>
+                    <div className="text-center mb-16">
+                        <p className="text-sm font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-3">Pricing</p>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{t("landing.pricingTitle")}</h2>
+                        <p className="text-lg text-muted-foreground">{t("landing.pricingSubtitle")}</p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                        {/* Free Plan */}
-                        <div className="rounded-3xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 d-flex flex-column">
-                            <div className="mb-4">
-                                <h3 className="fs-4 fw-bold mb-2">Homeowner</h3>
-                                <p className="text-muted fs-6 text-muted">Perfect for visualizing your personal space.</p>
-                            </div>
-                            <div className="mb-6">
-                                <span className="fs-1 font-extrabold">$0</span>
-                                <span className="text-muted fw-medium">/forever</span>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 items-start">
+                        {/* Free */}
+                        <div className="rounded-2xl bg-card border border-border p-7 flex flex-col hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md transition-all duration-300">
+                            <h3 className="text-xl font-bold mb-1">Homeowner</h3>
+                            <p className="text-sm text-muted-foreground mb-6">Perfect for visualizing your personal space.</p>
+                            <div className="mb-7">
+                                <span className="text-4xl font-extrabold">$0</span>
+                                <span className="text-muted-foreground font-medium ml-1">/forever</span>
                             </div>
                             <ul className="space-y-3 mb-8 flex-1">
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> 1 project workspace</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> 1 AI design generation</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> Basic layout analysis</li>
-                                <li className="d-flex align-items-center fs-6 text-muted text-muted decoration-slate-300"><CheckCircle2 className="w-4 h-4 text-slate-300 dark:text-slate-700 mr-3 shrink-0" /> No PDF exports</li>
+                                {["1 project workspace", "1 AI design generation", "Basic layout analysis"].map(f => (
+                                    <li key={f} className="flex items-center gap-3 text-sm text-foreground">
+                                        <CheckCircle2 className="h-4 w-4 text-violet-500 shrink-0" /> {f}
+                                    </li>
+                                ))}
+                                <li className="flex items-center gap-3 text-sm text-muted-foreground">
+                                    <CheckCircle2 className="h-4 w-4 text-muted-foreground/30 shrink-0" /> No PDF exports
+                                </li>
                             </ul>
                             <button
                                 onClick={() => setPage("auth")}
-                                className="inline-flex items-center justify-center gap-2 self-center px-8 py-3 rounded-full border border-gray-300 text-sm font-medium hover:bg-gray-100 transition-colors w-auto"
+                                className="w-full py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                             >
                                 Get Started Free
                             </button>
                         </div>
 
-                        {/* Pro Plan */}
-                        <div className="rounded-3xl bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 border-2 border-indigo-500 p-5 d-flex flex-column relative transform md:-translate-y-4 shadow-2xl">
-                            <div className="absolute top-0 right-8 -translate-y-1/2">
-                                <span className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white small fw-bold px-3 py-1 rounded-full uppercase tracking-wider">Most Popular</span>
+                        {/* Pro — featured */}
+                        <div className="rounded-2xl bg-gradient-to-b from-violet-600 to-violet-700 text-white border-2 border-violet-500 p-7 flex flex-col relative shadow-2xl shadow-violet-500/25 md:-translate-y-5">
+                            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                                <span className="bg-white text-violet-700 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Most Popular</span>
                             </div>
-                            <div className="mb-4">
-                                <h3 className="fs-4 fw-bold mb-2">Designer Pro</h3>
-                                <p className="text-slate-400 dark:text-slate-500 fs-6 text-muted">For interior designers and active flippers.</p>
-                            </div>
-                            <div className="mb-6">
-                                <span className="fs-1 font-extrabold">$49</span>
-                                <span className="text-slate-400 dark:text-slate-500 fw-medium">/month</span>
+                            <h3 className="text-xl font-bold mb-1">Designer Pro</h3>
+                            <p className="text-sm text-violet-200 mb-6">For interior designers and active flippers.</p>
+                            <div className="mb-7">
+                                <span className="text-4xl font-extrabold">$49</span>
+                                <span className="text-violet-200 font-medium ml-1">/month</span>
                             </div>
                             <ul className="space-y-3 mb-8 flex-1">
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-indigo-400 dark:text-indigo-600 mr-3 shrink-0" /> Unlimited projects</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-indigo-400 dark:text-indigo-600 mr-3 shrink-0" /> 5-10 layout variations per run</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-indigo-400 dark:text-indigo-600 mr-3 shrink-0" /> High-res PDF exports & reports</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-indigo-400 dark:text-indigo-600 mr-3 shrink-0" /> Detailed cost analysis tooling</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-indigo-400 dark:text-indigo-600 mr-3 shrink-0" /> Split-view comparison</li>
+                                {["Unlimited projects", "5–10 layout variations per run", "High-res PDF exports & reports", "Detailed cost analysis tooling", "Split-view comparison"].map(f => (
+                                    <li key={f} className="flex items-center gap-3 text-sm text-white">
+                                        <CheckCircle2 className="h-4 w-4 text-violet-200 shrink-0" /> {f}
+                                    </li>
+                                ))}
                             </ul>
                             <button
                                 onClick={() => setPage("auth")}
-                                className="inline-flex items-center justify-center gap-2 self-center px-8 py-3 rounded-full bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-colors cursor-pointer w-auto"
+                                className="w-full py-2.5 rounded-xl bg-white text-violet-700 text-sm font-semibold hover:bg-violet-50 transition-colors shadow-md"
                             >
                                 Subscribe to Pro
                             </button>
                         </div>
 
-                        {/* Business Plan */}
-                        <div className="rounded-3xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 d-flex flex-column">
-                            <div className="mb-4">
-                                <h3 className="fs-4 fw-bold mb-2">Architecture Firm</h3>
-                                <p className="text-muted fs-6 text-muted">Scale your agency's drafting power.</p>
-                            </div>
-                            <div className="mb-6">
-                                <span className="fs-1 font-extrabold">$199</span>
-                                <span className="text-muted fw-medium">/month</span>
+                        {/* Business */}
+                        <div className="rounded-2xl bg-card border border-border p-7 flex flex-col hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md transition-all duration-300">
+                            <h3 className="text-xl font-bold mb-1">Architecture Firm</h3>
+                            <p className="text-sm text-muted-foreground mb-6">Scale your agency's drafting power.</p>
+                            <div className="mb-7">
+                                <span className="text-4xl font-extrabold">$199</span>
+                                <span className="text-muted-foreground font-medium ml-1">/month</span>
                             </div>
                             <ul className="space-y-3 mb-8 flex-1">
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> Everything in Designer Pro</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> 5 Team seats included</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> Team collaboration & sharing</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> CAD/DWG export options</li>
-                                <li className="d-flex align-items-center fs-6 text-muted"><CheckCircle2 className="w-4 h-4 text-slate-900 dark:text-slate-100 mr-3 shrink-0" /> Workflow API access</li>
+                                {["Everything in Designer Pro", "5 team seats included", "Team collaboration & sharing", "CAD/DWG export options", "Workflow API access"].map(f => (
+                                    <li key={f} className="flex items-center gap-3 text-sm text-foreground">
+                                        <CheckCircle2 className="h-4 w-4 text-violet-500 shrink-0" /> {f}
+                                    </li>
+                                ))}
                             </ul>
                             <button
                                 onClick={() => setPage("auth")}
-                                className="inline-flex items-center justify-center gap-2 self-center px-8 py-3 rounded-full border border-gray-300 text-sm font-medium hover:bg-gray-100 transition-colors w-auto"
+                                className="w-full py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                             >
                                 Contact Sales
                             </button>
@@ -440,98 +434,87 @@ export default function LandingPage({ setPage, isAuthenticated = false, onShowTo
                 </div>
             </section>
 
-            {/* 6. Testimonials / Use Cases */}
-            <section className="py-24 overflow-hidden relative">
-                <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-8">
-                    <div className="mx-auto max-w-3xl">
-                        <h2 className="text-center mb-12 fs-2 md:text-4xl fw-bold tracking-tight">Trusted by the best in the business</h2>
+            {/* ── 6. Testimonials ──────────────────────────────────────── */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_50%_at_50%_100%,rgba(124,58,237,0.04),transparent)]" />
+                <div className="mx-auto max-w-6xl px-4 md:px-8">
+                    <div className="text-center mb-16">
+                        <p className="text-sm font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-3">Testimonials</p>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Trusted by the best in the business</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-4 shadow-sm border border-slate-100 dark:border-slate-800">
-                            <div className="d-flex text-yellow-400 mb-6">
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                            </div>
-                            <p className="fs-5 fw-medium text-slate-700 dark:text-slate-300 mb-8 flex-1">"SmartPlan AI completely changed our renovation approach. Instead of guessing, we visualized four different ways to reconfigure our apartment. It saved us thousands in architectural fees."</p>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src="https://i.pravatar.cc/150?img=12" alt="Avatar" className="w-12 h-12 rounded-circle border border-slate-200 dark:border-slate-800" />
-                                <div>
-                                    <div className="fw-bold fs-6 text-muted">Elena Rodriguez</div>
-                                    <div className="small text-muted">Homeowner, Chicago</div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                        {[
+                            { quote: "SmartPlan AI completely changed our renovation approach. Instead of guessing, we visualized four different ways to reconfigure our apartment. It saved us thousands in architectural fees.", name: "Elena Rodriguez", role: "Homeowner, Chicago",    img: "https://i.pravatar.cc/150?img=12" },
+                            { quote: "As a solo designer, this tool acts like a team of junior draftsmen. I upload As-Builts on Friday and review 10 AI concepts on Monday. Incredible productivity multiplier.",                name: "Marcus Chen",      role: "Interior Designer",  img: "https://i.pravatar.cc/150?img=33" },
+                            { quote: "We use SmartPlan AI for pitch meetings. Generating instant layouts 'on the fly' based on client feedback wins us the project almost every single time. It's magic.",                     name: "Sarah Jenkins",    role: "Principal Architect", img: "https://i.pravatar.cc/150?img=68" },
+                        ].map((tm) => (
+                            <div key={tm.name} className="flex flex-col rounded-2xl border border-border bg-card p-6 hover:border-violet-200 dark:hover:border-violet-800 hover:shadow-lg transition-all duration-300">
+                                <div className="flex gap-0.5 mb-4">
+                                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}
+                                </div>
+                                <p className="text-base text-foreground leading-relaxed flex-1 mb-6">
+                                    <span className="text-3xl text-violet-300 dark:text-violet-700 font-serif leading-none mr-1">"</span>
+                                    {tm.quote}
+                                    <span className="text-3xl text-violet-300 dark:text-violet-700 font-serif leading-none ml-1">"</span>
+                                </p>
+                                <div className="flex items-center gap-3 pt-4 border-t border-border">
+                                    <img src={tm.img} alt={tm.name} className="h-11 w-11 rounded-full object-cover ring-2 ring-violet-100 dark:ring-violet-900" />
+                                    <div>
+                                        <div className="text-sm font-semibold text-foreground">{tm.name}</div>
+                                        <div className="text-xs text-muted-foreground">{tm.role}</div>
+                                    </div>
+                                    <div className="ml-auto">
+                                        <CheckCircle2 className="h-4 w-4 text-violet-500" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-4 shadow-sm border border-slate-100 dark:border-slate-800">
-                            <div className="d-flex text-yellow-400 mb-6">
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                            </div>
-                            <p className="fs-5 fw-medium text-slate-700 dark:text-slate-300 mb-8 flex-1">"As a solo designer, this tool acts like a team of junior draftsmen. I upload the As-Builts on Friday and review 10 generated AI concepts on Monday. Incredible productivity multiplier."</p>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src="https://i.pravatar.cc/150?img=33" alt="Avatar" className="w-12 h-12 rounded-circle border border-slate-200 dark:border-slate-800" />
-                                <div>
-                                    <div className="fw-bold fs-6 text-muted">Marcus Chen</div>
-                                    <div className="small text-muted">Interior Designer</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-4 shadow-sm border border-slate-100 dark:border-slate-800">
-                            <div className="d-flex text-yellow-400 mb-6">
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                                <Star className="w-4 h-4 fill-current" />
-                            </div>
-                            <p className="fs-5 fw-medium text-slate-700 dark:text-slate-300 mb-8 flex-1">"We use SmartPlan AI for our pitch meetings. Generating instant layouts 'on the fly' based on client feedback during a meeting wins us the project almost every single time. It's magic."</p>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src="https://i.pravatar.cc/150?img=68" alt="Avatar" className="w-12 h-12 rounded-circle border border-slate-200 dark:border-slate-800" />
-                                <div>
-                                    <div className="fw-bold fs-6 text-muted">Sarah Jenkins</div>
-                                    <div className="small text-muted">Principal Architect</div>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* 7. Call to Action (Final Section) */}
-            <section className="py-24 relative overflow-hidden">
-                <div className="absolute inset-0 bg-slate-900">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 mix-blend-overlay"></div>
-                </div>
+            {/* ── 7. Final CTA ─────────────────────────────────────────── */}
+            <section className="py-28 relative overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-700">
+                {/* Soft light radial overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(255,255,255,0.08),transparent)]" />
+                {/* Dot texture */}
+                <div
+                    className="absolute inset-0 opacity-[0.06]"
+                    style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)", backgroundSize: "24px 24px" }}
+                />
+                {/* Soft glow blobs */}
+                <div className="absolute top-0 left-1/4 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
+                <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-indigo-300/10 blur-3xl" />
 
-                <div className="relative z-10 mx-auto max-w-6xl px-4 text-center md:px-8">
-                    <h2 className="text-center mb-4 fs-1 md:text-5xl fw-bold tracking-tight text-white">Start Designing Your Space with AI Today</h2>
-                    <p className="text-center mb-12 fs-4 text-slate-300 max-w-2xl mx-auto">
-                        Join thousands of homeowners and professionals who are creating optimal, beautiful spaces in a fraction of the time.
+                <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-8">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-white/90 mb-8">
+                        <Sparkles className="h-3.5 w-3.5" />
+                        Free to start — no credit card required
+                    </div>
+                    <h2 className="mb-5 text-4xl md:text-5xl font-bold tracking-tight text-white">Start Designing Your Space with AI Today</h2>
+                    <p className="mb-10 text-lg text-violet-100 max-w-xl mx-auto">
+                        Join thousands of homeowners and professionals creating optimal, beautiful spaces in a fraction of the time.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
                             onClick={() => setPage("auth")}
-                            className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-blue-500 text-white text-base font-semibold hover:bg-blue-400 transition-colors cursor-pointer w-auto"
+                            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white text-violet-700 font-semibold hover:bg-violet-50 active:bg-violet-100 transition-all shadow-lg shadow-violet-900/20"
                         >
-                            Start Designing
-                            <ArrowRight className="h-4 w-4" />
+                            Start Designing <ArrowRight className="h-4 w-4" />
                         </button>
                         <button
                             onClick={() => setPage("auth")}
-                            className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border border-slate-600 bg-slate-800/80 text-white text-base font-semibold hover:bg-slate-700 transition-colors w-auto"
+                            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-white/30 text-white font-semibold hover:bg-white/10 hover:border-white/50 transition-all"
                         >
                             Create Free Account
                         </button>
                     </div>
+
+                    <p className="mt-8 text-xs text-violet-200/70 tracking-wide">
+                        Trusted by 12,000+ designers · No credit card required · Cancel anytime
+                    </p>
                 </div>
             </section>
 

@@ -209,6 +209,7 @@
     "compare": "Compare",
     "exportPdf": "Export PDF",
     "saveDesign": "Save Design",
+    "saved": "Saved",
     "aiExplanation": "AI Explanation",
     "prefsLine": "Preferences: style {{style}}, usage {{usage}}, budget {{budget}}.",
     "fallbackParagraph": "Based on your preference for a Modern styling and a Medium budget, the AI has generated an open concept design. We removed the non-load-bearing partition wall between the original kitchen and living space to maximize natural light flow from the south-facing windows.",
@@ -389,7 +390,10 @@
     "backToDashboard": "Back to Dashboard",
     "newDesign": "New Design",
     "proceedSelected": "Proceed with Selected",
-    "expandedLayoutAlt": "Expanded Layout"
+    "expandedLayoutAlt": "Expanded Layout",
+    "generating": "Generating designs…",
+    "retry": "Try Again",
+    "regenerate": "Regenerate"
   },
   "compareDesigns": {
     "title": "Compare Design Options",
@@ -419,7 +423,8 @@
     "editPreferences": "Edit Preferences",
     "saveSelected": "Save Selected Design",
     "expandImage": "Expand Image",
-    "expandedLayoutAlt": "Expanded Layout"
+    "expandedLayoutAlt": "Expanded Layout",
+    "loading": "Loading comparison…"
   },
   "home": {
     "title": "Beautifully designed components",

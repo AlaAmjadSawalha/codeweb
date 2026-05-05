@@ -209,6 +209,7 @@
     "compare": "مقارنة",
     "exportPdf": "تصدير PDF",
     "saveDesign": "حفظ التصميم",
+    "saved": "تم الحفظ",
     "aiExplanation": "شرح الذكاء الاصطناعي",
     "prefsLine": "التفضيلات: الأسلوب {{style}}، الاستخدام {{usage}}، الميزانية {{budget}}.",
     "fallbackParagraph": "بناءً على تفضيلك لأسلوب عصري وميزانية متوسطة، أنشأ الذكاء الاصطناعي تصميمًا مفتوحًا. أزلنا الجدار غير الحامل بين المطبخ الأصلي وغرفة المعيشة لتعظيم تدفق الضوء الطبيعي من النوافذ الجنوبية.",
@@ -389,7 +390,10 @@
     "backToDashboard": "العودة للوحة التحكم",
     "newDesign": "تصميم جديد",
     "proceedSelected": "المتابعة بالمحدد",
-    "expandedLayoutAlt": "تخطيط موسّع"
+    "expandedLayoutAlt": "تخطيط موسّع",
+    "generating": "جارٍ إنشاء التصاميم…",
+    "retry": "حاول مرة أخرى",
+    "regenerate": "إعادة الإنشاء"
   },
   "compareDesigns": {
     "title": "مقارنة خيارات التصميم",
@@ -419,7 +423,8 @@
     "editPreferences": "تعديل التفضيلات",
     "saveSelected": "حفظ التصميم المحدد",
     "expandImage": "توسيع الصورة",
-    "expandedLayoutAlt": "تخطيط موسّع"
+    "expandedLayoutAlt": "تخطيط موسّع",
+    "loading": "جارٍ تحميل المقارنة…"
   },
   "home": {
     "title": "مكوّنات مصممة بعناية",
