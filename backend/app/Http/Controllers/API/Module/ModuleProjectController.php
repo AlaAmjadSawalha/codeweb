@@ -222,4 +222,4 @@ class ModuleProjectController extends Controller
             'preferences' => $project->preferences,
         ];
     }
-}
+} 

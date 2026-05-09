@@ -12,6 +12,7 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import AuthPage from "@/pages/AuthPage";
 import PlaceholderPage from "@/pages/PlaceholderPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import EchoTest from "./EchoTest.jsx";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import {
   Navigate,
@@ -156,53 +157,73 @@ function App() {
           }
         />
 
-        <Route path="/auth" element={<Navigate to={isAuthenticated ? "/dashboard" : "/auth/login"} replace />} />
+        <Route
+          path="/auth"
+          element={
+            <Navigate
+              to={isAuthenticated ? "/dashboard" : "/auth/login"}
+              replace
+            />
+          }
+        />
         <Route
           path="/auth/login"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> :
-            <AuthPage
-              setPage={setPage}
-              initialView="login"
-              onAuthSuccess={() => setIsAuthenticated(true)}
-              onShowToast={showToast}
-            />
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <AuthPage
+                setPage={setPage}
+                initialView="login"
+                onAuthSuccess={() => setIsAuthenticated(true)}
+                onShowToast={showToast}
+              />
+            )
           }
         />
         <Route
           path="/auth/signup"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> :
-            <AuthPage
-              setPage={setPage}
-              initialView="signup"
-              onAuthSuccess={() => setIsAuthenticated(true)}
-              onShowToast={showToast}
-            />
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <AuthPage
+                setPage={setPage}
+                initialView="signup"
+                onAuthSuccess={() => setIsAuthenticated(true)}
+                onShowToast={showToast}
+              />
+            )
           }
         />
         <Route
           path="/auth/forgot"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> :
-            <AuthPage
-              setPage={setPage}
-              initialView="forgot"
-              onAuthSuccess={() => setIsAuthenticated(true)}
-              onShowToast={showToast}
-            />
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <AuthPage
+                setPage={setPage}
+                initialView="forgot"
+                onAuthSuccess={() => setIsAuthenticated(true)}
+                onShowToast={showToast}
+              />
+            )
           }
         />
         <Route
           path="/auth/reset"
           element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> :
-            <AuthPage
-              setPage={setPage}
-              initialView="reset"
-              onAuthSuccess={() => setIsAuthenticated(true)}
-              onShowToast={showToast}
-            />
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <AuthPage
+                setPage={setPage}
+                initialView="reset"
+                onAuthSuccess={() => setIsAuthenticated(true)}
+                onShowToast={showToast}
+              />
+            )
           }
         />
 
@@ -297,6 +318,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
+      <EchoTest />
       {toastMessage && (
         <div className="fixed bottom-4 right-4 z-[80] rounded-xl bg-foreground text-background px-4 py-2.5 text-sm font-medium shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-200">
           {toastMessage}
